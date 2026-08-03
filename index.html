@@ -148,7 +148,7 @@ body::before{
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display-italic);font-style:italic;font-weight:500;font-size:19px;letter-spacing:.01em}
 .logo-mark{width:11px;height:11px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
 .logo small{display:block;font-family:var(--font-mono);font-style:normal;font-size:9px;letter-spacing:.22em;color:var(--muted-on-dark);margin-top:1px}
-.nav-links{display:flex;align-items:center;gap:30px;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.03em;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:19px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.02em;text-transform:uppercase}
 .nav-links a{color:var(--muted-on-dark);transition:color .18s ease}
 .nav-links a:hover{color:var(--text-on-dark)}
 .nav-cta{display:flex;align-items:center;gap:14px}
@@ -328,12 +328,74 @@ form .submit-row{grid-column:1/-1;display:flex;align-items:center;gap:18px;margi
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
 .footer-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px;margin-bottom:50px}
-.footer-links{display:flex;gap:36px;font-family:var(--font-mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.04em}
+.footer-links{display:flex;flex-wrap:wrap;row-gap:12px;column-gap:26px;font-family:var(--font-mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.04em}
 .footer-links a{color:var(--muted-on-dark)}
 .footer-links a:hover{color:var(--gold-bright)}
 .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-family:var(--font-mono);font-size:11px;color:var(--muted-on-dark);border-top:1px solid var(--ink-line);padding-top:26px}
 .footer-bottom a{color:var(--muted-on-dark)}
 .footer-bottom a:hover{color:var(--gold-bright)}
+
+/* ---------- resultados footnote ---------- */
+.stat-strip-note{
+  font-family:var(--font-mono);font-size:11px;color:var(--muted-on-dark);
+  line-height:1.7;max-width:60ch;margin:22px auto 0;text-align:center;
+}
+
+/* ---------- pricing setup line ---------- */
+.tier-setup{font-family:var(--font-mono);font-size:11.5px;color:var(--muted-on-dark);margin-top:-16px;margin-bottom:24px}
+.tiers-note{
+  font-family:var(--font-mono);font-size:11.5px;color:var(--muted-on-dark);
+  line-height:1.7;max-width:64ch;margin:36px auto 0;text-align:center;
+}
+
+/* ---------- nosotros ---------- */
+.nosotros-wrap{max-width:680px;margin:0 auto}
+.nosotros-wrap h2{margin-top:18px;text-wrap:balance}
+.nosotros-body{display:flex;flex-direction:column;gap:24px;margin-top:34px;font-size:1.08rem;line-height:1.78}
+.nosotros-pull{
+  border-left:3px solid var(--gold);padding-left:24px;margin:48px 0;
+  font-family:var(--font-display-italic);font-style:italic;font-weight:500;
+  font-size:clamp(1.35rem,2.4vw,1.7rem);color:var(--text-on-paper);
+}
+.founder{border-top:1px solid var(--paper-line);padding-top:30px;display:flex;flex-direction:column;gap:12px}
+.founder-name{font-family:var(--font-mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-on-paper)}
+.founder-name span{color:var(--muted-on-paper);text-transform:none;letter-spacing:0;font-size:12px}
+.founder-bio{color:var(--muted-on-paper);font-size:14.5px;line-height:1.75;max-width:56ch}
+
+/* ---------- criterios ---------- */
+.criterios-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start}
+.criterios-grid h2{margin-top:18px;text-wrap:balance}
+.criterios-grid > div:first-child p{margin-top:18px;max-width:42ch}
+.criteria-list{display:flex;flex-direction:column;gap:28px}
+.criteria-list li{display:flex;gap:16px}
+.criteria-list li svg{width:19px;height:19px;flex-shrink:0;margin-top:3px;color:var(--gold)}
+.criteria-list h3{font-family:var(--font-display);font-weight:600;font-size:1.08rem;margin-bottom:6px}
+.criteria-list p{font-size:13.8px;color:var(--muted-on-dark);line-height:1.6;max-width:46ch}
+.criteria-close{margin-top:32px;font-family:var(--font-mono);font-size:12px;color:var(--muted-on-dark)}
+@media (max-width:900px){.criterios-grid{grid-template-columns:1fr;gap:44px}}
+
+/* ---------- faq ---------- */
+.faq-wrap{max-width:760px;margin:0 auto}
+.faq-list{display:flex;flex-direction:column}
+.faq-item{border-bottom:1px solid var(--paper-line)}
+.faq-item:first-child{border-top:1px solid var(--paper-line)}
+.faq-q{font-size:inherit;font-weight:inherit}
+.faq-trigger{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  background:none;border:none;text-align:left;padding:22px 4px;color:var(--text-on-paper);
+}
+.faq-trigger span{font-family:var(--font-display);font-weight:600;font-size:1.05rem;line-height:1.4}
+.faq-chevron{width:20px;height:20px;flex-shrink:0;color:var(--gold-deep);transition:transform .25s ease}
+.faq-trigger[aria-expanded="true"] .faq-chevron{transform:rotate(180deg)}
+.faq-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.16,1,.32,1)}
+.faq-item.open .faq-panel{grid-template-rows:1fr}
+.faq-panel-inner{overflow:hidden}
+.faq-panel-inner p{padding:0 4px 24px;color:var(--muted-on-paper);font-size:14.5px;line-height:1.75;max-width:62ch}
+
+@media (max-width:520px){
+  .nosotros-body{font-size:1rem}
+  .criteria-list p,.criterios-grid > div:first-child p{max-width:none}
+}
 
 /* ---------- reveal ---------- */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.16,1,.32,1),transform .7s cubic-bezier(.16,1,.32,1)}
@@ -365,6 +427,9 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
       <a href="#soluciones">Soluciones</a>
       <a href="#proceso">Proceso</a>
       <a href="#resultados">Resultados</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#criterios">Criterios</a>
+      <a href="#faq">FAQ</a>
       <a href="#contacto">Contacto</a>
     </div>
     <div class="nav-cta">
@@ -380,6 +445,9 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
   <a href="#soluciones">Soluciones</a>
   <a href="#proceso">Proceso</a>
   <a href="#resultados">Resultados</a>
+  <a href="#nosotros">Nosotros</a>
+  <a href="#criterios">Criterios</a>
+  <a href="#faq">FAQ</a>
   <a href="#contacto">Contacto</a>
   <a href="#contacto" class="btn btn-gold" style="justify-content:center">Auditoría Gratuita</a>
 </div>
@@ -430,7 +498,7 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
         </svg>
         <div class="sparkline-label"><span>Semana 1</span><span>Semana 12</span></div>
       </div>
-      <p class="ledger-foot">Cifras de referencia basadas en auditorías realizadas a clínicas activas. Tu resultado depende del volumen y estado actual de tu agenda.</p>
+      <p class="ledger-foot">Estimación calculada sobre el volumen medio de una clínica de dos sillones en Barcelona. El tuyo lo calculamos con tus números en la auditoría.</p>
     </div>
   </div>
 </header>
@@ -457,6 +525,7 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
         <div class="tier-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3a7 7 0 0 0-7 7v3.5L3.5 17h17L19 13.5V10a7 7 0 0 0-7-7Z"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg></div>
         <h3>Sistema Silla Llena</h3>
         <div class="price">€297<span>/ mes</span></div>
+        <p class="tier-setup">+ €997 de instalación (pago único)</p>
         <ul>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Recordatorios de cita por WhatsApp (72h y 24h)</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Gestión automática de lista de espera</li>
@@ -470,6 +539,7 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
         <div class="tier-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 17 10 11 14 15 20 8"/><path d="M14 8h6v6"/></svg></div>
         <h3>Rescate de Facturación</h3>
         <div class="price">€697<span>/ mes</span></div>
+        <p class="tier-setup">+ €1.997 de instalación (pago único)</p>
         <ul>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Convierte cancelaciones en ingresos</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>€2.500–4.500 extra al mes (estimado)</li>
@@ -482,6 +552,7 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
         <div class="tier-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v4.5l3 2"/></svg></div>
         <h3>Piloto Automático</h3>
         <div class="price">€1.500<span>/ mes</span></div>
+        <p class="tier-setup">+ €2.997 de instalación (pago único)</p>
         <ul>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Autonomía total de la agenda</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Captación de leads 24/7</li>
@@ -490,6 +561,7 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
         <a href="#contacto" class="btn btn-ghost-dark">Hablar con el equipo</a>
       </article>
     </div>
+    <p class="tiers-note">La instalación cubre la integración con tu software, la limpieza de tu base de datos, la configuración completa y las pruebas supervisadas. Sin permanencia.</p>
   </div>
 </section>
 
@@ -538,17 +610,18 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
     </div>
 
     <div class="stat-strip reveal">
-      <div class="stat-cell"><div class="num">€3.200</div><div class="cap">Recuperación mensual promedio</div></div>
+      <div class="stat-cell"><div class="num">€3.200</div><div class="cap">Recuperación mensual estimada</div></div>
       <div class="stat-cell"><div class="num">30 días</div><div class="cap">Hasta ver resultados medibles</div></div>
       <div class="stat-cell"><div class="num">0h</div><div class="cap">Gestión manual añadida</div></div>
-      <div class="stat-cell"><div class="num">4–8×</div><div class="cap">ROI estimado a 90 días</div></div>
+      <div class="stat-cell"><div class="num">4–8×</div><div class="cap">ROI proyectado a 90 días</div></div>
     </div>
+    <p class="stat-strip-note reveal">Proyecciones basadas en el modelo de una clínica de 180–220 citas al mes con una tasa de inasistencia del 12–18%. Tu cifra real se calcula en la auditoría.</p>
 
     <div class="evidence-grid">
       <div class="guarantee reveal">
         <span class="eyebrow">Garantía de 30 días</span>
         <h3>Duplicamos tu inversión o no facturamos.</h3>
-        <p>Si en 30 días el sistema no genera al menos el doble de lo que pagas por él, dejamos de facturarte. El riesgo lo asumimos nosotros.</p>
+        <p>Si en los primeros 30 días de operación autónoma el sistema no genera al menos el doble de tu cuota mensual, dejamos de facturarte hasta que lo haga. Aplica siempre que tengamos acceso a la agenda y a la base de pacientes en los plazos acordados.</p>
       </div>
       <div class="compat reveal">
         <h3>Funciona con tu software actual</h3>
@@ -560,8 +633,209 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
         <ul class="trust-list">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Infraestructura conforme a RGPD</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Dashboard de ROI en tiempo real</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Gestor de cuenta dedicado — respuesta &lt; 4h</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Hablas siempre con la misma persona. Respuesta en menos de 4h.</li>
         </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section class="section-pad on-paper" id="nosotros" aria-labelledby="nosotros-heading">
+  <div class="container">
+    <div class="nosotros-wrap reveal">
+      <span class="eyebrow">Nosotros</span>
+      <h2 id="nosotros-heading">Nadie monta una clínica para perseguir a la gente por teléfono.</h2>
+      <div class="nosotros-body">
+        <p>Al sector dental le llevan años vendiendo la misma historia: que el problema es que no te conoce suficiente gente.</p>
+        <p>No lo es. El problema está en los huecos. En el paciente que no aparece un martes y nadie llama a nadie para ocupar esa hora. En los cientos de nombres de tu base de datos a los que nadie ha escrito en más de un año. En la consulta de Instagram que llega un sábado y se contesta el lunes.</p>
+        <p>Una clínica media pierde entre dos mil y tres mil euros al mes por ahí. Casi ningún propietario ha hecho esa cuenta, porque es más fácil vender visibilidad que señalar una hemorragia.</p>
+        <p>AXIONA existe para instalar lo que debería haber estado ahí desde el principio: la infraestructura que tapa esas fugas. No cambiamos tu software ni le pedimos nada nuevo a tu equipo. Funciona por debajo y te entrega una cifra cada semana: cuánto dinero ha vuelto y de dónde ha salido.</p>
+      </div>
+      <blockquote class="nosotros-pull">Haz la cuenta. Después decides.</blockquote>
+      <div class="founder">
+        <p class="founder-name">Hugo Corbalán <span>— fundador de AXIONA Systems</span></p>
+        <p class="founder-bio">AXIONA no es una agencia con departamentos. Soy yo quien hace la auditoría, quien instala el sistema y quien te escribe el lunes con los resultados, buenos o malos. Si algo falla, sabes exactamente a quién llamar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRITERIOS -->
+<section class="section-pad on-dark" id="criterios" aria-labelledby="criterios-heading">
+  <div class="container criterios-grid">
+    <div class="reveal">
+      <span class="eyebrow">Criterios de admisión</span>
+      <h2 id="criterios-heading">No trabajamos con todas las clínicas.</h2>
+      <p class="muted">El sistema necesita unas condiciones mínimas para generar retorno. Si no se cumplen, te lo decimos en la primera conversación y no te hacemos perder el tiempo.</p>
+    </div>
+    <div class="reveal">
+      <ul class="criteria-list">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+          <div>
+            <h3>Más de 80 citas al mes</h3>
+            <p>Por debajo de ese volumen no hay suficientes huecos que recuperar para que el retorno compense.</p>
+          </div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+          <div>
+            <h3>Software de gestión conectable</h3>
+            <p>Necesitamos poder leer tu agenda. La mayoría de sistemas del sector lo permiten; lo verificamos en la auditoría.</p>
+          </div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+          <div>
+            <h3>Base de pacientes con historial</h3>
+            <p>Al menos un par de años de registros con teléfono y tratamientos. Es el activo del que sale buena parte de la facturación recuperada.</p>
+          </div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+          <div>
+            <h3>Un responsable que decida</h3>
+            <p>Trabajamos directamente con el propietario. Sin comités ni intermediarios.</p>
+          </div>
+        </li>
+      </ul>
+      <p class="criteria-close">¿No estás seguro de si encajas? La auditoría lo aclara en 30 minutos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Esto ya lo hace mi software de gestión, ¿no?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tu software avisa. Este sistema gestiona. La diferencia se ve con una pregunta: cuando un paciente te cancela un martes por la mañana la cita del jueves, ¿tu software llama a alguien para ocupar ese hueco? Ahí está todo el valor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mis pacientes son mayores, muchos no usan WhatsApp.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Por eso el sistema envía un SMS automático cuando el mensaje de WhatsApp no se entrega. En la auditoría medimos qué porcentaje real de tu base tiene WhatsApp activo, casi siempre es más alto de lo que se estima. Y si hay un grupo que no es alcanzable, se excluye y el sistema trabaja sobre el resto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿No sonará a robot? No quiero molestar a mis pacientes.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los mensajes se redactan con el tono de tu clínica y los apruebas tú, palabra por palabra, antes de que salga ninguno. Después hay una fase de prueba supervisada en la que validas cada mensaje real antes de enviarse. Y monitorizamos la tasa de baja como métrica de alarma: si algo molesta, se detecta en días."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué pasa con los datos de mis pacientes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Firmamos un contrato de encargado de tratamiento y trabajamos solo con los datos mínimos necesarios: nombre, teléfono, cita y tipo de tratamiento. No accedemos a historiales clínicos ni a imágenes. La infraestructura está alojada en la UE y los datos siguen siendo tuyos: puedes exportarlos o pedir su borrado cuando quieras."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Por ese dinero contrato a alguien media jornada.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Haz el cálculo completo: salario bruto, cotizaciones, vacaciones, bajas, formación y rotación. Y después la comparación funcional: esa persona trabaja unas horas concretas de lunes a viernes. El sistema trabaja los siete días a cualquier hora, no se olvida de nadie y no se va a la competencia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ya probé algo parecido y no funcionó.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cuéntanos qué probaste y qué falló. Casi siempre fue un recordatorio automático sin gestión de huecos, sin segmentación y sin nadie detrás ajustándolo cuando dejaba de funcionar. Que lo hayas intentado significa que reconoces el problema: eso es la mitad del trabajo."
+      }
+    }
+  ]
+}
+</script>
+<section class="section-pad on-paper" id="faq" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Preguntas frecuentes</span>
+        <h2 id="faq-heading">Lo que nos preguntan antes de empezar</h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item open">
+          <h3 class="faq-q">
+            <button type="button" class="faq-trigger" id="faq-btn-1" aria-expanded="true" aria-controls="faq-panel-1">
+              <span>Esto ya lo hace mi software de gestión, ¿no?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </h3>
+          <div class="faq-panel" id="faq-panel-1" role="region" aria-labelledby="faq-btn-1">
+            <div class="faq-panel-inner"><p>Tu software avisa. Este sistema gestiona. La diferencia se ve con una pregunta: cuando un paciente te cancela un martes por la mañana la cita del jueves, ¿tu software llama a alguien para ocupar ese hueco? Ahí está todo el valor.</p></div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">
+            <button type="button" class="faq-trigger" id="faq-btn-2" aria-expanded="false" aria-controls="faq-panel-2">
+              <span>Mis pacientes son mayores, muchos no usan WhatsApp.</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </h3>
+          <div class="faq-panel" id="faq-panel-2" role="region" aria-labelledby="faq-btn-2">
+            <div class="faq-panel-inner"><p>Por eso el sistema envía un SMS automático cuando el mensaje de WhatsApp no se entrega. En la auditoría medimos qué porcentaje real de tu base tiene WhatsApp activo — casi siempre es más alto de lo que se estima. Y si hay un grupo que no es alcanzable, se excluye y el sistema trabaja sobre el resto.</p></div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">
+            <button type="button" class="faq-trigger" id="faq-btn-3" aria-expanded="false" aria-controls="faq-panel-3">
+              <span>¿No sonará a robot? No quiero molestar a mis pacientes.</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </h3>
+          <div class="faq-panel" id="faq-panel-3" role="region" aria-labelledby="faq-btn-3">
+            <div class="faq-panel-inner"><p>Los mensajes se redactan con el tono de tu clínica y los apruebas tú, palabra por palabra, antes de que salga ninguno. Después hay una fase de prueba supervisada en la que validas cada mensaje real antes de enviarse. Y monitorizamos la tasa de baja como métrica de alarma: si algo molesta, se detecta en días.</p></div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">
+            <button type="button" class="faq-trigger" id="faq-btn-4" aria-expanded="false" aria-controls="faq-panel-4">
+              <span>¿Qué pasa con los datos de mis pacientes?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </h3>
+          <div class="faq-panel" id="faq-panel-4" role="region" aria-labelledby="faq-btn-4">
+            <div class="faq-panel-inner"><p>Firmamos un contrato de encargado de tratamiento y trabajamos solo con los datos mínimos necesarios: nombre, teléfono, cita y tipo de tratamiento. No accedemos a historiales clínicos ni a imágenes. La infraestructura está alojada en la UE y los datos siguen siendo tuyos: puedes exportarlos o pedir su borrado cuando quieras.</p></div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">
+            <button type="button" class="faq-trigger" id="faq-btn-5" aria-expanded="false" aria-controls="faq-panel-5">
+              <span>Por ese dinero contrato a alguien media jornada.</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </h3>
+          <div class="faq-panel" id="faq-panel-5" role="region" aria-labelledby="faq-btn-5">
+            <div class="faq-panel-inner"><p>Haz el cálculo completo: salario bruto, cotizaciones, vacaciones, bajas, formación y rotación. Y después la comparación funcional: esa persona trabaja unas horas concretas de lunes a viernes. El sistema trabaja los siete días a cualquier hora, no se olvida de nadie y no se va a la competencia.</p></div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">
+            <button type="button" class="faq-trigger" id="faq-btn-6" aria-expanded="false" aria-controls="faq-panel-6">
+              <span>Ya probé algo parecido y no funcionó.</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </h3>
+          <div class="faq-panel" id="faq-panel-6" role="region" aria-labelledby="faq-btn-6">
+            <div class="faq-panel-inner"><p>Cuéntanos qué probaste y qué falló. Casi siempre fue un recordatorio automático sin gestión de huecos, sin segmentación y sin nadie detrás ajustándolo cuando dejaba de funcionar. Que lo hayas intentado significa que reconoces el problema: eso es la mitad del trabajo.</p></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -633,6 +907,9 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
         <a href="#soluciones">Soluciones</a>
         <a href="#proceso">Proceso</a>
         <a href="#resultados">Resultados</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#criterios">Criterios</a>
+        <a href="#faq">FAQ</a>
         <a href="#contacto">Contacto</a>
       </nav>
     </div>
@@ -727,6 +1004,16 @@ if (spark && !reduceMotion) {
   }, { threshold: 0.5 });
   sparkIO.observe(spark);
 }
+
+// faq accordion
+document.querySelectorAll('.faq-item').forEach(item => {
+  const trigger = item.querySelector('.faq-trigger');
+  trigger.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    item.classList.toggle('open', !isOpen);
+    trigger.setAttribute('aria-expanded', String(!isOpen));
+  });
+});
 
 // contact form (demo only — wire to your CRM / webhook)
 const leadForm = document.getElementById('leadForm');

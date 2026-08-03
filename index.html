@@ -362,18 +362,6 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
 .founder-name span{color:var(--muted-on-paper);text-transform:none;letter-spacing:0;font-size:12px}
 .founder-bio{color:var(--muted-on-paper);font-size:14.5px;line-height:1.75;max-width:56ch}
 
-/* ---------- criterios ---------- */
-.criterios-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start}
-.criterios-grid h2{margin-top:18px;text-wrap:balance}
-.criterios-grid > div:first-child p{margin-top:18px;max-width:42ch}
-.criteria-list{display:flex;flex-direction:column;gap:28px}
-.criteria-list li{display:flex;gap:16px}
-.criteria-list li svg{width:19px;height:19px;flex-shrink:0;margin-top:3px;color:var(--gold)}
-.criteria-list h3{font-family:var(--font-display);font-weight:600;font-size:1.08rem;margin-bottom:6px}
-.criteria-list p{font-size:13.8px;color:var(--muted-on-dark);line-height:1.6;max-width:46ch}
-.criteria-close{margin-top:32px;font-family:var(--font-mono);font-size:12px;color:var(--muted-on-dark)}
-@media (max-width:900px){.criterios-grid{grid-template-columns:1fr;gap:44px}}
-
 /* ---------- faq ---------- */
 .faq-wrap{max-width:760px;margin:0 auto}
 .faq-list{display:flex;flex-direction:column}
@@ -394,7 +382,6 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
 
 @media (max-width:520px){
   .nosotros-body{font-size:1rem}
-  .criteria-list p,.criterios-grid > div:first-child p{max-width:none}
 }
 
 /* ---------- reveal ---------- */
@@ -428,7 +415,6 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
       <a href="#proceso">Proceso</a>
       <a href="#resultados">Resultados</a>
       <a href="#nosotros">Nosotros</a>
-      <a href="#criterios">Criterios</a>
       <a href="#faq">FAQ</a>
       <a href="#contacto">Contacto</a>
     </div>
@@ -446,7 +432,6 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
   <a href="#proceso">Proceso</a>
   <a href="#resultados">Resultados</a>
   <a href="#nosotros">Nosotros</a>
-  <a href="#criterios">Criterios</a>
   <a href="#faq">FAQ</a>
   <a href="#contacto">Contacto</a>
   <a href="#contacto" class="btn btn-gold" style="justify-content:center">Auditoría Gratuita</a>
@@ -661,50 +646,6 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
   </div>
 </section>
 
-<!-- CRITERIOS -->
-<section class="section-pad on-dark" id="criterios" aria-labelledby="criterios-heading">
-  <div class="container criterios-grid">
-    <div class="reveal">
-      <span class="eyebrow">Criterios de admisión</span>
-      <h2 id="criterios-heading">No trabajamos con todas las clínicas.</h2>
-      <p class="muted">El sistema necesita unas condiciones mínimas para generar retorno. Si no se cumplen, te lo decimos en la primera conversación y no te hacemos perder el tiempo.</p>
-    </div>
-    <div class="reveal">
-      <ul class="criteria-list">
-        <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
-          <div>
-            <h3>Más de 80 citas al mes</h3>
-            <p>Por debajo de ese volumen no hay suficientes huecos que recuperar para que el retorno compense.</p>
-          </div>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
-          <div>
-            <h3>Software de gestión conectable</h3>
-            <p>Necesitamos poder leer tu agenda. La mayoría de sistemas del sector lo permiten; lo verificamos en la auditoría.</p>
-          </div>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
-          <div>
-            <h3>Base de pacientes con historial</h3>
-            <p>Al menos un par de años de registros con teléfono y tratamientos. Es el activo del que sale buena parte de la facturación recuperada.</p>
-          </div>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
-          <div>
-            <h3>Un responsable que decida</h3>
-            <p>Trabajamos directamente con el propietario. Sin comités ni intermediarios.</p>
-          </div>
-        </li>
-      </ul>
-      <p class="criteria-close">¿No estás seguro de si encajas? La auditoría lo aclara en 30 minutos.</p>
-    </div>
-  </div>
-</section>
-
 <!-- FAQ -->
 <script type="application/ld+json">
 {
@@ -908,7 +849,6 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
         <a href="#proceso">Proceso</a>
         <a href="#resultados">Resultados</a>
         <a href="#nosotros">Nosotros</a>
-        <a href="#criterios">Criterios</a>
         <a href="#faq">FAQ</a>
         <a href="#contacto">Contacto</a>
       </nav>

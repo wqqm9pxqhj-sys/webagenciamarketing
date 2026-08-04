@@ -150,6 +150,16 @@
 }
 #calc-email-form .field input:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
 #calc-email-form .field label{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-on-paper)}
+.calc-optional{
+  border:1px solid var(--paper-line);border-radius:6px;padding:20px;margin:0;min-width:0;
+  display:flex;flex-direction:column;gap:18px;background:var(--paper-soft);
+}
+.calc-optional legend{
+  padding:0 8px;margin-left:-8px;font-family:var(--font-mono);font-size:11px;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--gold-deep);
+}
+.calc-optional .calc-field-hint{font-size:12px;color:var(--muted-on-paper);margin:2px 0 2px}
+.calc-optional .field{gap:5px}
 .calc-consent{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;line-height:1.6;color:var(--muted-on-paper)}
 .calc-consent input{margin-top:3px;flex-shrink:0}
 .calc-consent a{color:var(--gold-deep);text-decoration:underline}
@@ -331,8 +341,8 @@
   <div class="container calc-narrow calc-form-wrap">
     <!-- TEXTO GENERADO - REVISAR: etiqueta de sección no especificada en el prompt original -->
     <span class="eyebrow">Informe ampliado</span>
-    <h2 id="informe-heading">Te mando el desglose completo</h2>
-    <p>Un informe con tu cálculo detallado, la comparativa de tu tamaño de clínica y una estimación de las otras dos fugas. Sin llamadas ni seguimiento comercial si no lo pides.</p>
+    <h2 id="informe-heading">Te calculo las tres fugas, no solo esta</h2>
+    <p>Con dos datos más puedo calcular también los pacientes dormidos y los interesados que no reciben respuesta, y decirte qué parte del total es recuperable en tu caso. Sin llamadas ni seguimiento comercial si no lo pides.</p>
 
     <form id="calc-email-form" novalidate>
       <input type="hidden" name="_subject" value="Nuevo lead — Calculadora de fuga AXIONA" />
@@ -346,6 +356,20 @@
       <input type="hidden" name="fuga_anual" id="hid-fuga-anual" />
       <input type="hidden" name="recuperable_mensual" id="hid-rec-mes" />
       <input type="hidden" name="recuperable_anual" id="hid-rec-anual" />
+
+      <fieldset class="calc-optional">
+        <legend>Opcional — si los rellenas, te calculo las tres fugas</legend>
+        <div class="field">
+          <label for="calc-pacientes">Pacientes en tu base de datos</label>
+          <span class="calc-field-hint">Aproximado. Todos los que han pasado por la clínica desde que abriste.</span>
+          <input type="text" inputmode="numeric" id="calc-pacientes" name="pacientes_base" placeholder="900" />
+        </div>
+        <div class="field">
+          <label for="calc-consultas">Consultas al mes por web, Instagram o Google</label>
+          <span class="calc-field-hint">Gente que pregunta sin ser paciente todavía. Aproximado.</span>
+          <input type="text" inputmode="numeric" id="calc-consultas" name="consultas_mes" placeholder="40" />
+        </div>
+      </fieldset>
 
       <div class="field">
         <label for="calc-email">Email</label>
@@ -629,6 +653,10 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando…';
 
+    var payload = Object.fromEntries(new FormData(form));
+    if (!payload.pacientes_base || !String(payload.pacientes_base).trim()) payload.pacientes_base = 'no facilitado';
+    if (!payload.consultas_mes || !String(payload.consultas_mes).trim()) payload.consultas_mes = 'no facilitado';
+
     // TODO: conectar proveedor de email definitivo (Resend, SendGrid, Postmark...).
     // Ahora mismo el envío pasa por FormSubmit (sin cuenta ni claves) directo a
     // axionasystems262@gmail.com. La primera vez, FormSubmit manda un correo de
@@ -637,7 +665,7 @@
     fetch('https://formsubmit.co/ajax/axionasystems262@gmail.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(Object.fromEntries(new FormData(form)))
+      body: JSON.stringify(payload)
     })
       .then(function (res) {
         if (!res.ok) throw new Error('request failed');

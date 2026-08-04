@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calculadora de fuga para clínicas dentales | AXIONA Systems</title>
+<meta name="description" content="Calcula en 10 segundos cuánto pierde tu clínica dental al año en citas que no se presentan. Tres datos, resultado inmediato, sin registro." />
+<meta property="og:title" content="Calculadora de fuga para clínicas dentales | AXIONA Systems" />
+<meta property="og:description" content="Calcula en 10 segundos cuánto pierde tu clínica dental al año en citas que no se presentan. Tres datos, resultado inmediato, sin registro." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://axiona-systems-redesign.vercel.app/calculadora" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Calculadora de fuga para clínicas dentales | AXIONA Systems" />
+<meta name="twitter:description" content="Calcula en 10 segundos cuánto pierde tu clínica dental al año en citas que no se presentan." />
+<link rel="stylesheet" href="/assets/styles.css" />
+<style>
+/* ---------- calculator header ---------- */
+.calc-hero{padding:160px 0 60px}
+.calc-hero h1{
+  font-family:var(--font-display);font-weight:600;font-optical-sizing:auto;
+  font-size:clamp(2.1rem,4vw,3.2rem);line-height:1.1;letter-spacing:-.01em;
+  margin:20px 0 18px;max-width:20ch;text-wrap:balance;
+}
+.calc-hero p{font-size:1.08rem;color:var(--muted-on-dark);max-width:52ch}
+
+/* ---------- calculator block ---------- */
+.calc-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:28px;align-items:start}
+.calc-inputs{
+  background:#fff;border:1px solid var(--paper-line);border-radius:6px;padding:30px;
+  display:flex;flex-direction:column;gap:26px;
+}
+.calc-example-note{font-family:var(--font-mono);font-size:11px;color:var(--muted-on-paper);letter-spacing:.02em;line-height:1.6}
+.calc-field{display:flex;flex-direction:column;gap:10px}
+.calc-field-head{display:flex;flex-direction:column;gap:3px}
+.calc-field-head label{font-family:var(--font-display);font-weight:600;font-size:1rem;color:var(--text-on-paper)}
+.calc-field-hint{font-size:12.5px;color:var(--muted-on-paper);line-height:1.5}
+.calc-controls{display:flex;align-items:center;gap:14px}
+.calc-controls input[type="range"]{
+  flex:1;appearance:none;-webkit-appearance:none;height:4px;border-radius:999px;
+  background:var(--paper-line);outline:none;
+}
+.calc-controls input[type="range"]::-webkit-slider-runnable-track{height:4px;border-radius:999px;background:var(--paper-line)}
+.calc-controls input[type="range"]::-moz-range-track{height:4px;border-radius:999px;background:var(--paper-line)}
+.calc-controls input[type="range"]::-webkit-slider-thumb{
+  appearance:none;-webkit-appearance:none;margin-top:-7px;width:18px;height:18px;border-radius:50%;
+  background:var(--gold-deep);border:3px solid #fff;box-shadow:0 0 0 1px var(--paper-line);cursor:pointer;
+}
+.calc-controls input[type="range"]::-moz-range-thumb{
+  width:18px;height:18px;border-radius:50%;background:var(--gold-deep);border:3px solid #fff;
+  box-shadow:0 0 0 1px var(--paper-line);cursor:pointer;
+}
+.calc-controls input[type="range"]:focus-visible{outline:2px solid var(--gold-deep);outline-offset:4px}
+.calc-numfield{position:relative;flex-shrink:0;width:92px}
+.calc-numfield input{
+  width:100%;background:var(--paper);border:1px solid var(--paper-line);border-radius:4px;
+  padding:9px 10px;font-family:var(--font-mono);font-size:14px;color:var(--text-on-paper);
+  text-align:right;font-variant-numeric:tabular-nums;
+}
+.calc-numfield input:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
+.calc-numfield .pre,.calc-numfield .suf{
+  position:absolute;top:50%;transform:translateY(-50%);font-family:var(--font-mono);
+  font-size:13px;color:var(--muted-on-paper);pointer-events:none;
+}
+.calc-numfield .pre{left:9px}
+.calc-numfield.has-pre input{padding-left:20px}
+.calc-numfield .suf{right:10px}
+.calc-numfield.has-suf input{padding-right:22px}
+
+.calc-result{
+  background:var(--ink);color:var(--text-on-dark);border-radius:6px;padding:34px;
+  position:relative;overflow:hidden;
+}
+.calc-result::after{content:"";position:absolute;top:-40%;right:-20%;width:60%;height:130%;
+  background:radial-gradient(circle,rgba(214,168,74,.14),transparent 65%);pointer-events:none}
+.calc-result-label{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-on-dark);position:relative}
+.calc-result-figure{
+  font-family:var(--font-mono);font-weight:500;font-variant-numeric:tabular-nums;
+  font-size:clamp(2.4rem,5vw,3.6rem);color:var(--gold-bright);margin-top:10px;position:relative;
+  transition:opacity .18s ease;
+}
+.calc-result-sub{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;padding-top:24px;
+  border-top:1px solid var(--ink-line);position:relative;
+}
+.calc-result-sub .v{display:block;font-family:var(--font-mono);font-size:1.15rem;font-variant-numeric:tabular-nums;color:var(--text-on-dark)}
+.calc-result-sub .k{display:block;font-size:11.5px;color:var(--muted-on-dark);margin-top:4px;line-height:1.4}
+.calc-recover{margin-top:28px;padding-top:26px;border-top:1px solid var(--ink-line);position:relative}
+.calc-recover-figure{
+  font-family:var(--font-mono);font-size:1.5rem;font-variant-numeric:tabular-nums;
+  color:#7fd8a8;margin-top:8px;
+}
+.calc-recover-note{font-size:12.5px;color:var(--muted-on-dark);margin-top:12px;line-height:1.6;max-width:44ch}
+.calc-recover-low{
+  margin-top:16px;padding:14px 16px;background:rgba(214,168,74,.1);border:1px solid var(--gold-deep);
+  border-radius:4px;font-size:12.5px;line-height:1.6;color:var(--text-on-dark);
+}
+
+@media (max-width:900px){
+  .calc-grid{grid-template-columns:1fr}
+  .calc-result-sub{grid-template-columns:1fr 1fr}
+  .calc-result-sub > div:last-child{grid-column:1/-1}
+}
+
+/* ---------- sticky mobile result bar ---------- */
+.calc-sticky-bar{
+  display:none;position:fixed;left:0;right:0;bottom:0;z-index:600;
+  background:var(--ink);border-top:1px solid var(--ink-line);
+  padding:12px 20px;align-items:center;justify-content:space-between;gap:14px;
+}
+.calc-sticky-bar.active{display:flex}
+.calc-sticky-bar .k{font-family:var(--font-mono);font-size:10.5px;color:var(--muted-on-dark);text-transform:uppercase;letter-spacing:.06em}
+.calc-sticky-bar .v{font-family:var(--font-mono);font-size:1.2rem;color:var(--gold-bright);font-variant-numeric:tabular-nums}
+@media (max-width:900px){.calc-section{padding-bottom:150px}}
+
+/* ---------- sector comparison ---------- */
+.calc-narrow{max-width:720px;margin:0 auto}
+.sector-bar-wrap{margin:36px 0 22px}
+.sector-bar{position:relative;height:10px;border-radius:999px;background:var(--paper-soft);border:1px solid var(--paper-line)}
+.sector-bar-range{position:absolute;top:-1px;bottom:-1px;background:rgba(138,106,38,.22);border-radius:999px}
+.sector-bar-marker{
+  position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:var(--gold-deep);
+  border:3px solid var(--paper);transform:translate(-50%,-50%);box-shadow:0 0 0 1px var(--paper-line);
+  transition:left .25s cubic-bezier(.16,1,.32,1);
+}
+.sector-bar-range{transition:left .25s ease,width .25s ease}
+.sector-bar-scale{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--font-mono);font-size:11px;color:var(--muted-on-paper)}
+#sector-text{font-size:14.5px;line-height:1.65;color:var(--text-on-paper)}
+
+/* ---------- leak cards ---------- */
+.leak-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.leak-card{background:#fff;border:1px solid var(--paper-line);border-radius:6px;padding:26px}
+.leak-card--covered{border-color:var(--gold-deep);background:linear-gradient(165deg,#fff,var(--paper-soft))}
+.leak-tag{
+  display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--gold-deep);margin-bottom:16px;
+}
+.leak-tag svg{width:13px;height:13px}
+.leak-tag--off{color:var(--muted-on-paper)}
+.leak-card h3{font-family:var(--font-display);font-weight:600;font-size:1.05rem;margin-bottom:10px}
+.leak-card p{font-size:13.5px;color:var(--muted-on-paper);line-height:1.65}
+@media (max-width:900px){.leak-cards{grid-template-columns:1fr}}
+
+/* ---------- email capture ---------- */
+.calc-form-wrap h2{margin-top:16px}
+.calc-form-wrap > p{margin:16px 0 30px;color:var(--muted-on-paper);max-width:56ch}
+#calc-email-form{display:flex;flex-direction:column;gap:18px;max-width:480px}
+#calc-email-form .field input{
+  background:#fff;border:1px solid var(--paper-line);color:var(--text-on-paper);
+  border-radius:4px;padding:14px 15px;font-size:14.5px;
+}
+#calc-email-form .field input:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
+#calc-email-form .field label{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-on-paper)}
+.calc-consent{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;line-height:1.6;color:var(--muted-on-paper)}
+.calc-consent input{margin-top:3px;flex-shrink:0}
+.calc-consent a{color:var(--gold-deep);text-decoration:underline}
+.calc-form-note{font-size:11.5px;color:var(--muted-on-paper)}
+.calc-form-status{font-family:var(--font-mono);font-size:12.5px;color:#b03636;min-height:1em}
+.calc-form-success{
+  max-width:480px;background:#fff;border:1px solid var(--gold-deep);border-radius:6px;
+  padding:26px;font-size:14.5px;color:var(--text-on-paper);
+}
+
+/* ---------- methodology ---------- */
+.calc-methodology{padding:50px 0 90px}
+.calc-methodology p{font-size:12.5px;color:var(--muted-on-paper);line-height:1.75}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+
+<div class="nav-wrap">
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="/" class="logo">AXIONA<small>SYSTEMS</small><span class="logo-mark" aria-hidden="true" style="order:-1;margin-right:2px"></span></a>
+    <div class="nav-links">
+      <a href="/#soluciones">Soluciones</a>
+      <a href="/#proceso">Proceso</a>
+      <a href="/#resultados">Resultados</a>
+      <a href="/calculadora" aria-current="page">Calculadora</a>
+      <a href="/#nosotros">Nosotros</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/#contacto">Contacto</a>
+    </div>
+    <div class="nav-cta">
+      <a href="/#contacto" class="btn btn-ghost-dark">Contacto</a>
+      <a href="/#contacto" class="btn btn-gold">Auditoría Gratuita</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobilePanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </nav>
+</div>
+<div class="mobile-panel" id="mobilePanel">
+  <a href="/#soluciones">Soluciones</a>
+  <a href="/#proceso">Proceso</a>
+  <a href="/#resultados">Resultados</a>
+  <a href="/calculadora" aria-current="page">Calculadora</a>
+  <a href="/#nosotros">Nosotros</a>
+  <a href="/#faq">FAQ</a>
+  <a href="/#contacto">Contacto</a>
+  <a href="/#contacto" class="btn btn-gold" style="justify-content:center">Auditoría Gratuita</a>
+</div>
+
+<main id="main">
+
+<!-- CABECERA -->
+<header class="hero calc-hero on-dark" id="top">
+  <div class="container">
+    <span class="eyebrow">Calculadora de fuga</span>
+    <h1>Cuánto pierde tu clínica en citas que no se presentan</h1>
+    <p>Tres datos que ya tienes. El resultado, al instante y sin registrarte.</p>
+  </div>
+</header>
+
+<!-- CALCULADORA -->
+<section class="section-pad on-paper calc-section" id="calculadora-tool" aria-labelledby="calc-tool-heading">
+  <div class="container">
+    <h2 id="calc-tool-heading" class="visually-hidden">Calculadora</h2>
+    <div class="calc-grid">
+      <div class="calc-inputs reveal">
+        <p class="calc-example-note" id="calc-example-note">Valores de ejemplo de una clínica de dos sillones. Cámbialos por los tuyos.</p>
+
+        <div class="calc-field" role="group" aria-labelledby="lbl-citas">
+          <div class="calc-field-head">
+            <span id="lbl-citas" style="font-family:var(--font-display);font-weight:600;font-size:1rem;color:var(--text-on-paper)">Citas al mes</span>
+            <span class="calc-field-hint">¿Cuántas citas gestiona tu clínica en un mes normal?</span>
+          </div>
+          <div class="calc-controls">
+            <input type="range" id="slider-citas" min="20" max="1000" step="10" value="200" aria-labelledby="lbl-citas" />
+            <div class="calc-numfield">
+              <input type="text" inputmode="numeric" id="input-citas" aria-labelledby="lbl-citas" value="200" />
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-field" role="group" aria-labelledby="lbl-tasa">
+          <div class="calc-field-head">
+            <span id="lbl-tasa" style="font-family:var(--font-display);font-weight:600;font-size:1rem;color:var(--text-on-paper)">Ausencias y cancelaciones sin margen</span>
+            <span class="calc-field-hint">Porcentaje de citas que no se presentan o se cancelan con tan poca antelación que el hueco se queda vacío.</span>
+          </div>
+          <div class="calc-controls">
+            <input type="range" id="slider-tasa" min="1" max="40" step="1" value="15" aria-labelledby="lbl-tasa" />
+            <div class="calc-numfield has-suf">
+              <input type="text" inputmode="numeric" id="input-tasa" aria-labelledby="lbl-tasa" value="15" />
+              <span class="suf">%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-field" role="group" aria-labelledby="lbl-ticket">
+          <div class="calc-field-head">
+            <span id="lbl-ticket" style="font-family:var(--font-display);font-weight:600;font-size:1rem;color:var(--text-on-paper)">Ticket medio</span>
+            <span class="calc-field-hint">Lo que factura de media una cita estándar en tu clínica.</span>
+          </div>
+          <div class="calc-controls">
+            <input type="range" id="slider-ticket" min="30" max="500" step="5" value="85" aria-labelledby="lbl-ticket" />
+            <div class="calc-numfield has-pre">
+              <span class="pre">€</span>
+              <input type="text" inputmode="decimal" id="input-ticket" aria-labelledby="lbl-ticket" value="85" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-result reveal" id="calc-result-panel">
+        <span class="calc-result-label">Lo que se te escapa al año</span>
+        <div class="calc-result-figure" id="out-fuga-anual">—</div>
+        <div class="calc-result-sub">
+          <div><span class="v" id="out-fuga-mes">—</span><span class="k">al mes</span></div>
+          <div><span class="v" id="out-citas-perdidas">—</span><span class="k">citas perdidas al mes</span></div>
+          <div><span class="v" id="out-tasa">—</span><span class="k">tu tasa de ausencias</span></div>
+        </div>
+        <div class="calc-recover">
+          <span class="calc-result-label">Lo que sería recuperable</span>
+          <div class="calc-recover-figure"><span id="out-rec-mes">—</span> al mes · <span id="out-rec-anual">—</span> al año</div>
+          <p class="calc-recover-note">Estimación basada en reducir tu tasa de ausencias al 6% y rellenar cerca de la mitad de los huecos que aún se cancelen.</p>
+          <p class="calc-recover-low" id="calc-recover-low" hidden>Con estos números, la fuga es contenida. Un sistema como el nuestro tendría sentido solo con un alcance reducido. Dínoslo en la auditoría y ajustamos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="calc-sr-announce" class="visually-hidden" role="status" aria-live="polite"></div>
+
+<!-- COMPARATIVA DE SECTOR -->
+<section class="section-pad on-paper calc-section" id="comparativa" aria-labelledby="comparativa-heading" style="padding-top:0">
+  <div class="container calc-narrow">
+    <!-- TEXTO GENERADO - REVISAR: encabezado de sección no especificado en el prompt original -->
+    <span class="eyebrow">Comparativa de sector</span>
+    <h2 id="comparativa-heading" style="font-family:var(--font-display);font-weight:600;font-size:1.6rem;margin:16px 0 6px">Cómo te sitúas frente al sector</h2>
+    <div class="sector-bar-wrap">
+      <div class="sector-bar" role="img" id="sector-bar" aria-label="Tu tasa de ausencias frente al rango habitual del sector, entre 12% y 18%">
+        <div class="sector-bar-range" id="sector-range"></div>
+        <div class="sector-bar-marker" id="sector-marker"></div>
+      </div>
+      <div class="sector-bar-scale"><span>0%</span><span>40%</span></div>
+    </div>
+    <p id="sector-text">—</p>
+  </div>
+</section>
+
+<!-- LO QUE NO MIDE -->
+<section class="section-pad on-paper calc-section" id="no-mide" aria-labelledby="no-mide-heading">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 id="no-mide-heading">Esta cifra se queda corta</h2>
+      <p class="muted">La calculadora mide una sola de las tres fugas por las que una clínica pierde facturación. Las otras dos no salen en ningún número de arriba.</p>
+    </div>
+    <div class="leak-cards">
+      <article class="leak-card leak-card--covered reveal">
+        <span class="leak-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Medida</span>
+        <h3>Citas que no se presentan</h3>
+        <p>El paciente confirmó, está en la agenda y no aparece. Es la fuga visible y la única que esta calculadora calcula.</p>
+      </article>
+      <article class="leak-card reveal">
+        <span class="leak-tag leak-tag--off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>No medida</span>
+        <h3>Pacientes que dejaron de venir</h3>
+        <p>Pasaron por tu clínica, quedaron contentos y llevan más de un año sin volver porque nadie les ha escrito. En una clínica con tres años abiertos suelen ser entre cuatrocientos y ochocientos nombres.</p>
+      </article>
+      <article class="leak-card reveal">
+        <span class="leak-tag leak-tag--off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>No medida</span>
+        <h3>Interesados que nunca reciben respuesta</h3>
+        <p>Preguntó por un implante un sábado por la noche, recibió respuesta el lunes y para entonces ya había reservado en otro sitio.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CAPTURA DE EMAIL -->
+<section class="section-pad on-paper calc-section" id="informe" aria-labelledby="informe-heading">
+  <div class="container calc-narrow calc-form-wrap">
+    <!-- TEXTO GENERADO - REVISAR: etiqueta de sección no especificada en el prompt original -->
+    <span class="eyebrow">Informe ampliado</span>
+    <h2 id="informe-heading">Te mando el desglose completo</h2>
+    <p>Un informe con tu cálculo detallado, la comparativa de tu tamaño de clínica y una estimación de las otras dos fugas. Sin llamadas ni seguimiento comercial si no lo pides.</p>
+
+    <form id="calc-email-form" novalidate>
+      <input type="hidden" name="_subject" value="Nuevo lead — Calculadora de fuga AXIONA" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+      <input type="hidden" name="citas_al_mes" id="hid-citas" />
+      <input type="hidden" name="tasa_ausencias" id="hid-tasa" />
+      <input type="hidden" name="ticket_medio" id="hid-ticket" />
+      <input type="hidden" name="fuga_mensual" id="hid-fuga-mes" />
+      <input type="hidden" name="fuga_anual" id="hid-fuga-anual" />
+      <input type="hidden" name="recuperable_mensual" id="hid-rec-mes" />
+      <input type="hidden" name="recuperable_anual" id="hid-rec-anual" />
+
+      <div class="field">
+        <label for="calc-email">Email</label>
+        <input type="email" id="calc-email" name="email" required placeholder="nombre@tuclinica.com" autocomplete="email" />
+      </div>
+      <label class="calc-consent">
+        <input type="checkbox" id="calc-consent" name="consentimiento" required />
+        <span>Acepto recibir el informe y comunicaciones de AXIONA Systems. Puedo darme de baja en cualquier momento. <a href="/#">Política de privacidad</a>.</span>
+      </label>
+      <div>
+        <button type="submit" class="btn btn-gold" id="calc-submit-btn">Enviar el desglose</button>
+      </div>
+      <p class="calc-form-note">No compartimos tu correo con nadie. Baja en un clic en todos los envíos.</p>
+      <p class="calc-form-status" id="calc-form-status" role="status" aria-live="polite"></p>
+    </form>
+    <div class="calc-form-success" id="calc-form-success" role="status" hidden>
+      <p>Enviado. Revisa tu bandeja en los próximos minutos — si no aparece, mira en promociones o spam.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA AUDITORÍA -->
+<section class="cta-banner on-dark reveal" aria-labelledby="calc-cta-heading">
+  <div class="container">
+    <h2 id="calc-cta-heading">El número real es el de tu agenda</h2>
+    <p>Esta calculadora trabaja con estimaciones. En la auditoría analizamos tu agenda real y calculamos tu fuga con tus datos, no con medias del sector. Treinta minutos, sin coste, y la cifra es tuya trabajes con nosotros o no.</p>
+    <a href="/#contacto" class="btn btn-gold" id="calc-cta-audit">Reservar la auditoría</a>
+  </div>
+</section>
+
+<!-- NOTA METODOLÓGICA -->
+<section class="calc-methodology on-paper" aria-label="Nota metodológica">
+  <div class="container calc-narrow">
+    <p><strong>Cómo se calcula.</strong> La fuga es el producto de tus citas mensuales por tu tasa de ausencias por tu ticket medio. La recuperación estimada combina dos efectos: reducir la tasa de ausencias hasta el 6% mediante confirmación activa, y rellenar en torno al 45% de los huecos que aún se cancelen mediante lista de espera. El rango del 12% al 18% corresponde a valores habituales en clínicas dentales. Son estimaciones sobre medias del sector: tu cifra real depende de tu agenda, tu mezcla de tratamientos y tu base de pacientes.</p>
+  </div>
+</section>
+
+</main>
+
+<div class="calc-sticky-bar" id="calcStickyBar">
+  <span class="k">Fuga anual estimada</span>
+  <span class="v" id="sticky-fuga-anual">—</span>
+</div>
+
+<footer class="on-dark">
+  <div class="container">
+    <div class="footer-grid">
+      <a href="/" class="logo">AXIONA<small>SYSTEMS</small><span class="logo-mark" aria-hidden="true" style="order:-1;margin-right:2px"></span></a>
+      <nav class="footer-links" aria-label="Enlaces de pie de página">
+        <a href="/#soluciones">Soluciones</a>
+        <a href="/#proceso">Proceso</a>
+        <a href="/#resultados">Resultados</a>
+        <a href="/calculadora">Calculadora</a>
+        <a href="/#nosotros">Nosotros</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/#contacto">Contacto</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> AXIONA Systems S.L. Todos los derechos reservados.</span>
+      <div style="display:flex;gap:22px">
+        <a href="/#">Privacidad</a>
+        <a href="/#">Aviso Legal</a>
+        <a href="/#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js"></script>
+<script>
+(function () {
+  // ---------- analytics helper: only fires if project already has analytics ----------
+  function trackEvent(name, params) {
+    if (window.gtag) window.gtag('event', name, params || {});
+    else if (window.plausible) window.plausible(name, { props: params || {} });
+    else if (window.analytics && window.analytics.track) window.analytics.track(name, params || {});
+  }
+
+  // ---------- model constants ----------
+  var TASA_OBJETIVO = 0.06;
+  var TASA_RELLENO = 0.45;
+  var SECTOR_MIN = 0.12;
+  var SECTOR_MAX = 0.18;
+
+  var DEFAULTS = { citas: 200, tasa: 15, ticket: 85 };
+  var LIMITS = {
+    citas: { min: 20, max: 1000 },
+    tasa: { min: 1, max: 40 },
+    ticket: { min: 30, max: 500 }
+  };
+
+  var eurFmt = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  var numFmt = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 });
+
+  var state = { citas: DEFAULTS.citas, tasa: DEFAULTS.tasa, ticket: DEFAULTS.ticket };
+  var hasInteracted = false;
+
+  var els = {
+    sliderCitas: document.getElementById('slider-citas'),
+    inputCitas: document.getElementById('input-citas'),
+    sliderTasa: document.getElementById('slider-tasa'),
+    inputTasa: document.getElementById('input-tasa'),
+    sliderTicket: document.getElementById('slider-ticket'),
+    inputTicket: document.getElementById('input-ticket'),
+    exampleNote: document.getElementById('calc-example-note'),
+    outFugaAnual: document.getElementById('out-fuga-anual'),
+    outFugaMes: document.getElementById('out-fuga-mes'),
+    outCitasPerdidas: document.getElementById('out-citas-perdidas'),
+    outTasa: document.getElementById('out-tasa'),
+    outRecMes: document.getElementById('out-rec-mes'),
+    outRecAnual: document.getElementById('out-rec-anual'),
+    sectorRange: document.getElementById('sector-range'),
+    sectorMarker: document.getElementById('sector-marker'),
+    sectorText: document.getElementById('sector-text'),
+    sectorBar: document.getElementById('sector-bar'),
+    srAnnounce: document.getElementById('calc-sr-announce'),
+    stickyBar: document.getElementById('calcStickyBar'),
+    stickyFuga: document.getElementById('sticky-fuga-anual'),
+    calcSection: document.getElementById('calculadora-tool')
+  };
+  var recoverLowEl = document.getElementById('calc-recover-low');
+
+  function clampNumber(raw, min, max, fallback) {
+    if (raw === '' || raw === null || raw === undefined) return fallback;
+    var n = parseFloat(String(raw).replace(',', '.'));
+    if (isNaN(n) || !isFinite(n)) return fallback;
+    return Math.min(max, Math.max(min, n));
+  }
+
+  function markInteracted() {
+    if (hasInteracted) return;
+    hasInteracted = true;
+    if (els.exampleNote) els.exampleNote.style.display = 'none';
+    trackEvent('calc_interact');
+  }
+
+  function syncPair(slider, numberInput, key, min, max, decimals) {
+    slider.addEventListener('input', function () {
+      var v = parseFloat(slider.value);
+      numberInput.value = decimals ? v.toFixed(decimals) : String(v);
+      state[key] = v;
+      markInteracted();
+      calculate();
+    });
+    numberInput.addEventListener('input', function () {
+      // live-update slider while typing, without clamping yet (clamp happens on blur)
+      var n = parseFloat(String(numberInput.value).replace(',', '.'));
+      if (!isNaN(n) && isFinite(n)) {
+        var clampedForSlider = Math.min(max, Math.max(min, n));
+        slider.value = clampedForSlider;
+        state[key] = n;
+        markInteracted();
+        calculate();
+      }
+    });
+    numberInput.addEventListener('blur', function () {
+      var clamped = clampNumber(numberInput.value, min, max, DEFAULTS[key]);
+      numberInput.value = decimals ? clamped.toFixed(decimals) : String(Math.round(clamped));
+      slider.value = clamped;
+      state[key] = clamped;
+      calculate();
+    });
+  }
+
+  syncPair(els.sliderCitas, els.inputCitas, 'citas', LIMITS.citas.min, LIMITS.citas.max, 0);
+  syncPair(els.sliderTasa, els.inputTasa, 'tasa', LIMITS.tasa.min, LIMITS.tasa.max, 0);
+  syncPair(els.sliderTicket, els.inputTicket, 'ticket', LIMITS.ticket.min, LIMITS.ticket.max, 0);
+
+  var announceTimer = null;
+  function scheduleAnnounce(text) {
+    if (announceTimer) clearTimeout(announceTimer);
+    announceTimer = setTimeout(function () {
+      els.srAnnounce.textContent = text;
+    }, 700);
+  }
+
+  function updateSliderA11y() {
+    els.sliderCitas.setAttribute('aria-valuenow', state.citas);
+    els.sliderCitas.setAttribute('aria-valuetext', numFmt.format(state.citas) + ' citas al mes');
+    els.sliderTasa.setAttribute('aria-valuenow', state.tasa);
+    els.sliderTasa.setAttribute('aria-valuetext', numFmt.format(state.tasa) + '% de tasa de ausencias');
+    els.sliderTicket.setAttribute('aria-valuenow', state.ticket);
+    els.sliderTicket.setAttribute('aria-valuetext', eurFmt.format(state.ticket) + ' de ticket medio');
+  }
+
+  function calculate() {
+    updateSliderA11y();
+    var C = state.citas;
+    var T = state.tasa / 100; // decimal
+    var P = state.ticket;
+
+    var fugaMes = C * T * P;
+    var fugaAnual = fugaMes * 12;
+    var citasPerdidasMes = C * T;
+
+    var reduccion = Math.max(0, T - TASA_OBJETIVO);
+    var citasEvitadas = C * reduccion;
+    var recPrevencion = citasEvitadas * P;
+
+    var citasResiduales = C * Math.min(T, TASA_OBJETIVO);
+    var recRelleno = citasResiduales * TASA_RELLENO * P;
+
+    var recuperableMes = recPrevencion + recRelleno;
+    var recuperableAnual = recuperableMes * 12;
+
+    var posicion;
+    if (T < SECTOR_MIN) posicion = 'bajo';
+    else if (T <= SECTOR_MAX) posicion = 'medio';
+    else posicion = 'alto';
+
+    // ---- paint result panel ----
+    els.outFugaAnual.textContent = eurFmt.format(Math.round(fugaAnual));
+    els.outFugaMes.textContent = eurFmt.format(Math.round(fugaMes));
+    els.outCitasPerdidas.textContent = numFmt.format(Math.round(citasPerdidasMes));
+    els.outTasa.textContent = numFmt.format(Math.round(T * 100)) + '%';
+    els.outRecMes.textContent = eurFmt.format(Math.round(recuperableMes));
+    els.outRecAnual.textContent = eurFmt.format(Math.round(recuperableAnual));
+    if (recoverLowEl) recoverLowEl.hidden = !(recuperableMes < 400);
+
+    // ---- sticky mobile bar ----
+    els.stickyFuga.textContent = eurFmt.format(Math.round(fugaAnual));
+
+    // ---- sector bar ----
+    var pct = Math.min(100, Math.max(0, (T * 100 / 40) * 100));
+    var rangeStart = (SECTOR_MIN * 100 / 40) * 100;
+    var rangeWidth = ((SECTOR_MAX - SECTOR_MIN) * 100 / 40) * 100;
+    els.sectorRange.style.left = rangeStart + '%';
+    els.sectorRange.style.width = rangeWidth + '%';
+    els.sectorMarker.style.left = pct + '%';
+    var tasaLabel = numFmt.format(Math.round(T * 100)) + '%';
+    els.sectorBar.setAttribute('aria-label', 'Tu tasa de ausencias es ' + tasaLabel + '. El rango habitual del sector va del 12% al 18%.');
+
+    var sectorMsg;
+    if (posicion === 'bajo') {
+      sectorMsg = 'Tu tasa está por debajo del rango habitual del sector, que se mueve entre el 12% y el 18%. Aun así, esas citas siguen siendo dinero que no vuelve.';
+    } else if (posicion === 'medio') {
+      sectorMsg = 'Tu tasa está dentro del rango habitual del sector, entre el 12% y el 18%. Es lo normal — que sea normal no significa que sea inevitable.';
+    } else {
+      sectorMsg = 'Tu tasa está por encima del rango habitual del sector, que se mueve entre el 12% y el 18%. La diferencia entre tu cifra y ese rango es margen que se está evaporando cada mes.';
+    }
+    els.sectorText.textContent = sectorMsg;
+
+    // ---- hidden form fields ----
+    document.getElementById('hid-citas').value = C;
+    document.getElementById('hid-tasa').value = tasaLabel;
+    document.getElementById('hid-ticket').value = eurFmt.format(P);
+    document.getElementById('hid-fuga-mes').value = eurFmt.format(Math.round(fugaMes));
+    document.getElementById('hid-fuga-anual').value = eurFmt.format(Math.round(fugaAnual));
+    document.getElementById('hid-rec-mes').value = eurFmt.format(Math.round(recuperableMes));
+    document.getElementById('hid-rec-anual').value = eurFmt.format(Math.round(recuperableAnual));
+
+    scheduleAnnounce(
+      'Se te escapan ' + eurFmt.format(Math.round(fugaAnual)) + ' al año. Recuperable estimado: ' +
+      eurFmt.format(Math.round(recuperableMes)) + ' al mes.'
+    );
+  }
+
+  calculate();
+  trackEvent('calc_view');
+
+  // ---------- sticky mobile bar: visible only while the calculator section is in view ----------
+  if (window.matchMedia('(max-width: 900px)').matches && els.calcSection) {
+    var stickyIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        els.stickyBar.classList.toggle('active', entry.isIntersecting);
+      });
+    }, { threshold: 0.1 });
+    stickyIO.observe(els.calcSection);
+  }
+
+  // ---------- email form ----------
+  var form = document.getElementById('calc-email-form');
+  var statusEl = document.getElementById('calc-form-status');
+  var successEl = document.getElementById('calc-form-success');
+  var submitBtn = document.getElementById('calc-submit-btn');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    statusEl.textContent = '';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+
+    // TODO: conectar proveedor de email definitivo (Resend, SendGrid, Postmark...).
+    // Ahora mismo el envío pasa por FormSubmit (sin cuenta ni claves) directo a
+    // axionasystems262@gmail.com. La primera vez, FormSubmit manda un correo de
+    // activación a esa bandeja: hay que abrirlo y confirmar una única vez para
+    // que los envíos siguientes lleguen como notificación normal.
+    fetch('https://formsubmit.co/ajax/axionasystems262@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(form)))
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('request failed');
+        form.hidden = true;
+        successEl.hidden = false;
+        trackEvent('calc_email_submit');
+      })
+      .catch(function () {
+        statusEl.textContent = 'No se pudo enviar. Inténtalo de nuevo o escríbenos a ceo@axionasystems.com.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar el desglose';
+      });
+  });
+
+  document.getElementById('calc-cta-audit').addEventListener('click', function () {
+    trackEvent('calc_cta_audit');
+  });
+})();
+</script>
+</body>
+</html>

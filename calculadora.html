@@ -99,13 +99,15 @@
 .calc-narrow{max-width:720px;margin:0 auto}
 .sector-bar-wrap{margin:36px 0 22px}
 .sector-bar{position:relative;height:10px;border-radius:999px;background:var(--paper-soft);border:1px solid var(--paper-line)}
-.sector-bar-range{position:absolute;top:-1px;bottom:-1px;background:rgba(138,106,38,.22);border-radius:999px}
-.sector-bar-marker{
-  position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:var(--gold-deep);
-  border:3px solid var(--paper);transform:translate(-50%,-50%);box-shadow:0 0 0 1px var(--paper-line);
-  transition:left .25s cubic-bezier(.16,1,.32,1);
+.sector-bar-range{
+  position:absolute;top:-1px;bottom:-1px;background:rgba(138,106,38,.22);border-radius:999px;
 }
-.sector-bar-range{transition:left .25s cubic-bezier(.16,1,.32,1),width .25s cubic-bezier(.16,1,.32,1)}
+.sector-bar-marker{
+  position:absolute;top:50%;left:0;width:16px;height:16px;border-radius:50%;background:var(--gold-deep);
+  border:3px solid var(--paper);box-shadow:0 0 0 1px var(--paper-line);
+  transform:translate(calc(var(--marker-pct,0%) - 50%),-50%);
+  transition:transform .25s cubic-bezier(.16,1,.32,1);
+}
 .sector-bar-scale{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--muted-on-paper)}
 #sector-text{font-size:var(--text-base);line-height:1.65;color:var(--text-on-paper)}
 
@@ -582,7 +584,7 @@
     var rangeWidth = ((SECTOR_MAX - SECTOR_MIN) * 100 / 40) * 100;
     els.sectorRange.style.left = rangeStart + '%';
     els.sectorRange.style.width = rangeWidth + '%';
-    els.sectorMarker.style.left = pct + '%';
+    els.sectorMarker.style.setProperty('--marker-pct', pct + '%');
     var tasaLabel = numFmt.format(Math.round(T * 100)) + '%';
     els.sectorBar.setAttribute('aria-label', 'Tu tasa de ausencias es ' + tasaLabel + '. El rango habitual del sector va del 12% al 18%.');
 

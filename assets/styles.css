@@ -217,8 +217,12 @@ body::before{
 .ledger-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;position:relative}
 .ledger-title{font-family:var(--font-mono);font-size:var(--text-2xs);text-transform:uppercase;letter-spacing:.12em;color:var(--muted-on-dark)}
 .pulse{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:var(--text-3xs);color:var(--gold-bright);text-transform:uppercase;letter-spacing:.1em}
-.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--gold-bright);box-shadow:0 0 0 0 rgba(240,198,110,.6);animation:pulse 2s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(240,198,110,.55)}70%{box-shadow:0 0 0 8px rgba(240,198,110,0)}100%{box-shadow:0 0 0 0 rgba(240,198,110,0)}}
+.pulse-dot{position:relative;width:6px;height:6px;border-radius:50%;background:var(--gold-bright)}
+.pulse-dot::after{
+  content:"";position:absolute;inset:0;border-radius:50%;background:var(--gold-bright);
+  animation:pulse-ping 2s cubic-bezier(.16,1,.32,1) infinite;
+}
+@keyframes pulse-ping{0%{transform:scale(1);opacity:.6}70%{transform:scale(2.8);opacity:0}100%{transform:scale(2.8);opacity:0}}
 .ledger-rows{display:flex;flex-direction:column;border-top:1px solid var(--ink-line);position:relative}
 .ledger-row{display:flex;justify-content:space-between;align-items:baseline;padding:15px 0;border-bottom:1px solid var(--ink-line)}
 .ledger-row .label{font-size:var(--text-sm);color:var(--muted-on-dark)}
@@ -402,7 +406,7 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
 .faq-trigger span{font-family:var(--font-display);font-weight:600;font-size:1.05rem;line-height:1.4}
 .faq-chevron{width:20px;height:20px;flex-shrink:0;color:var(--gold-deep);transition:transform .25s cubic-bezier(.16,1,.32,1)}
 .faq-trigger[aria-expanded="true"] .faq-chevron{transform:rotate(180deg)}
-.faq-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.16,1,.32,1)}
+.faq-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .22s cubic-bezier(.16,1,.32,1)}
 .faq-item.open .faq-panel{grid-template-rows:1fr}
 .faq-panel-inner{overflow:hidden}
 .faq-panel-inner p{padding:0 4px 24px;color:var(--muted-on-paper);font-size:var(--text-base);line-height:1.75;max-width:62ch}

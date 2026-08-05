@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="/assets/styles.css" />
 <style>
 body{background:var(--paper);color:var(--text-on-paper)}
-.tool-wrap{max-width:1120px;margin:0 auto;padding:56px 28px 100px}
+.tool-wrap{max-width:1120px;margin:0 auto;padding:var(--space-14) 28px 100px}
 .tool-head{margin-bottom:40px}
 .tool-head h1{
   font-family:var(--font-display);font-weight:600;font-optical-sizing:auto;
@@ -24,39 +24,39 @@ body{background:var(--paper);color:var(--text-on-paper)}
   display:flex;flex-direction:column;gap:22px;
 }
 .tool-field{display:flex;flex-direction:column;gap:6px}
-.tool-field label{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted-on-paper)}
+.tool-field label{font-family:var(--font-mono);font-size:var(--text-2xs);text-transform:uppercase;letter-spacing:.06em;color:var(--muted-on-paper)}
 .tool-field .req{color:var(--gold-deep)}
 .tool-field input{
   background:var(--paper);border:1px solid var(--paper-line);border-radius:4px;
-  padding:11px 13px;font-family:var(--font-mono);font-size:14.5px;color:var(--text-on-paper);
+  padding:11px 13px;font-family:var(--font-mono);font-size:var(--text-base);color:var(--text-on-paper);
   font-variant-numeric:tabular-nums;
 }
 .tool-field input:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
-.tool-fieldset{border:1px solid var(--paper-line);border-radius:6px;padding:18px;margin:0;min-width:0;background:var(--paper-soft);display:flex;flex-direction:column;gap:16px}
-.tool-fieldset legend{padding:0 6px;margin-left:-6px;font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--gold-deep)}
-.tool-hint{font-size:11.5px;color:var(--muted-on-paper);margin-top:8px}
+.tool-fieldset{border:1px solid var(--paper-line);border-radius:6px;padding:18px;margin:0;min-width:0;background:var(--paper-soft);display:flex;flex-direction:column;gap:var(--space-4)}
+.tool-fieldset legend{padding:0 6px;margin-left:-6px;font-family:var(--font-mono);font-size:var(--text-3xs);text-transform:uppercase;letter-spacing:.05em;color:var(--gold-deep)}
+.tool-hint{font-size:var(--text-2xs);color:var(--muted-on-paper);margin-top:8px}
 
 .result-figure-block .calc-result-figure{font-size:clamp(2rem,3.6vw,2.8rem)}
 #resultPanel .tool-result-sub{grid-template-columns:1fr 1fr}
 .rec-line{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--ink-line)}
 .rec-line:last-of-type{border-bottom:none}
-.rec-name{font-size:13.5px;color:var(--muted-on-dark)}
+.rec-name{font-size:var(--text-sm);color:var(--muted-on-dark)}
 .rec-value{font-family:var(--font-mono);font-size:1.05rem;color:var(--gold-bright);font-variant-numeric:tabular-nums}
-.rec-value.empty{color:var(--muted-on-dark);font-family:var(--font-body);font-size:13px}
-.rec-assumption{font-size:11px;color:var(--muted-on-dark);line-height:1.6;margin:-6px 0 4px;max-width:48ch}
+.rec-value.empty{color:var(--muted-on-dark);font-family:var(--font-body);font-size:var(--text-sm)}
+.rec-assumption{font-size:var(--text-2xs);color:var(--muted-on-dark);line-height:1.6;margin:-6px 0 4px;max-width:48ch}
 .rec-assumption[hidden]{display:none}
 
 .email-card{background:#fff;border:1px solid var(--paper-line);border-radius:6px;padding:26px;margin-top:26px}
 .email-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:14px;flex-wrap:wrap}
-.email-card-head span{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted-on-paper)}
+.email-card-head span{font-family:var(--font-mono);font-size:var(--text-2xs);text-transform:uppercase;letter-spacing:.06em;color:var(--muted-on-paper)}
 #emailOutput{
-  width:100%;font-family:var(--font-mono);font-size:12.8px;line-height:1.65;
-  border:1px solid var(--paper-line);border-radius:4px;padding:16px;
+  width:100%;font-family:var(--font-mono);font-size:var(--text-xs);line-height:1.65;
+  border:1px solid var(--paper-line);border-radius:4px;padding:var(--space-4);
   background:var(--paper);color:var(--text-on-paper);resize:vertical;min-height:380px;
 }
 #emailOutput:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
-#copyStatus{font-family:var(--font-mono);font-size:11.5px;color:var(--gold-deep);margin-top:8px;min-height:1em}
-.tool-empty-note{font-family:var(--font-mono);font-size:12px;color:var(--muted-on-dark)}
+#copyStatus{font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--gold-deep);margin-top:8px;min-height:1em}
+.tool-empty-note{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--muted-on-dark)}
 </style>
 </head>
 <body>

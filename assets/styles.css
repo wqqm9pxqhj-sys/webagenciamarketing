@@ -378,6 +378,10 @@ footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}
   font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--muted-on-dark);
   line-height:1.7;max-width:64ch;margin:36px auto 0;text-align:center;
 }
+.tiers-terms{
+  font-family:var(--font-mono);font-size:var(--text-3xs);color:var(--muted-on-dark);
+  line-height:1.7;max-width:60ch;margin:14px auto 0;text-align:center;
+}
 
 /* ---------- nosotros ---------- */
 .nosotros-wrap{max-width:680px;margin:0 auto}

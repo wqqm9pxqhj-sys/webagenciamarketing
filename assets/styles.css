@@ -29,6 +29,20 @@
   font-display:swap;
   src:url(/assets/fonts/publicsans-var.woff2) format('woff2');
 }
+@font-face{
+  font-family:'Spectral';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url(/assets/fonts/spectral-400.woff2) format('woff2');
+}
+@font-face{
+  font-family:'Spectral';
+  font-style:normal;
+  font-weight:500;
+  font-display:swap;
+  src:url(/assets/fonts/spectral-500.woff2) format('woff2');
+}
 
 /* ---------- reset ---------- */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -66,6 +80,7 @@ input,select{font:inherit}
   --font-display-italic:'Fraunces',Georgia,serif;
   --font-mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
   --font-body:'Public Sans',-apple-system,'Segoe UI',sans-serif;
+  --font-logo:'Spectral',Georgia,'Times New Roman',serif;
   --container:1180px;
 
   /* type scale — small/UI tier (headings keep their own fluid clamp() sizes) */
@@ -163,9 +178,19 @@ body::before{
   -webkit-backdrop-filter:blur(14px) saturate(140%);
   border:1px solid var(--ink-line);border-radius:999px;padding:10px 10px 10px 22px;
 }
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display-italic);font-style:italic;font-weight:500;font-size:19px;letter-spacing:.01em}
-.logo-mark{width:11px;height:11px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
-.logo small{display:block;font-family:var(--font-mono);font-style:normal;font-size:var(--text-3xs);letter-spacing:.22em;color:var(--muted-on-dark);margin-top:1px}
+.logo{display:flex;align-items:center}
+.logo-full{display:block;height:32px;width:auto}
+.logo-symbol{display:none;height:32px;width:auto}
+footer .logo-full{height:28px}
+footer .logo-symbol{height:28px}
+@media (max-width:860px){
+  .logo-full{height:26px}
+  .logo-symbol{height:26px}
+}
+@media (max-width:300px){
+  .logo-full{display:none}
+  .logo-symbol{display:block}
+}
 .nav-links{display:flex;align-items:center;gap:15px;font-family:var(--font-mono);font-size:var(--text-3xs);letter-spacing:.01em;text-transform:uppercase}
 .nav-links a{color:var(--muted-on-dark);transition:color .18s cubic-bezier(.16,1,.32,1)}
 .nav-links a:hover{color:var(--text-on-dark)}

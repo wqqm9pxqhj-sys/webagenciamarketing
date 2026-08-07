@@ -1,0 +1,19 @@
+{
+  "name": "AXIONA Systems",
+  "short_name": "AXIONA",
+  "icons": [
+    {
+      "src": "/brand/favicon/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/assets/icons/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ],
+  "theme_color": "#0A0E1A",
+  "background_color": "#0A0E1A",
+  "display": "standalone"
+}

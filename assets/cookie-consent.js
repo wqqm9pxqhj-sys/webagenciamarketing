@@ -88,7 +88,7 @@
         '<div class="cookie-banner-inner">' +
           '<div class="cookie-banner-text">' +
             '<h2 id="cookieBannerTitle" class="visually-hidden">Uso de cookies</h2>' +
-            '<p>Usamos cookies propias necesarias para el funcionamiento del sitio. Con tu permiso, también podríamos usar cookies analíticas y de marketing. Puedes aceptarlas, rechazarlas o elegir cuáles en <a href="/politica-cookies.html">nuestra política de cookies</a>.</p>' +
+            '<p>Usamos cookies propias necesarias para el funcionamiento del sitio. Con tu permiso, también podríamos usar cookies analíticas y de marketing. Puedes aceptarlas, rechazarlas o elegir cuáles en <a href="/politica-cookies">nuestra política de cookies</a>.</p>' +
           '</div>' +
           '<div class="cookie-banner-actions">' +
             '<button type="button" class="btn-cookie btn-cookie-reject" data-action="reject">Rechazar todas</button>' +
@@ -106,7 +106,7 @@
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>' +
           '</button>' +
           '<h2 id="cookieModalTitle">Preferencias de cookies</h2>' +
-          '<p>Elige qué categorías de cookies aceptas. Las necesarias no se pueden desactivar porque el sitio no funcionaría sin ellas. Más detalle en <a href="/politica-cookies.html">la política de cookies</a>.</p>' +
+          '<p>Elige qué categorías de cookies aceptas. Las necesarias no se pueden desactivar porque el sitio no funcionaría sin ellas. Más detalle en <a href="/politica-cookies">la política de cookies</a>.</p>' +
           '<div class="cookie-category">' +
             '<div class="cookie-category-head">' +
               '<h3>Necesarias</h3>' +

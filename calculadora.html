@@ -274,9 +274,6 @@
       </div>
       <div>
         <form id="calc-email-form" novalidate>
-          <input type="hidden" name="_subject" value="Nuevo informe pedido desde la calculadora de AXIONA" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_captcha" value="false" />
           <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <input type="hidden" name="citas_al_mes" id="hid-citas" />
           <input type="hidden" name="tasa_ausencias" id="hid-tasa" />
@@ -604,24 +601,24 @@
     if (!payload.pacientes_base || !String(payload.pacientes_base).trim()) payload.pacientes_base = 'no facilitado';
     if (!payload.consultas_mes || !String(payload.consultas_mes).trim()) payload.consultas_mes = 'no facilitado';
 
-    // FormSubmit, same address and provider as the home form.
-    fetch('https://formsubmit.co/ajax/ceo@axionasystems.es', {
+    // same Vercel function as the home form
+    payload.formulario = 'informe';
+    fetch('/api/contacto', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
       .then(function (res) {
-        if (!res.ok) throw new Error('request failed');
-        return res.json();
+        return res.json().catch(function () { return {}; });
       })
       .then(function (data) {
-        if (String(data.success) !== 'true') throw new Error('not delivered');
+        if (!data.ok) throw new Error('not delivered');
         form.hidden = true;
         successEl.hidden = false;
         trackEvent('calc_email_submit');
       })
       .catch(function () {
-        statusEl.textContent = 'No he podido confirmar el envío. Si mañana no tienes el informe, escríbeme a ceo@axionasystems.es.';
+        statusEl.textContent = 'No se ha podido enviar. Inténtalo otra vez o escríbeme a ceo@axionasystems.es.';
         submitBtn.disabled = false;
         submitBtn.textContent = 'Enviar el desglose';
       });

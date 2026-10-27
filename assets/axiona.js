@@ -104,7 +104,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
   });
 });
 
-// lead form → FormSubmit
+// lead form → /api/contacto (Vercel function that sends through Resend)
 const leadForm = document.getElementById('leadForm');
 if (leadForm) {
   const msg = document.getElementById('formMsg');
@@ -127,14 +127,14 @@ if (leadForm) {
     const slow = setTimeout(() => {
       show('Está tardando más de lo normal. Espera un poco más o escríbeme a ' + CALL_EMAIL + '.', false);
     }, 15000);
-    fetch('https://formsubmit.co/ajax/' + CALL_EMAIL, {
+    fetch('/api/contacto', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(Object.fromEntries(new FormData(leadForm)))
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign(Object.fromEntries(new FormData(leadForm)), { formulario: 'contacto' }))
     })
-      .then((res) => (res.ok ? res.json() : Promise.reject(new Error('request failed'))))
+      .then((res) => res.json().catch(() => ({})))
       .then((data) => {
-        if (String(data.success) !== 'true') throw new Error('not delivered');
+        if (!data.ok) throw new Error('not delivered');
         clearTimeout(slow);
         show('Recibido. Te escribo o te llamo en menos de 24 horas laborables.', false);
         btn.textContent = 'Enviado';
@@ -142,9 +142,7 @@ if (leadForm) {
       })
       .catch(() => {
         clearTimeout(slow);
-        // FormSubmit sometimes delivers the email and still answers with an error,
-        // so don't claim it failed: say we couldn't confirm it.
-        show('No he podido confirmar el envío. Si mañana no tienes respuesta, escríbeme a ' + CALL_EMAIL + '.', true);
+        show('No se ha podido enviar. Inténtalo otra vez o escríbeme a ' + CALL_EMAIL + '.', true);
         btn.disabled = false;
         btn.textContent = btnText;
       });

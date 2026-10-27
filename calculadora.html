@@ -7,12 +7,16 @@
 <meta name="description" content="Calcula en 10 segundos cuánto pierde tu clínica dental al año en citas que no se presentan. Tres datos, resultado inmediato, sin registro." />
 <meta property="og:title" content="Calculadora de fuga para clínicas dentales | AXIONA Systems" />
 <meta property="og:description" content="Calcula en 10 segundos cuánto pierde tu clínica dental al año en citas que no se presentan. Tres datos, resultado inmediato, sin registro." />
+<meta property="og:locale" content="es_ES" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://axionasystems.es/calculadora" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Calculadora de fuga para clínicas dentales | AXIONA Systems" />
 <meta name="twitter:description" content="Calcula en 10 segundos cuánto pierde tu clínica dental al año en citas que no se presentan." />
 <meta property="og:image" content="https://axionasystems.es/assets/icons/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="AXIONA Systems: cada silla vacía es margen que no vuelve" />
 <meta name="twitter:image" content="https://axionasystems.es/assets/icons/og-image.png" />
 <link rel="canonical" href="https://axionasystems.es/calculadora" />
 <link rel="icon" href="/brand/favicon/favicon.svg" type="image/svg+xml" />
@@ -31,7 +35,7 @@
 .calc-label{font-size:18px;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
 .calc-field-hint{font-size:14.5px;color:var(--muted);line-height:1.5}
 .calc-controls{display:flex;align-items:center;gap:16px}
-.calc-controls input[type="range"]{--fill:50%;flex:1;min-width:0;appearance:none;-webkit-appearance:none;height:28px;background:transparent;cursor:pointer}
+.calc-controls input[type="range"]{--fill:50%;flex:1;min-width:0;appearance:none;-webkit-appearance:none;height:44px;background:transparent;cursor:pointer}
 .calc-controls input[type="range"]::-webkit-slider-runnable-track{height:4px;border-radius:999px;background:linear-gradient(to right,var(--ink) var(--fill),var(--line) var(--fill))}
 .calc-controls input[type="range"]::-moz-range-track{height:4px;border-radius:999px;background:var(--line)}
 .calc-controls input[type="range"]::-moz-range-progress{height:4px;border-radius:999px;background:var(--ink)}
@@ -42,7 +46,7 @@
 .calc-controls input[type="range"]:focus-visible{outline:2px solid var(--mint);outline-offset:4px;border-radius:6px}
 .calc-numfield{position:relative;flex:none;width:104px}
 .calc-numfield input{width:100%;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card-2);padding:0 14px;text-align:right;font-size:17px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--ink);transition:border-color 200ms ease}
-.calc-numfield input:focus{outline:none;border-color:var(--mint);box-shadow:0 0 0 3px rgba(22,128,107,.15)}
+.calc-numfield input:focus{outline:none;border-color:var(--mint);box-shadow:0 0 0 3px rgba(18,113,95,.15)}
 .calc-numfield .pre,.calc-numfield .suf{position:absolute;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted);pointer-events:none}
 .calc-numfield .pre{left:14px}
 .calc-numfield.has-pre input{padding-left:28px}
@@ -50,7 +54,7 @@
 .calc-numfield.has-suf input{padding-right:32px}
 
 .calc-result{border-radius:var(--r-lg);padding:var(--pad);color:#fff;display:flex;flex-direction:column;min-width:0;
-  background:radial-gradient(90% 70% at 15% 0%,#3fd1a8 0%,transparent 60%),radial-gradient(80% 80% at 100% 100%,var(--mint-deep) 0%,transparent 70%),linear-gradient(160deg,var(--mint),var(--mint-deep))}
+  background:radial-gradient(70% 55% at 100% 0%,rgba(63,209,168,.6) 0%,transparent 70%),radial-gradient(80% 80% at 0% 100%,var(--mint-deep) 0%,transparent 70%),linear-gradient(160deg,var(--mint),var(--mint-deep))}
 .calc-result .eyebrow{color:var(--mint-pale)}
 .calc-result-figure{font-size:clamp(56px,7vw,104px);margin:14px 0 30px}
 .calc-result .figure .unit{color:var(--mint-pale)}
@@ -80,7 +84,7 @@
 .leak-card p{color:var(--body);font-size:15.5px}
 .leak-tag{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:13px;font-weight:500;color:var(--body)}
 .leak-tag svg{width:14px;height:14px}
-.leak-card--covered{color:#fff;background:linear-gradient(150deg,#1c8f77,var(--mint-deep))}
+.leak-card--covered{color:#fff;background:linear-gradient(150deg,var(--mint),var(--mint-deep))}
 .leak-card--covered p{color:var(--mint-pale)}
 .leak-card--covered .leak-tag{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25);color:#fff}
 
@@ -100,7 +104,7 @@
 .calc-methodology p{font-size:14.5px;color:var(--muted);max-width:90ch}
 .calc-methodology strong{color:var(--ink);font-weight:600}
 
-.calc-sticky-bar{position:fixed;left:8px;right:8px;bottom:8px;z-index:600;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 18px;border-radius:var(--r-sm);background:var(--ink);color:#fff;
+.calc-sticky-bar{position:fixed;left:calc(8px + env(safe-area-inset-left,0px));right:calc(8px + env(safe-area-inset-right,0px));bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:600;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 18px;border-radius:var(--r-sm);background:var(--ink);color:#fff;
   box-shadow:0 16px 40px -16px rgba(0,0,0,.6);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity 200ms var(--ease-out),transform 200ms var(--ease-out)}
 .calc-sticky-bar.active{opacity:1;transform:none}
 .calc-sticky-bar .k{font-size:13.5px;color:var(--on-frame-muted)}
@@ -122,7 +126,7 @@
 <header class="nav">
   <a href="/" class="logo" aria-label="AXIONA Systems, inicio">
     <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="0" y="39" width="64" height="6" fill="#3fd1a8"/><path d="M32,4 L60,58 L4,58 Z M32,27 L47,51 L17,51 Z" fill="#ecedeb" fill-rule="evenodd"/></svg>
-    <span>AXIONA <small>SYSTEMS</small></span>
+    <span translate="no">AXIONA <small>SYSTEMS</small></span>
   </a>
   <nav class="nav-links" aria-label="Principal">
     <a href="/#sistemas">Sistemas</a>
@@ -296,7 +300,7 @@
           </fieldset>
           <div class="field">
             <label for="calc-email">Email</label>
-            <input type="email" id="calc-email" name="email" required placeholder="nombre@tuclinica.com" autocomplete="email" />
+            <input type="email" spellcheck="false" id="calc-email" name="email" required placeholder="nombre@tuclinica.com" autocomplete="email" />
           </div>
           <label class="calc-consent">
             <input type="checkbox" id="calc-consent" name="consentimiento" required />
@@ -342,7 +346,7 @@
   <div class="footer-top">
     <a href="/" class="logo" aria-label="AXIONA Systems, inicio">
       <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="0" y="39" width="64" height="6" fill="#3fd1a8"/><path d="M32,4 L60,58 L4,58 Z M32,27 L47,51 L17,51 Z" fill="#ecedeb" fill-rule="evenodd"/></svg>
-      <span>AXIONA <small>SYSTEMS</small></span>
+      <span translate="no">AXIONA <small>SYSTEMS</small></span>
     </a>
     <nav class="footer-links" aria-label="Pie de página">
       <a href="/#sistemas">Sistemas</a>

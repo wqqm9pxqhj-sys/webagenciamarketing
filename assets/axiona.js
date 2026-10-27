@@ -34,7 +34,18 @@ document.querySelectorAll('[data-copy]').forEach(btn => {
       btn.textContent = 'Copiado';
       setTimeout(() => { btn.textContent = 'Copiar'; }, 1800);
     };
-    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(() => {});
+    // fallback: select the address so the visitor can copy it by hand
+    const selectIt = () => {
+      const target = btn.parentElement.querySelector('.email');
+      if (!target) return;
+      const range = document.createRange();
+      range.selectNodeContents(target);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(selectIt);
+    else selectIt();
   });
 });
 
@@ -55,12 +66,16 @@ if (!('IntersectionObserver' in window)) {
 }
 
 // FAQ accordion
+// closed answers are inert so screen readers skip them
 document.querySelectorAll('.faq-item').forEach(item => {
   const trigger = item.querySelector('.faq-trigger');
+  const inner = item.querySelector('.faq-panel-inner');
+  inner.inert = !item.classList.contains('open');
   trigger.addEventListener('click', () => {
     const open = !item.classList.contains('open');
     item.classList.toggle('open', open);
     trigger.setAttribute('aria-expanded', String(open));
+    inner.inert = !open;
   });
 });
 

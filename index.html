@@ -625,8 +625,9 @@ leadForm.addEventListener('submit', (e) => {
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
     body: JSON.stringify(Object.fromEntries(new FormData(leadForm)))
   })
-    .then((res) => {
-      if (!res.ok) throw new Error('request failed');
+    .then((res) => (res.ok ? res.json() : Promise.reject(new Error('request failed'))))
+    .then((data) => {
+      if (String(data.success) !== 'true') throw new Error('not delivered');
       formMsg.textContent = 'Gracias. Hemos recibido tu solicitud y te contactaremos en menos de 24h.';
       formMsg.classList.add('show');
       leadBtn.textContent = 'Enviado';

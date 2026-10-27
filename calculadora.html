@@ -670,6 +670,10 @@
     })
       .then(function (res) {
         if (!res.ok) throw new Error('request failed');
+        return res.json();
+      })
+      .then(function (data) {
+        if (String(data.success) !== 'true') throw new Error('not delivered');
         form.hidden = true;
         successEl.hidden = false;
         trackEvent('calc_email_submit');

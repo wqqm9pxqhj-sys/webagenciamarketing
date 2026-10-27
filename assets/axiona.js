@@ -49,6 +49,31 @@ document.querySelectorAll('[data-copy]').forEach(btn => {
   });
 });
 
+// price odometer: split each amount into digit reels (0-9 twice) that roll to the second pass
+document.querySelectorAll('[data-odometer]').forEach(el => {
+  const value = el.textContent.trim();
+  el.setAttribute('aria-label', value);
+  let d = 0;
+  const parts = [...value].map(ch => {
+    if (!/[0-9]/.test(ch)) return '<span class="odo-sep" aria-hidden="true">' + ch + '</span>';
+    const reel = Array.from({ length: 20 }, (_, n) => '<span>' + (n % 10) + '</span>').join('');
+    return '<span class="odo-digit" aria-hidden="true"><span class="odo-reel" style="--to:' + (10 + Number(ch)) + ';--d:' + (d++) + '">' + reel + '</span></span>';
+  });
+  el.innerHTML = '<span class="odo">' + parts.join('') + '</span>';
+  el.setAttribute('role', 'img');
+});
+
+// pricing spotlight follows the pointer (desktop only)
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.querySelectorAll('.plan').forEach(card => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+}
+
 // scroll reveal, once per element (reduced motion is handled in CSS)
 const revealEls = document.querySelectorAll('.reveal, .reveal-group');
 if (!('IntersectionObserver' in window)) {

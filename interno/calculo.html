@@ -3,151 +3,110 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cálculo de las tres fugas — Interno</title>
+<title>Cálculo de las tres fugas | Interno</title>
 <meta name="robots" content="noindex, nofollow" />
 <link rel="icon" href="/brand/favicon/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
-<meta name="theme-color" content="#0A0E1A" />
-<link rel="preload" href="/assets/fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="/assets/fonts/publicsans-var.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="/assets/styles.css" />
+<meta name="theme-color" content="#0b0b0c" />
+<link rel="preload" href="/assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/assets/axiona.css" />
 <style>
-body{background:var(--paper);color:var(--text-on-paper)}
-.tool-wrap{max-width:1120px;margin:0 auto;padding:var(--space-14) 28px 100px}
-.tool-head{margin-bottom:40px}
-.tool-head h1{
-  font-family:var(--font-display);font-weight:600;font-optical-sizing:auto;
-  font-size:clamp(1.7rem,3vw,2.4rem);margin:14px 0 10px;text-wrap:balance;
-}
-.tool-head p{color:var(--muted-on-paper);max-width:60ch}
-
-.tool-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:26px;align-items:start}
-@media (max-width:960px){.tool-grid{grid-template-columns:1fr}}
-
-.tool-inputs{
-  background:#fff;border:1px solid var(--paper-line);border-radius:6px;padding:28px;
-  display:flex;flex-direction:column;gap:22px;
-}
-.tool-field{display:flex;flex-direction:column;gap:6px}
-.tool-field label{font-family:var(--font-mono);font-size:var(--text-2xs);text-transform:uppercase;letter-spacing:.06em;color:var(--muted-on-paper)}
-.tool-field .req{color:var(--gold-deep)}
-.tool-field input{
-  background:var(--paper);border:1px solid var(--paper-line);border-radius:4px;
-  padding:11px 13px;font-family:var(--font-mono);font-size:var(--text-base);color:var(--text-on-paper);
-  font-variant-numeric:tabular-nums;
-}
-.tool-field input:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
-.tool-fieldset{border:1px solid var(--paper-line);border-radius:6px;padding:18px;margin:0;min-width:0;background:var(--paper-soft);display:flex;flex-direction:column;gap:var(--space-4)}
-.tool-fieldset legend{padding:0 6px;margin-left:-6px;font-family:var(--font-mono);font-size:var(--text-3xs);text-transform:uppercase;letter-spacing:.05em;color:var(--gold-deep)}
-.tool-hint{font-size:var(--text-2xs);color:var(--muted-on-paper);margin-top:8px}
-
-.result-figure-block .calc-result-figure{font-size:clamp(2rem,3.6vw,2.8rem)}
-#resultPanel .tool-result-sub{grid-template-columns:1fr 1fr}
-.rec-line{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--ink-line)}
+/* internal tool: same cards as the public calculator, inputs beside the mint result, email below */
+.tool-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:var(--gap)}
+.tool-inputs{display:grid;gap:18px;align-content:start}
+.tool-field{display:grid;gap:6px}
+.tool-field label{font-size:14px;font-weight:500}
+.tool-field .req{color:var(--mint)}
+.tool-field input{height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card-2);padding:0 14px;font-size:16px;font-variant-numeric:tabular-nums;transition:border-color 200ms ease}
+.tool-field input:focus{outline:none;border-color:var(--mint);box-shadow:0 0 0 3px rgba(18,113,95,.15)}
+.tool-fieldset{border:1px solid var(--line);border-radius:var(--r-md);padding:18px;margin:0;min-width:0;display:grid;gap:16px}
+.tool-fieldset legend{padding:0 6px;margin-left:-6px;font-size:14px;font-weight:500}
+.tool-result{border-radius:var(--r-lg);padding:var(--pad);color:#fff;display:grid;gap:24px;align-content:start;min-width:0;
+  background:radial-gradient(70% 55% at 100% 0%,rgba(63,209,168,.6) 0%,transparent 70%),radial-gradient(80% 80% at 0% 100%,var(--mint-deep) 0%,transparent 70%),linear-gradient(160deg,var(--mint),var(--mint-deep))}
+.tool-result .eyebrow{color:var(--mint-pale)}
+.tool-result .figure .unit{color:var(--mint-pale)}
+.tool-big{font-size:clamp(48px,5vw,76px);margin-top:10px}
+.tool-sub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.2)}
+.tool-sub .v{display:block;font-size:clamp(24px,2.2vw,30px)}
+.tool-sub .k{display:block;font-size:14px;color:var(--mint-pale);margin-top:6px}
+.tool-box{padding:20px;border-radius:var(--r-md);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)}
+.rec-line{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.18)}
 .rec-line:last-of-type{border-bottom:none}
-.rec-name{font-size:var(--text-sm);color:var(--muted-on-dark)}
-.rec-value{font-family:var(--font-mono);font-size:1.05rem;color:var(--gold-bright);font-variant-numeric:tabular-nums}
-.rec-value.empty{color:var(--muted-on-dark);font-family:var(--font-body);font-size:var(--text-sm)}
-.rec-assumption{font-size:var(--text-2xs);color:var(--muted-on-dark);line-height:1.6;margin:-6px 0 4px;max-width:48ch}
-.rec-assumption[hidden]{display:none}
-
-.email-card{background:#fff;border:1px solid var(--paper-line);border-radius:6px;padding:26px;margin-top:26px}
-.email-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:14px;flex-wrap:wrap}
-.email-card-head span{font-family:var(--font-mono);font-size:var(--text-2xs);text-transform:uppercase;letter-spacing:.06em;color:var(--muted-on-paper)}
-#emailOutput{
-  width:100%;font-family:var(--font-mono);font-size:var(--text-xs);line-height:1.65;
-  border:1px solid var(--paper-line);border-radius:4px;padding:var(--space-4);
-  background:var(--paper);color:var(--text-on-paper);resize:vertical;min-height:380px;
-}
-#emailOutput:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
-#copyStatus{font-family:var(--font-mono);font-size:var(--text-2xs);color:var(--gold-deep);margin-top:8px;min-height:1em}
-.tool-empty-note{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--muted-on-dark)}
+.rec-name{font-size:15px;color:var(--mint-pale)}
+.rec-value{font-size:20px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.rec-value.empty{font-size:14px;font-weight:400;letter-spacing:0;color:var(--mint-pale)}
+.rec-assumption{font-size:13.5px;color:var(--mint-pale);margin:-4px 0 6px;max-width:52ch}
+.tool-total{font-size:clamp(22px,2vw,28px);font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin-top:8px}
+.tool-total small{font-size:.6em;font-weight:500;color:var(--mint-pale);letter-spacing:0}
+.email-card-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.email-card-head span{font-size:15px;font-weight:500}
+#emailOutput{width:100%;min-height:380px;resize:vertical;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--card-2);padding:16px;font-family:var(--mono);font-size:14px;line-height:1.65;color:var(--ink)}
+#emailOutput:focus{outline:none;border-color:var(--mint)}
+#copyStatus{font-size:14px;color:var(--mint);margin-top:8px;min-height:1em}
+@media (max-width:960px){.tool-grid{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
-<div class="tool-wrap">
-  <div class="tool-head">
-    <span class="eyebrow">Herramienta interna</span>
+<header class="nav">
+  <a href="/" class="logo" aria-label="AXIONA Systems, inicio">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="0" y="39" width="64" height="6" fill="#3fd1a8"/><path d="M32,4 L60,58 L4,58 Z M32,27 L47,51 L17,51 Z" fill="#ecedeb" fill-rule="evenodd"/></svg>
+    <span translate="no">AXIONA <small>SYSTEMS</small></span>
+  </a>
+  <span class="tag" style="background:transparent;color:var(--on-frame-muted);border-color:var(--frame-line)">Uso interno</span>
+</header>
+<main class="frame">
+  <header class="card page-hero">
+    <p class="eyebrow">Herramienta interna</p>
     <h1>Cálculo de las tres fugas</h1>
-    <p>Uso interno — no indexable, sin enlaces desde el sitio público. Introduce los datos del lead y genera el email con el cálculo completo.</p>
-  </div>
+    <p class="lede">Solo para uso interno. No se indexa y no hay enlaces desde la web. Mete los datos del contacto y sale el email con el cálculo completo.</p>
+  </header>
 
   <div class="tool-grid">
-    <div class="tool-inputs">
-      <div class="tool-field">
-        <label for="f-nombre">Nombre</label>
-        <input type="text" id="f-nombre" placeholder="Para personalizar el email" />
-      </div>
-      <div class="tool-field">
-        <label for="f-citas">Citas al mes <span class="req">*</span></label>
-        <input type="text" inputmode="numeric" id="f-citas" placeholder="200" />
-      </div>
-      <div class="tool-field">
-        <label for="f-tasa">Tasa de ausencias % <span class="req">*</span></label>
-        <input type="text" inputmode="numeric" id="f-tasa" placeholder="15" />
-      </div>
-      <div class="tool-field">
-        <label for="f-ticket">Ticket medio € <span class="req">*</span></label>
-        <input type="text" inputmode="decimal" id="f-ticket" placeholder="85" />
-      </div>
-
+    <div class="card tool-inputs">
+      <div class="tool-field"><label for="f-nombre">Nombre</label><input type="text" id="f-nombre" placeholder="Para personalizar el email" autocomplete="off" /></div>
+      <div class="tool-field"><label for="f-citas">Citas al mes <span class="req">*</span></label><input type="text" inputmode="numeric" id="f-citas" placeholder="200" autocomplete="off" /></div>
+      <div class="tool-field"><label for="f-tasa">Tasa de ausencias (%) <span class="req">*</span></label><input type="text" inputmode="numeric" id="f-tasa" placeholder="15" autocomplete="off" /></div>
+      <div class="tool-field"><label for="f-ticket">Ticket medio (€) <span class="req">*</span></label><input type="text" inputmode="decimal" id="f-ticket" placeholder="85" autocomplete="off" /></div>
       <fieldset class="tool-fieldset">
-        <legend>Opcional — activa Fuga 2 y Fuga 3</legend>
-        <div class="tool-field">
-          <label for="f-pacientes">Pacientes en base de datos</label>
-          <input type="text" inputmode="numeric" id="f-pacientes" placeholder="900" />
-        </div>
-        <div class="tool-field">
-          <label for="f-consultas">Consultas al mes</label>
-          <input type="text" inputmode="numeric" id="f-consultas" placeholder="40" />
-        </div>
+        <legend>Opcional, activa las fugas 2 y 3</legend>
+        <div class="tool-field"><label for="f-pacientes">Pacientes en base de datos</label><input type="text" inputmode="numeric" id="f-pacientes" placeholder="900" autocomplete="off" /></div>
+        <div class="tool-field"><label for="f-consultas">Consultas al mes</label><input type="text" inputmode="numeric" id="f-consultas" placeholder="40" autocomplete="off" /></div>
       </fieldset>
     </div>
 
-    <div class="calc-result" id="resultPanel">
-      <div class="result-figure-block">
-        <span class="calc-result-label">Fuga de no-shows</span>
-        <div class="calc-result-figure" id="out-fuga1-mes">—</div>
+    <div class="tool-result grain" id="resultPanel">
+      <div>
+        <p class="eyebrow">Fuga de citas que no se presentan, al mes</p>
+        <p class="tool-big figure" id="out-fuga1-mes">—</p>
       </div>
-      <div class="calc-result-sub tool-result-sub">
-        <div><span class="v" id="out-fuga1-anual">—</span><span class="k">al año</span></div>
-        <div><span class="v" id="out-citas-perdidas">—</span><span class="k">citas perdidas al mes</span></div>
+      <div class="tool-sub">
+        <div><span class="v figure" id="out-fuga1-anual">—</span><span class="k">al año</span></div>
+        <div><span class="v figure" id="out-citas-perdidas">—</span><span class="k">citas perdidas al mes</span></div>
       </div>
-
-      <div class="calc-recover">
-        <span class="calc-result-label">Recuperable por fuga</span>
-        <div class="rec-line">
-          <span class="rec-name">Fuga 1 — no-shows</span>
-          <span class="rec-value" id="out-rec1">—</span>
-        </div>
-        <div class="rec-line">
-          <span class="rec-name">Fuga 2 — pacientes dormidos</span>
-          <span class="rec-value empty" id="out-rec2">sin datos</span>
-        </div>
-        <p class="rec-assumption" id="rec2-assumption" hidden>Supuesto: <span id="a-inactivos">—</span> pacientes inactivos (60% de la base), contactando hasta <span id="a-contactados">—</span> al mes, conversión del 8%.</p>
-        <div class="rec-line">
-          <span class="rec-name">Fuga 3 — sin respuesta</span>
-          <span class="rec-value empty" id="out-rec3">sin datos</span>
-        </div>
-        <p class="rec-assumption" id="rec3-assumption" hidden>Supuesto: 60% de las consultas no recibe respuesta a tiempo; 25% de esas es recuperable.</p>
+      <div class="tool-box">
+        <p class="eyebrow">Recuperable por fuga</p>
+        <div class="rec-line"><span class="rec-name">1 · Citas que no se presentan</span><span class="rec-value" id="out-rec1">—</span></div>
+        <div class="rec-line"><span class="rec-name">2 · Pacientes dormidos</span><span class="rec-value empty" id="out-rec2">sin datos</span></div>
+        <p class="rec-assumption" id="rec2-assumption" hidden>Supuesto: <span id="a-inactivos">—</span> pacientes inactivos (60 % de la base), contactando hasta <span id="a-contactados">—</span> al mes, conversión del 8 %.</p>
+        <div class="rec-line"><span class="rec-name">3 · Consultas sin respuesta</span><span class="rec-value empty" id="out-rec3">sin datos</span></div>
+        <p class="rec-assumption" id="rec3-assumption" hidden>Supuesto: el 60 % de las consultas no recibe respuesta a tiempo y el 25 % de esas es recuperable.</p>
       </div>
-
-      <div class="calc-recover" style="border-top:1px solid var(--ink-line);margin-top:22px;padding-top:22px">
-        <span class="calc-result-label">Total recuperable</span>
-        <div class="calc-recover-figure"><span id="out-total-mes">—</span> al mes · <span id="out-total-anual">—</span> al año</div>
+      <div class="tool-box">
+        <p class="eyebrow">Total recuperable</p>
+        <p class="tool-total"><span id="out-total-mes">—</span> <small>al mes</small> · <span id="out-total-anual">—</span> <small>al año</small></p>
       </div>
     </div>
   </div>
 
-  <div class="email-card">
+  <section class="card card-2">
     <div class="email-card-head">
-      <span id="email-variant-label">Email generado — variante B (faltan datos)</span>
-      <button type="button" class="btn btn-gold" id="copyBtn">Copiar</button>
+      <span id="email-variant-label">Email generado, variante B (faltan datos)</span>
+      <button type="button" class="btn btn-submit" id="copyBtn">Copiar email</button>
     </div>
-    <textarea id="emailOutput" readonly spellcheck="false"></textarea>
-    <p id="copyStatus"></p>
-  </div>
-</div>
+    <textarea id="emailOutput" readonly spellcheck="false" aria-labelledby="email-variant-label"></textarea>
+    <p id="copyStatus" role="status" aria-live="polite"></p>
+  </section>
+</main>
 
 <script>
 (function () {
@@ -160,8 +119,9 @@ body{background:var(--paper);color:var(--text-on-paper)}
   var PCT_SIN_RESP = 0.60;
   var PCT_RECUPERABLE = 0.25;
 
-  var eurFmt = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-  var numFmt = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 });
+  // es-ES leaves 4-digit numbers ungrouped (2550); de-DE uses the same separators and always groups (2.550)
+  var numFmt = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 });
+  var eurFmt = { format: function (v) { return numFmt.format(v) + ' €'; } };
   var BOOKING_LINK = 'https://axionasystems.es/#contacto';
   var SIGNATURE = 'Hugo Corbalán\nAXIONA Systems\nceo@axionasystems.es';
 
@@ -199,6 +159,9 @@ body{background:var(--paper);color:var(--text-on-paper)}
   }
 
   function em(id) { return document.getElementById(id); }
+  function figure(el, amount, unit) {
+    el.innerHTML = '<span class="amount">' + amount + '</span>' + (unit ? '<span class="unit">' + unit + '</span>' : '');
+  }
 
   function calculate() {
     var C = parseNum(f.citas.value);
@@ -245,9 +208,9 @@ body{background:var(--paper);color:var(--text-on-paper)}
     var recTotalMes = rec1 + (rec2 || 0) + (rec3 || 0);
     var recTotalAnual = recTotalMes * 12;
 
-    out.fuga1Mes.textContent = eurFmt.format(Math.round(fuga1Mes));
-    out.fuga1Anual.textContent = eurFmt.format(Math.round(fuga1Anual));
-    out.citasPerdidas.textContent = numFmt.format(Math.round(citasPerdidas));
+    figure(out.fuga1Mes, numFmt.format(Math.round(fuga1Mes)), '€');
+    figure(out.fuga1Anual, numFmt.format(Math.round(fuga1Anual)), '€');
+    figure(out.citasPerdidas, numFmt.format(Math.round(citasPerdidas)));
     out.rec1.textContent = eurFmt.format(Math.round(rec1));
     out.totalMes.textContent = eurFmt.format(Math.round(recTotalMes));
     out.totalAnual.textContent = eurFmt.format(Math.round(recTotalAnual));
@@ -290,9 +253,9 @@ body{background:var(--paper);color:var(--text-on-paper)}
     var text;
 
     if (hasBoth) {
-      out.variantLabel.textContent = 'Email generado — variante A (cálculo completo)';
+      out.variantLabel.textContent = 'Email generado, variante A (cálculo completo)';
       text =
-        'Asunto: Tus tres fugas — ' + eurFmt.format(Math.round(d.recTotalMes)) + ' al mes\n\n' +
+        'Asunto: Tus tres fugas suman ' + eurFmt.format(Math.round(d.recTotalMes)) + ' al mes\n\n' +
         greeting(d.nombre) + ' aquí tienes el cálculo completo.\n\n' +
         'Lo que ya viste: con ' + numFmt.format(d.C) + ' citas al mes y un ' + numFmt.format(d.Tpct) + '% de ausencias, pierdes ' +
         eurFmt.format(Math.round(d.fuga1Mes)) + ' al mes. De ahí son recuperables unos ' + eurFmt.format(Math.round(d.rec1)) + '.\n\n' +
@@ -303,11 +266,11 @@ body{background:var(--paper);color:var(--text-on-paper)}
         'Y de las ' + numFmt.format(d.L) + ' consultas que recibes al mes, la mayoría llega fuera de horario y no recibe respuesta rápida. Recuperar solo una parte son unos ' +
         eurFmt.format(Math.round(d.rec3)) + ' al mes.\n\n' +
         'Total recuperable: ' + eurFmt.format(Math.round(d.recTotalMes)) + ' al mes. ' + eurFmt.format(Math.round(d.recTotalAnual)) + ' al año.\n\n' +
-        'Son estimaciones sobre supuestos del sector, no sobre tu agenda real. En la auditoría lo calculamos con tus datos, y esa cifra es tuya trabajes con nosotros o no.\n\n' +
+        'Son estimaciones con supuestos del sector, no con tu agenda real. En una llamada de treinta minutos lo calculamos con tus datos, y esa cifra es tuya trabajes conmigo o no.\n\n' +
         BOOKING_LINK + '\n\n' +
         SIGNATURE;
     } else {
-      out.variantLabel.textContent = 'Email generado — variante B (faltan datos)';
+      out.variantLabel.textContent = 'Email generado, variante B (faltan datos)';
       text =
         'Asunto: Tu cálculo, y lo que falta\n\n' +
         greeting(d.nombre) + ' tu cifra ya la tienes: ' + eurFmt.format(Math.round(d.fuga1Mes)) +

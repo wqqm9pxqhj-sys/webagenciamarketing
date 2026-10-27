@@ -182,25 +182,51 @@ p{text-wrap:pretty}
 .step-last{color:#fff;background:linear-gradient(150deg,var(--mint),var(--mint-deep))}
 .step-last .eyebrow,.step-last p{color:var(--mint-pale)}
 
-/* ---------- pricing ---------- */
+/* ---------- pricing: three tones that climb with the plan level ---------- */
 .plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
-.plan{border-radius:var(--r-md);border:1px solid var(--line);background:var(--card);padding:30px;display:flex;flex-direction:column;gap:18px;
-  transition:translate 250ms var(--ease-out),border-color 200ms ease,box-shadow 250ms var(--ease-out)}
-@media (hover:hover) and (pointer:fine){.plan:hover{translate:0 -4px;border-color:#cfd2ce;box-shadow:0 22px 44px -28px rgba(11,11,12,.28)}}
+.plan{position:relative;isolation:isolate;overflow:hidden;border-radius:var(--r-md);padding:30px;display:flex;flex-direction:column;gap:18px;
+  --plan-line:rgba(11,11,12,.1);--plan-muted:var(--muted);--plan-check:var(--mint);--spot:rgba(255,255,255,.55);
+  transition:translate 250ms var(--ease-out),box-shadow 250ms var(--ease-out)}
+.plan::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity 250ms ease;
+  background:radial-gradient(320px circle at var(--mx,50%) var(--my,0%),var(--spot),transparent 70%)}
+.plan-1{background:var(--mint-pale);color:var(--ink)}
+.plan-2{color:#fff;--plan-line:rgba(255,255,255,.2);--plan-muted:var(--mint-pale);--plan-check:#fff;--spot:rgba(255,255,255,.16);
+  background:radial-gradient(70% 60% at var(--gx,100%) 0%,rgba(63,209,168,.65) 0%,transparent 70%),linear-gradient(165deg,var(--mint),var(--mint-deep))}
+.plan-3{color:var(--on-frame);--plan-line:rgba(255,255,255,.12);--plan-muted:var(--on-frame-muted);--plan-check:var(--mint-bright);--spot:rgba(63,209,168,.16);
+  background:radial-gradient(80% 60% at 100% 100%,rgba(22,128,107,.45) 0%,transparent 70%),linear-gradient(165deg,#16201d,var(--frame))}
+@media (hover:hover) and (pointer:fine){
+  .plan:hover{translate:0 -6px;box-shadow:0 28px 56px -30px rgba(11,11,12,.45)}
+  .plan:hover::after{opacity:1}
+}
+.plan-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .plan h3{font-size:24px}
-.plan-for{color:var(--body);font-size:15px;margin-top:-8px}
+.level{display:flex;gap:5px;margin-top:8px;flex:none}
+.level i{width:8px;height:8px;border-radius:50%;background:var(--plan-line)}
+.level i.on{background:var(--plan-check)}
+.plan-for{color:var(--plan-muted);font-size:15px;margin-top:-8px}
+.plan-1 .plan-for{color:var(--body)}
 .price{display:flex;flex-direction:column;gap:6px}
-.price-from{font-size:13.5px;color:var(--muted)}
+.price-from{font-size:13.5px;color:var(--plan-muted)}
 .price .figure{font-size:clamp(48px,4.4vw,64px)}
-.price .figure .unit{font-size:.36em}
-.price-mask{display:inline-block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
-.price-mask .amount{display:inline-block}
-.price .per{font-size:15px;color:var(--muted);margin-left:.2em}
-.setup{font-size:14.5px;color:var(--muted);margin-top:-12px}
-.plan ul{display:grid;gap:10px;padding-top:18px;border-top:1px solid var(--line);margin-bottom:auto}
-.plan li{display:grid;grid-template-columns:20px 1fr;gap:10px;font-size:15.5px;color:var(--body)}
-.plan li svg{width:18px;height:18px;margin-top:3px;color:var(--mint)}
-.plan .btn{align-self:flex-start}
+.price .figure .unit{font-size:.36em;color:var(--plan-muted)}
+.price .per{font-size:15px;color:var(--plan-muted);margin-left:.2em}
+.setup{font-size:14.5px;color:var(--plan-muted);margin-top:-12px}
+.plan-1 .setup,.plan-1 .price-from,.plan-1 .per,.plan-1 .figure .unit{color:var(--body)}
+.plan ul{display:grid;gap:10px;padding-top:18px;border-top:1px solid var(--plan-line);margin-bottom:auto}
+.plan li{display:grid;grid-template-columns:20px 1fr;gap:10px;font-size:15.5px}
+.plan-1 li{color:var(--body)}
+.plan li svg{width:18px;height:18px;margin-top:3px;color:var(--plan-check)}
+.plan-btn{align-self:flex-start}
+.plan-1 .plan-btn{background:var(--ink);color:#fff}
+.plan-1 .plan-btn .btn-icon{background:var(--mint)}
+.plan-2 .plan-btn{background:#fff;color:var(--ink)}
+.plan-3 .plan-btn{background:var(--mint-bright);color:var(--ink)}
+/* odometer: each digit is a reel of 0-9 twice, rolled to the second pass */
+.odo{display:inline-flex;align-items:baseline}
+.odo-digit{display:inline-block;height:1em;line-height:1;overflow:hidden;vertical-align:baseline}
+.odo-reel{display:flex;flex-direction:column;transform:translateY(calc(var(--to) * -5%))}
+.odo-reel span{height:1em;line-height:1}
+.odo-sep{line-height:1}
 .plans-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 48px;margin-top:32px;color:var(--body);font-size:15px}
 
 /* ---------- proof ---------- */
@@ -279,21 +305,26 @@ p{text-wrap:pretty}
 .js .reveal{opacity:0;transform:translateY(16px);transition:opacity 600ms var(--ease-out),transform 600ms var(--ease-out)}
 .js .reveal.is-visible{opacity:1;transform:none}
 
-/* ---------- pricing entrance: cards stagger, amounts rise out of a mask, checks draw ---------- */
-@keyframes planIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
-@keyframes amountUp{from{transform:translateY(105%)}to{transform:none}}
+/* ---------- pricing entrance: cards rise, digits roll, level dots light up, checks draw ---------- */
+@keyframes planIn{from{opacity:0;transform:translateY(32px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes roll{from{transform:translateY(0)}to{transform:translateY(calc(var(--to) * -5%))}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes itemIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 @keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes dotOn{from{transform:scale(.4);opacity:.3}to{transform:none;opacity:1}}
+@keyframes glowIn{from{--gx:20%}to{--gx:100%}}
+@property --gx{syntax:'<percentage>';inherits:false;initial-value:100%}
 .plan li svg path{stroke-dasharray:1}
 .js .plans .plan,.js .plans .unit,.js .plans .per,.js .plans li{opacity:0}
-.js .plans .amount{transform:translateY(105%)}
 .js .plans .plan li svg path{stroke-dashoffset:1}
-.plans.is-visible .plan{animation:planIn 700ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms)}
-.plans.is-visible .amount{animation:amountUp 800ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms + 220ms)}
-.plans.is-visible .unit,.plans.is-visible .per{animation:fadeIn 500ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms + 520ms)}
-.plans.is-visible li{animation:itemIn 450ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms + 420ms + var(--j) * 70ms)}
-.plans.is-visible li svg path{animation:draw 400ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms + 520ms + var(--j) * 70ms)}
+.js .plans .odo-reel{transform:translateY(0)}
+.plans.is-visible .plan{animation:planIn 800ms var(--ease-out) both;animation-delay:calc(var(--i) * 110ms)}
+.plans.is-visible .plan-2{animation:planIn 800ms var(--ease-out) both,glowIn 2400ms var(--ease-in-out) both;animation-delay:calc(var(--i) * 110ms)}
+.plans.is-visible .odo-reel{animation:roll 1400ms var(--ease-out) both;animation-delay:calc(var(--i) * 110ms + 250ms + var(--d) * 70ms)}
+.plans.is-visible .unit,.plans.is-visible .per{animation:fadeIn 500ms var(--ease-out) both;animation-delay:calc(var(--i) * 110ms + 900ms)}
+.plans.is-visible .level i.on{animation:dotOn 400ms var(--ease-out) both;animation-delay:calc(var(--i) * 110ms + 500ms + var(--k) * 120ms)}
+.plans.is-visible li{animation:itemIn 450ms var(--ease-out) both;animation-delay:calc(var(--i) * 110ms + 700ms + var(--j) * 80ms)}
+.plans.is-visible li svg path{animation:draw 450ms var(--ease-out) both;animation-delay:calc(var(--i) * 110ms + 800ms + var(--j) * 80ms)}
 
 /* ---------- cookie banner (markup from cookie-consent.js) ---------- */
 .cookie-banner{position:fixed;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:2000;max-width:520px;background:var(--card);color:var(--ink);border-radius:var(--r-md);padding:20px;box-shadow:0 24px 60px -20px rgba(0,0,0,.55);border:1px solid var(--line)}
@@ -332,6 +363,7 @@ p{text-wrap:pretty}
 }
 @media (max-width:960px){
   .nav-links,.nav>.btn{display:none}
+  .plan::after{display:none}
   .nav-toggle{display:grid}
   .hero,.proof,.contact,.about,.faq{grid-template-columns:minmax(0,1fr)}
   .hero-main{min-height:0}
@@ -354,11 +386,12 @@ p{text-wrap:pretty}
   html{scroll-behavior:auto}
   .hero-main .eyebrow,.hero h1,.hero .lede,.hero .ctas,.hero .direct,.chat [data-step]{animation:none}
   .js .reveal{transform:none;transition:opacity 300ms ease}
-  .js .plans .amount{transform:none}
-  .plans.is-visible .plan,.plans.is-visible li{animation:fadeIn 300ms ease both;animation-delay:calc(var(--i) * 60ms)}
-  .plans.is-visible .amount{animation:none}
+  .js .plans .odo-reel,.plans.is-visible .odo-reel{animation:none;transform:translateY(calc(var(--to) * -5%))}
+  .plans.is-visible .plan,.plans.is-visible .plan-2,.plans.is-visible li{animation:fadeIn 300ms ease both;animation-delay:calc(var(--i) * 60ms)}
+  .plans.is-visible .level i.on{animation:none}
   .plans.is-visible li svg path{animation:none;stroke-dashoffset:0}
   .plan{transition:none}
+  .plan::after{display:none}
   .mobile-panel,.mobile-panel.open{transform:none}
   .btn,.btn-icon svg,.faq-plus{transition:none}
 }

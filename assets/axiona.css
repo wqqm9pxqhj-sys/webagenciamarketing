@@ -61,7 +61,11 @@ h2{font-size:clamp(32px,3.7vw,54px);line-height:1.04;letter-spacing:-.042em}
 h3{font-size:clamp(22px,2vw,28px);line-height:1.12;letter-spacing:-.03em}
 .dim{color:var(--soft)}
 p{text-wrap:pretty}
-.num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum','ss01';letter-spacing:-.02em}
+/* figures: big amount in Geist, unit set small and quiet beside it */
+.figure{display:inline-flex;align-items:baseline;gap:.18em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.figure .amount{font-weight:600;letter-spacing:-.05em;line-height:1}
+.figure .unit{font-size:.46em;font-weight:500;letter-spacing:-.01em;color:var(--muted)}
 
 /* ---------- grain ---------- */
 .grain{position:relative;isolation:isolate;overflow:hidden}
@@ -124,7 +128,7 @@ p{text-wrap:pretty}
 .hero-foot{padding-top:22px;border-top:1px solid var(--line)}
 .hero-foot dl{display:flex;flex-wrap:wrap;gap:20px 44px}
 .hero-foot dt{font-size:14px;color:var(--muted);order:2}
-.hero-foot dd{font-family:var(--mono);font-size:clamp(20px,1.8vw,24px);font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.hero-foot dd{font-size:clamp(30px,2.6vw,38px);margin-bottom:4px}
 .hero-foot div{display:flex;flex-direction:column}
 .example-note{margin-top:14px;font-size:13px;color:var(--muted)}
 .tag{display:inline-block;padding:3px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--body);vertical-align:1px;margin-right:6px}
@@ -139,7 +143,8 @@ p{text-wrap:pretty}
 .bubble-out{background:rgba(255,255,255,.94);color:var(--ink);border-bottom-left-radius:5px}
 .bubble-in{align-self:flex-end;background:rgba(9,40,35,.55);border:1px solid rgba(255,255,255,.2);border-bottom-right-radius:5px}
 .chat-status{margin-top:6px;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);font-size:14px}
-.chat-status .num{font-size:18px;font-weight:500}
+.chat-status .figure{font-size:22px}
+.chat-status .figure .unit{color:var(--mint-pale)}
 .chat-caption{margin-top:auto;padding-top:12px;font-size:12.5px;color:var(--mint-pale);opacity:.85}
 
 /* hero entrance: one orchestrated load, then the chat plays the mechanism once */
@@ -176,12 +181,18 @@ p{text-wrap:pretty}
 
 /* ---------- pricing ---------- */
 .plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
-.plan{border-radius:var(--r-md);border:1px solid var(--line);padding:30px;display:flex;flex-direction:column;gap:18px}
+.plan{border-radius:var(--r-md);border:1px solid var(--line);background:var(--card);padding:30px;display:flex;flex-direction:column;gap:18px;
+  transition:translate 250ms var(--ease-out),border-color 200ms ease,box-shadow 250ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.plan:hover{translate:0 -4px;border-color:#cfd2ce;box-shadow:0 22px 44px -28px rgba(11,11,12,.28)}}
 .plan h3{font-size:24px}
 .plan-for{color:var(--body);font-size:15px;margin-top:-8px}
-.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.price .num{font-size:clamp(34px,3vw,44px);font-weight:500;letter-spacing:-.04em}
-.price span{color:var(--muted);font-size:14.5px}
+.price{display:flex;flex-direction:column;gap:6px}
+.price-from{font-size:13.5px;color:var(--muted)}
+.price .figure{font-size:clamp(48px,4.4vw,64px)}
+.price .figure .unit{font-size:.36em}
+.price-mask{display:inline-block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.price-mask .amount{display:inline-block}
+.price .per{font-size:15px;color:var(--muted);margin-left:.2em}
 .setup{font-size:14.5px;color:var(--muted);margin-top:-12px}
 .plan ul{display:grid;gap:10px;padding-top:18px;border-top:1px solid var(--line);margin-bottom:auto}
 .plan li{display:grid;grid-template-columns:20px 1fr;gap:10px;font-size:15.5px;color:var(--body)}
@@ -231,7 +242,7 @@ p{text-wrap:pretty}
 .contact h2{margin:16px 0 20px;max-width:14ch}
 .contact .lede{margin-bottom:6px}
 .copy-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:18px;font-size:15px;color:var(--muted)}
-.copy-row .num{color:var(--ink);font-size:15px;user-select:all}
+.copy-row .email{color:var(--ink);font-weight:500;user-select:all}
 .copy-btn{padding:6px 12px;border-radius:999px;border:1px solid var(--line);font-size:13.5px;color:var(--body);transition:border-color 200ms ease,transform 160ms var(--ease-out)}
 .copy-btn:active{transform:scale(.97)}
 .form-card h3{margin:14px 0 6px}
@@ -263,6 +274,22 @@ p{text-wrap:pretty}
 /* ---------- reveal (only when JS is running) ---------- */
 .js .reveal{opacity:0;transform:translateY(16px);transition:opacity 600ms var(--ease-out),transform 600ms var(--ease-out)}
 .js .reveal.is-visible{opacity:1;transform:none}
+
+/* ---------- pricing entrance: cards stagger, amounts rise out of a mask, checks draw ---------- */
+@keyframes planIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes amountUp{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes itemIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.plan li svg path{stroke-dasharray:1}
+.js .plans .plan,.js .plans .unit,.js .plans .per,.js .plans li{opacity:0}
+.js .plans .amount{transform:translateY(105%)}
+.js .plans .plan li svg path{stroke-dashoffset:1}
+.plans.is-visible .plan{animation:planIn 700ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms)}
+.plans.is-visible .amount{animation:amountUp 800ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms + 220ms)}
+.plans.is-visible .unit,.plans.is-visible .per{animation:fadeIn 500ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms + 520ms)}
+.plans.is-visible li{animation:itemIn 450ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms + 420ms + var(--j) * 70ms)}
+.plans.is-visible li svg path{animation:draw 400ms var(--ease-out) both;animation-delay:calc(var(--i) * 90ms + 520ms + var(--j) * 70ms)}
 
 /* ---------- cookie banner (markup from cookie-consent.js) ---------- */
 .cookie-banner{position:fixed;left:12px;bottom:12px;z-index:2000;max-width:520px;background:var(--card);color:var(--ink);border-radius:var(--r-md);padding:20px;box-shadow:0 24px 60px -20px rgba(0,0,0,.55);border:1px solid var(--line)}
@@ -323,6 +350,38 @@ p{text-wrap:pretty}
   html{scroll-behavior:auto}
   .hero-main .eyebrow,.hero h1,.hero .lede,.hero .ctas,.hero .direct,.chat [data-step]{animation:none}
   .js .reveal{transform:none;transition:opacity 300ms ease}
+  .js .plans .amount{transform:none}
+  .plans.is-visible .plan,.plans.is-visible li{animation:fadeIn 300ms ease both;animation-delay:calc(var(--i) * 60ms)}
+  .plans.is-visible .amount{animation:none}
+  .plans.is-visible li svg path{animation:none;stroke-dashoffset:0}
+  .plan{transition:none}
   .mobile-panel,.mobile-panel.open{transform:none}
   .btn,.btn-icon svg,.faq-plus{transition:none}
 }
+
+/* ---------- inner pages: hero card + reading card ---------- */
+.page-hero h1{margin:20px 0 18px;max-width:18ch;font-size:clamp(38px,4.4vw,64px)}
+.page-hero .lede{max-width:52ch}
+.legal-hero h1{max-width:22ch}
+.legal-hero .updated{font-size:14px;color:var(--muted)}
+.legal-content{max-width:720px;margin:0 auto;color:var(--body);font-size:16.5px;line-height:1.7}
+.legal-content h2{font-size:clamp(24px,2.2vw,30px);color:var(--ink);margin:56px 0 16px;letter-spacing:-.03em}
+.legal-content section:first-of-type h2{margin-top:0}
+.legal-content h3{font-size:19px;color:var(--ink);margin:28px 0 10px;letter-spacing:-.015em}
+.legal-content p{margin-bottom:16px}
+.legal-content ul,.legal-content ol{margin:0 0 18px;padding-left:22px;display:grid;gap:8px}
+.legal-content ul{list-style:disc}
+.legal-content ol{list-style:decimal}
+.legal-content strong{font-weight:600;color:var(--ink)}
+.legal-content a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft);text-underline-offset:3px;transition:text-decoration-color 200ms ease}
+@media (hover:hover) and (pointer:fine){.legal-content a:hover{text-decoration-color:var(--ink)}}
+.legal-intro{font-size:18px;color:var(--body);max-width:60ch;margin-bottom:8px}
+.legal-table-wrap{overflow-x:auto;margin:20px 0 26px;border:1px solid var(--line);border-radius:var(--r-sm)}
+.legal-content table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:560px}
+.legal-content th,.legal-content td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.legal-content tr:last-child td{border-bottom:none}
+.legal-content th{font-weight:500;font-size:13px;color:var(--muted);background:var(--card-2)}
+.legal-note{font-size:15px;color:var(--body);border-radius:var(--r-sm);padding:16px 18px;margin:24px 0;background:var(--card-2);border:1px solid var(--line)}
+.legal-toc{display:grid;gap:8px;margin:32px 0 0;padding:22px 24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card)}
+.legal-toc span{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
+.legal-toc a{font-size:15px}

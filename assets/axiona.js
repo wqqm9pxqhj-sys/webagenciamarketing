@@ -39,7 +39,7 @@ document.querySelectorAll('[data-copy]').forEach(btn => {
 });
 
 // scroll reveal, once per element (reduced motion is handled in CSS)
-const revealEls = document.querySelectorAll('.reveal');
+const revealEls = document.querySelectorAll('.reveal, .reveal-group');
 if (!('IntersectionObserver' in window)) {
   revealEls.forEach(el => el.classList.add('is-visible'));
 } else {

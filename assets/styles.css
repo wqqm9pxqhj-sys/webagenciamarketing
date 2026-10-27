@@ -380,6 +380,8 @@ form{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 form .submit-row{grid-column:1/-1;display:flex;align-items:center;gap:18px;margin-top:6px;flex-wrap:wrap}
 .form-msg{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--gold-bright);display:none}
 .form-msg.show{display:block}
+.form-legal{grid-column:1/-1;font-size:var(--text-xs);color:var(--muted-on-dark)}
+.form-legal a{text-decoration:underline}
 
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--ink-line);padding:64px 0 40px}

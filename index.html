@@ -8,12 +8,13 @@
 <meta property="og:title" content="AXIONA Systems — Infraestructura IA para Clínicas Dentales" />
 <meta property="og:description" content="Automatización con IA para clínicas dentales de alto rendimiento. Eliminamos las inasistencias, llenamos tu agenda y recuperamos ingresos perdidos. Resultados en 30 días." />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://axiona-systems-redesign.vercel.app/" />
-<meta property="og:image" content="https://axiona-systems-redesign.vercel.app/assets/icons/og-image.png" />
+<meta property="og:url" content="https://axionasystems.es/" />
+<meta property="og:image" content="https://axionasystems.es/assets/icons/og-image.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="AXIONA Systems — Infraestructura IA para Clínicas Dentales" />
 <meta name="twitter:description" content="Automatización con IA para clínicas dentales de alto rendimiento. Resultados en 30 días." />
-<meta name="twitter:image" content="https://axiona-systems-redesign.vercel.app/assets/icons/og-image.png" />
+<meta name="twitter:image" content="https://axionasystems.es/assets/icons/og-image.png" />
+<link rel="canonical" href="https://axionasystems.es/" />
 <link rel="icon" href="/brand/favicon/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
@@ -471,6 +472,10 @@
     </div>
 
     <form id="leadForm" class="reveal" novalidate>
+      <input type="hidden" name="_subject" value="Nueva solicitud de auditoría — web AXIONA" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
       <div class="field">
         <label for="f-name">Nombre</label>
         <input id="f-name" name="name" type="text" placeholder="Tu nombre" required autocomplete="name" />
@@ -499,8 +504,9 @@
       </div>
       <div class="submit-row">
         <button type="submit" class="btn btn-gold">Solicitar auditoría — respuesta en 24h</button>
-        <span class="form-msg" id="formMsg">Gracias. Hemos recibido tu solicitud y te contactaremos en menos de 24h.</span>
+        <span class="form-msg" id="formMsg" role="status" aria-live="polite"></span>
       </div>
+      <p class="form-legal">Usamos tus datos solo para responder a esta solicitud. Más información en la <a href="/politica-privacidad">política de privacidad</a>.</p>
     </form>
   </div>
 </section>
@@ -598,13 +604,40 @@ document.querySelectorAll('.faq-item').forEach(item => {
   });
 });
 
-// contact form (demo only — wire to your CRM / webhook)
+// contact form → FormSubmit (mismo proveedor que la calculadora)
 const leadForm = document.getElementById('leadForm');
 const formMsg = document.getElementById('formMsg');
+const leadBtn = leadForm.querySelector('button[type="submit"]');
+const leadBtnText = leadBtn.textContent;
 leadForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  formMsg.classList.add('show');
-  leadForm.querySelectorAll('input,select,button').forEach(el => el.disabled = true);
+  if (!leadForm.checkValidity()) {
+    formMsg.textContent = 'Rellena todos los campos para poder enviarlo.';
+    formMsg.classList.add('show');
+    leadForm.reportValidity();
+    return;
+  }
+  formMsg.classList.remove('show');
+  leadBtn.disabled = true;
+  leadBtn.textContent = 'Enviando…';
+  fetch('https://formsubmit.co/ajax/ceo@axionasystems.es', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(Object.fromEntries(new FormData(leadForm)))
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error('request failed');
+      formMsg.textContent = 'Gracias. Hemos recibido tu solicitud y te contactaremos en menos de 24h.';
+      formMsg.classList.add('show');
+      leadBtn.textContent = 'Enviado';
+      leadForm.querySelectorAll('input,select').forEach(el => el.disabled = true);
+    })
+    .catch(() => {
+      formMsg.textContent = 'No se pudo enviar. Inténtalo de nuevo o escríbenos a ceo@axionasystems.es.';
+      formMsg.classList.add('show');
+      leadBtn.disabled = false;
+      leadBtn.textContent = leadBtnText;
+    });
 });
 </script>
 </body>

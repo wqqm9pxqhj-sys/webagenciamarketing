@@ -1,0 +1,8 @@
+{
+  "name": "axiona-web",
+  "private": true,
+  "description": "Web de AXIONA Systems. El sitio es estático; las dependencias son solo para las funciones de /api.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0"
+  }
+}

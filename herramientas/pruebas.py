@@ -28,6 +28,8 @@ PAGES = ['/', '/aviso-legal', '/politica-privacidad', '/politica-cookies']
 def page(b, w=1440, h=900, consent=True, **kw):
     ctx = b.new_context(viewport={'width': w, 'height': h}, **kw)
     if consent: ctx.add_cookies([CONSENT])
+    # the local server has no functions: the assistant is "not switched on" unless a test says otherwise
+    ctx.route('**/api/ayuda', lambda r: r.fulfill(status=200, content_type='application/json', body='{"ok":false}'))
     pg = ctx.new_page(); pg.errs = []
     _goto = pg.goto
     def goto(url, **kw):
@@ -156,7 +158,8 @@ with sync_playwright() as p:
         def ok_route(route):
             sent['url'] = route.request.url; sent['body'] = json.loads(route.request.post_data); route.fulfill(status=200, content_type='application/json', body='{"success":"true"}')
         pg.route('https://formsubmit.co/**', ok_route)
-        pg.click('#informe summary'); pg.wait_for_timeout(300); pg.locator('#calc-submit-btn').scroll_into_view_if_needed(); pg.click('#calc-submit-btn'); pg.wait_for_timeout(200)
+        check(pg.is_visible('#sector-text') and pg.is_visible('#calc-email') and pg.locator('.measured li').count() == 3, f'{tag}: comparativa con el sector y «te calculo las tres fugas» a la vista, sin desplegar')
+        pg.locator('#calc-submit-btn').scroll_into_view_if_needed(); pg.click('#calc-submit-btn'); pg.wait_for_timeout(200)
         check(not sent and 'email' in pg.inner_text('#calc-form-status'), f'{tag}: el informe no se envía sin email ni casilla')
         pg.fill('#calc-email', 'no-es-un-email'); pg.check('#calc-consent'); pg.click('#calc-submit-btn'); pg.wait_for_timeout(200); check(not sent, f'{tag}: email mal escrito no se envía')
         pg.fill('#calc-email', 'a@b.es'); pg.fill('#calc-pacientes', '99999999999999999999'); pg.click('#calc-submit-btn'); pg.wait_for_timeout(500)
@@ -196,6 +199,42 @@ with sync_playwright() as p:
         fit = pg.evaluate('''(i) => { const a = document.querySelectorAll('[data-act]')[i], t = a.querySelector('.act-text'), s = a.querySelector('[data-slot]'); const tr = t.getBoundingClientRect(), sr = s.getBoundingClientRect(); return { bottom: Math.round(tr.bottom), vh: innerHeight, clip: t.scrollHeight - t.clientHeight, slot: Math.round(sr.height), gap: Math.round(tr.top - sr.bottom) }; }''', i)
         check(fit['bottom'] <= fit['vh'] + 1 and fit['slot'] >= 100 and fit['gap'] >= 0 and (fit['clip'] <= 1 or i == 1), f'móvil pequeño: «{name}» cabe en pantalla {fit}')
     check(not pg.errs, f'móvil sin errores {pg.errs[:3]}')
+    ctx.close()
+
+    # ---- help assistant (the server side is simulated here; herramientas/prueba-ayuda.mjs covers the function)
+    asked = []
+    def ayuda(route):
+        if route.request.method == 'GET': route.fulfill(status=200, content_type='application/json', body='{"ok":true}')
+        else:
+            asked.append(json.loads(route.request.post_data)); route.fulfill(status=200, content_type='application/json', body=json.dumps({"ok": True, "text": "Desde 690 € al mes. Si quieres la cifra exacta, escribe a ceo@axionasystems.es."}))
+    ctx, pg = page(b); pg.goto(B + '/?3d=0', wait_until='networkidle'); pg.wait_for_timeout(1500)
+    check(pg.locator('#ayudaBtn').count() == 0 and not pg.errs, f'asistente sin clave en el servidor: el botón no aparece y no hay errores {pg.errs[:3]}')
+    pg.wait_for_selector('img.hero-full.on', timeout=8000)
+    same = pg.evaluate('(() => { const r = (e) => { const b = e.getBoundingClientRect(); return [b.left, b.top, b.width, b.height].map(Math.round).join(); }; return r(document.getElementById("heroPoster")) === r(document.querySelector("img.hero-full")); })()')
+    check(same, 'sin 3D: la agenda llena del hero cae exactamente encima de la agenda con huecos')
+    ctx.close()
+    ctx, pg = page(b); pg.route('**/api/ayuda', ayuda); pg.goto(B + '/?3d=0', wait_until='networkidle'); pg.wait_for_selector('#ayudaBtn', timeout=5000)
+    check(pg.is_visible('#ayudaBtn') and pg.locator('#ayudaPanel').count() == 0, 'asistente: botón a la vista y ventana sin crear hasta que se pide')
+    pg.click('#ayudaBtn'); pg.wait_for_timeout(400)
+    check(pg.is_visible('#ayudaPanel') and pg.get_attribute('#ayudaBtn', 'aria-expanded') == 'true' and 'automático' in pg.inner_text('.ayuda-list'), 'asistente: se abre y se presenta como automático')
+    pg.fill('#ayudaInput', '¿Cuánto cuesta?'); pg.keyboard.press('Enter'); pg.wait_for_timeout(500)
+    check(len(asked) == 1 and asked[0]['messages'] == [{'role': 'user', 'content': '¿Cuánto cuesta?'}], 'asistente: envía la pregunta')
+    check('Desde 690' in pg.inner_text('.ayuda-msg.bot >> nth=1') and pg.locator('.ayuda-msg.bot a[href="mailto:ceo@axionasystems.es"]').count() == 1, 'asistente: enseña la respuesta y enlaza el correo')
+    pg.fill('#ayudaInput', '<img src=x onerror=alert(1)> y la garantía'); pg.click('.ayuda-form button'); pg.wait_for_timeout(500)
+    check(len(asked) == 2 and len(asked[1]['messages']) == 3 and pg.locator('.ayuda-list img').count() == 0, 'asistente: mantiene la conversación y trata lo escrito como texto')
+    pg.fill('#ayudaInput', '   '); pg.keyboard.press('Enter'); pg.wait_for_timeout(200); check(len(asked) == 2, 'asistente: no envía preguntas vacías')
+    pg.keyboard.press('Escape'); pg.wait_for_timeout(200)
+    check(not pg.is_visible('#ayudaPanel') and pg.evaluate('document.activeElement.id') == 'ayudaBtn', 'asistente: Escape lo cierra y devuelve el foco')
+    check(not pg.errs, f'asistente sin errores {pg.errs[:3]}')
+    ctx.close()
+    def caido(route):
+        if route.request.method == 'GET': route.fulfill(status=200, content_type='application/json', body='{"ok":true}')
+        else: route.fulfill(status=502, content_type='application/json', body='{"ok":false,"error":"upstream"}')
+    ctx, pg = page(b, 375, 700, has_touch=True, is_mobile=True); pg.route('**/api/ayuda', caido); pg.goto(B + '/?3d=0', wait_until='networkidle'); pg.wait_for_selector('#ayudaBtn', timeout=5000)
+    pg.click('#ayudaBtn'); pg.wait_for_timeout(400); pg.click('.ayuda-suggest button >> nth=0'); pg.wait_for_timeout(600)
+    box = pg.evaluate('(() => { const r = document.getElementById("ayudaPanel").getBoundingClientRect(); return [Math.round(r.left), Math.round(r.top), Math.round(r.right), Math.round(r.bottom)]; })()')
+    check(box[0] >= 0 and box[1] >= 0 and box[2] <= 375 and box[3] <= 700, f'asistente en móvil: la ventana cabe en pantalla {box}')
+    check('Ahora mismo no puedo responder' in pg.inner_text('.ayuda-list') and pg.is_disabled('#ayudaInput') and pg.locator('.ayuda-call').get_attribute('href').startswith('mailto:ceo@axionasystems.es?subject='), 'asistente caído a media conversación: lo dice y ofrece el correo y la llamada')
     ctx.close()
 
     # ---- cookie banner on a first visit

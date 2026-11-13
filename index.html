@@ -244,18 +244,17 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentEl
         </div>
       </div>
 
-      <div class="calc-more">
-        <details class="more">
-          <summary>Cómo estás frente al sector</summary>
-          <div class="more-body">
-            <div class="sector-bar" role="img" id="sector-bar" aria-label="Tu tasa de ausencias frente al rango habitual del sector, entre el 12 % y el 18 %">
-              <div class="sector-range" id="sector-range"></div>
-              <div class="sector-marker" id="sector-marker"></div>
-            </div>
-            <div class="sector-scale"><span>0 %</span><span>Lo habitual: del 12 al 18 %</span><span>40 %</span></div>
-            <p id="sector-text">Estás dentro del rango habitual del sector, entre el 12 % y el 18 %. Es lo normal, pero se puede bajar.</p>
+      <!-- after the result: where the clinic stands, and why this figure is not the whole picture -->
+      <div class="calc-after">
+        <div class="calc-sector">
+          <h3>Cómo estás frente al sector</h3>
+          <div class="sector-bar" role="img" id="sector-bar" aria-label="Tu tasa de ausencias frente al rango habitual del sector, entre el 12 % y el 18 %">
+            <div class="sector-range" id="sector-range"></div>
+            <div class="sector-marker" id="sector-marker"></div>
           </div>
-        </details>
+          <div class="sector-scale"><span>0 %</span><span>Lo habitual: del 12 al 18 %</span><span>40 %</span></div>
+          <p id="sector-text">Estás dentro del rango habitual del sector, entre el 12 % y el 18 %. Es lo normal, pero se puede bajar.</p>
+        </div>
         <details class="more">
           <summary>Cómo se calcula</summary>
           <div class="more-body">
@@ -267,49 +266,60 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentEl
             <p>La fuga es tus citas al mes por tu tasa de ausencias por tu ticket medio. La recuperación junta dos efectos: bajar la tasa de ausencias hasta el 6 % confirmando cada cita, y rellenar en torno al 45 % de los huecos que aún se cancelen con la lista de espera. El rango del 12 % al 18 % es el habitual en clínicas dentales. Son estimaciones con medias del sector. Tu cifra real depende de tu agenda, de los tratamientos que haces y de tu base de pacientes.</p>
           </div>
         </details>
-        <details class="more" id="informe">
-          <summary>Te calculo las tres fugas, no solo esta</summary>
-          <div class="more-body">
-            <p>La calculadora mide una de las tres fugas. Con dos datos más calculo también los pacientes que dejaron de venir y las consultas sin respuesta, y te digo qué parte del total se puede recuperar en tu caso. No te llamo ni te hago seguimiento si no me lo pides.</p>
-            <form id="calc-email-form" class="form form-on-mint" novalidate>
-              <input type="hidden" name="_subject" value="Nuevo informe pedido desde la calculadora de AXIONA" />
-              <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
-              <input type="hidden" name="citas_al_mes" id="hid-citas" />
-              <input type="hidden" name="tasa_ausencias" id="hid-tasa" />
-              <input type="hidden" name="ticket_medio" id="hid-ticket" />
-              <input type="hidden" name="fuga_mensual" id="hid-fuga-mes" />
-              <input type="hidden" name="fuga_anual" id="hid-fuga-anual" />
-              <input type="hidden" name="recuperable_mensual" id="hid-rec-mes" />
-              <input type="hidden" name="recuperable_anual" id="hid-rec-anual" />
-              <div class="field">
-                <label for="calc-pacientes">Pacientes en tu base de datos <span class="optional">(opcional)</span></label>
-                <input type="text" inputmode="numeric" id="calc-pacientes" name="pacientes_base" placeholder="900…" autocomplete="off" aria-describedby="hint-pacientes" />
-                <span class="hint" id="hint-pacientes">Aproximado. Todos los que han pasado por la clínica desde que abriste.</span>
-              </div>
-              <div class="field">
-                <label for="calc-consultas">Consultas al mes por web, Instagram o Google <span class="optional">(opcional)</span></label>
-                <input type="text" inputmode="numeric" id="calc-consultas" name="consultas_mes" placeholder="40…" autocomplete="off" aria-describedby="hint-consultas" />
-                <span class="hint" id="hint-consultas">Aproximado. Gente que pregunta sin ser paciente todavía.</span>
-              </div>
-              <div class="field full">
-                <label for="calc-email">Email</label>
-                <input type="email" spellcheck="false" id="calc-email" name="email" required placeholder="nombre@tuclinica.com" autocomplete="email" />
-              </div>
-              <label class="consent full">
-                <input type="checkbox" id="calc-consent" name="consentimiento" required />
-                <span>Acepto recibir el informe y comunicaciones de AXIONA Systems. Puedo darme de baja cuando quiera. <a href="/politica-privacidad">Política de privacidad</a>.</span>
-              </label>
-              <div class="form-foot full">
-                <button type="submit" class="btn btn-light btn-plain" id="calc-submit-btn">Enviar el desglose</button>
-                <p class="form-msg" id="calc-form-status" role="status" aria-live="polite"></p>
-              </div>
-              <p class="form-legal full">No comparto tu correo con nadie. Puedes darte de baja en cualquier envío con un clic.</p>
-            </form>
-            <p class="form-done" id="calc-form-success" role="status" hidden>Enviado. Te llegará a tu bandeja en cuanto lo prepare. Si no lo ves, mira en promociones o spam.</p>
-          </div>
-        </details>
+      </div>
+
+      <div class="calc-rest" id="informe">
+        <div class="calc-rest-why">
+          <h3 class="calc-rest-title">Esta cifra se queda corta.</h3>
+          <p>La calculadora mide una de las tres fugas por las que una clínica pierde facturación. Las otras dos no salen en ningún número de arriba.</p>
+          <ul class="measured">
+            <li class="is-measured"><span class="measured-tag">Medida</span><b>Citas que no se presentan</b><span>El paciente confirmó, está en la agenda y no aparece. Es la única fuga que calcula esta página.</span></li>
+            <li><span class="measured-tag">Sin medir</span><b>Pacientes que dejaron de venir</b><span>Pasaron por tu clínica, salieron contentos y llevan más de un año sin volver porque nadie les ha escrito.</span></li>
+            <li><span class="measured-tag">Sin medir</span><b>Consultas que nadie contesta a tiempo</b><span>Alguien pregunta por un implante un sábado por la noche, le contestan el lunes y para entonces ya ha reservado en otra clínica.</span></li>
+          </ul>
+        </div>
+        <div class="calc-rest-form">
+          <h3>Te calculo las tres fugas, no solo esta</h3>
+          <p>Con dos datos más calculo también los pacientes que dejaron de venir y las consultas sin respuesta, y te digo qué parte del total se puede recuperar en tu caso. No te llamo ni te hago seguimiento si no me lo pides.</p>
+          <form id="calc-email-form" class="form form-on-mint" novalidate>
+            <input type="hidden" name="_subject" value="Nuevo informe pedido desde la calculadora de AXIONA" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <input type="hidden" name="citas_al_mes" id="hid-citas" />
+            <input type="hidden" name="tasa_ausencias" id="hid-tasa" />
+            <input type="hidden" name="ticket_medio" id="hid-ticket" />
+            <input type="hidden" name="fuga_mensual" id="hid-fuga-mes" />
+            <input type="hidden" name="fuga_anual" id="hid-fuga-anual" />
+            <input type="hidden" name="recuperable_mensual" id="hid-rec-mes" />
+            <input type="hidden" name="recuperable_anual" id="hid-rec-anual" />
+            <div class="field">
+              <label for="calc-pacientes">Pacientes en tu base de datos <span class="optional">(opcional)</span></label>
+              <input type="text" inputmode="numeric" id="calc-pacientes" name="pacientes_base" placeholder="900…" autocomplete="off" aria-describedby="hint-pacientes" />
+              <span class="hint" id="hint-pacientes">Aproximado. Todos los que han pasado por la clínica desde que abriste.</span>
+            </div>
+            <div class="field">
+              <label for="calc-consultas">Consultas al mes por web, Instagram o Google <span class="optional">(opcional)</span></label>
+              <input type="text" inputmode="numeric" id="calc-consultas" name="consultas_mes" placeholder="40…" autocomplete="off" aria-describedby="hint-consultas" />
+              <span class="hint" id="hint-consultas">Aproximado. Gente que pregunta sin ser paciente todavía.</span>
+            </div>
+            <div class="field full">
+              <label for="calc-email">Email</label>
+              <input type="email" spellcheck="false" id="calc-email" name="email" required placeholder="nombre@tuclinica.com" autocomplete="email" />
+            </div>
+            <label class="consent full">
+              <input type="checkbox" id="calc-consent" name="consentimiento" required />
+              <span>Acepto recibir el informe y comunicaciones de AXIONA Systems. Puedo darme de baja cuando quiera. <a href="/politica-privacidad">Política de privacidad</a>.</span>
+            </label>
+            <div class="form-foot full">
+              <button type="submit" class="btn btn-light btn-plain" id="calc-submit-btn">Enviar el desglose</button>
+              <p class="form-msg" id="calc-form-status" role="status" aria-live="polite"></p>
+            </div>
+            <p class="form-legal full">No comparto tu correo con nadie. Puedes darte de baja en cualquier envío con un clic.</p>
+          </form>
+          <p class="form-done" id="calc-form-success" role="status" hidden>Enviado. Te llegará a tu bandeja en cuanto lo prepare. Si no lo ves, mira en promociones o spam.</p>
+          <p class="calc-rest-or">Si prefieres verlo conmigo, <a href="mailto:ceo@axionasystems.es" data-call>pide una llamada</a> y lo calculamos con tu agenda delante.</p>
+        </div>
       </div>
     </section>
 
@@ -563,5 +573,6 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentEl
 <script src="/assets/vendor/lenis-1.1.14.min.js" defer></script>
 <script src="/assets/home.js" defer></script>
 <script src="/assets/cookie-consent.js" defer></script>
+<script src="/assets/ayuda.js" defer></script>
 </body>
 </html>

@@ -8,8 +8,8 @@
 <link rel="canonical" href="https://axionasystems.es/" />
 <meta property="og:title" content="Agenda sin huecos para clínicas dentales | AXIONA Systems" />
 <meta property="og:description" content="Recordatorios por WhatsApp, lista de espera automática y pacientes antiguos que vuelven. Para clínicas dentales de Barcelona." />
-<meta property="og:type" content="website" />
 <meta property="og:locale" content="es_ES" />
+<meta property="og:type" content="website" />
 <meta property="og:url" content="https://axionasystems.es/" />
 <meta property="og:image" content="https://axionasystems.es/assets/icons/og-image.png" />
 <meta property="og:image:width" content="1200" />
@@ -22,9 +22,15 @@
 <link rel="icon" href="/brand/favicon/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<meta name="theme-color" content="#0b0b0c" />
+<meta name="theme-color" content="#e3f5ee" />
 <link rel="preload" href="/assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="/assets/axiona.css" />
+<link rel="preload" as="image" href="/assets/img/hilo-hero-m.webp" media="(max-width: 900px)" fetchpriority="high" />
+<link rel="preload" as="image" href="/assets/img/hilo-hero-d.webp" media="(min-width: 901px)" fetchpriority="high" />
+<link rel="stylesheet" href="/assets/sitio.css" />
+<script>
+// the scroll story needs JS and motion; without them every section stands on its own
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('story-on');
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,19 +51,18 @@
 <body>
 <a href="#main" class="skip-link">Saltar al contenido</a>
 
-<header class="nav">
+<header class="nav" id="nav">
   <a href="/" class="logo" aria-label="AXIONA Systems, inicio">
-    <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="0" y="39" width="64" height="6" fill="#3fd1a8"/><path d="M32,4 L60,58 L4,58 Z M32,27 L47,51 L17,51 Z" fill="#ecedeb" fill-rule="evenodd"/></svg>
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="0" y="39" width="64" height="6" fill="#12715f"/><path d="M32,4 L60,58 L4,58 Z M32,27 L47,51 L17,51 Z" fill="#0b0b0c" fill-rule="evenodd"/></svg>
     <span translate="no">AXIONA <small>SYSTEMS</small></span>
   </a>
   <nav class="nav-links" aria-label="Principal">
-    <a href="#sistemas">Sistemas</a>
     <a href="#como-funciona">Cómo funciona</a>
+    <a href="#calculadora">Calculadora</a>
     <a href="#precios">Precios</a>
-    <a href="/calculadora">Calculadora</a>
     <a href="#preguntas">Preguntas</a>
   </nav>
-  <a class="btn btn-primary" href="mailto:ceo@axionasystems.es" data-call>
+  <a class="btn btn-small" href="mailto:ceo@axionasystems.es" data-call>
     <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada
   </a>
   <button class="nav-toggle" id="navToggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobilePanel">
@@ -65,201 +70,341 @@
   </button>
 </header>
 <nav class="mobile-panel" id="mobilePanel" aria-label="Menú móvil">
-  <a href="#sistemas">Sistemas</a>
   <a href="#como-funciona">Cómo funciona</a>
+  <a href="#calculadora">Calculadora</a>
   <a href="#precios">Precios</a>
-  <a href="/calculadora">Calculadora</a>
   <a href="#preguntas">Preguntas</a>
-  <a class="btn btn-primary" href="mailto:ceo@axionasystems.es" data-call>
+  <a class="btn" href="mailto:ceo@axionasystems.es" data-call>
     <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada
   </a>
 </nav>
 
-<main id="main" class="frame">
+<!-- fixed layers of the scroll story: the ground colour and the 3D agenda -->
+<div class="stage" aria-hidden="true">
+  <div class="stage-ground" id="stageGround"></div>
+  <canvas class="stage-canvas" id="stageCanvas"></canvas>
+</div>
 
-  <!-- HERO -->
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="card hero-main grain">
-      <div>
-        <p class="eyebrow">Clínicas dentales en Barcelona</p>
-        <h1 id="hero-title">Cada silla vacía <span class="dim">es margen que no vuelve.</span></h1>
-        <p class="lede">Confirmamos cada cita por WhatsApp, ofrecemos los huecos a tu lista de espera y escribimos a los pacientes que dejaron de venir. Tu recepción no tiene que hacer ni una llamada.</p>
-        <div class="ctas">
-          <a class="btn btn-primary" href="mailto:ceo@axionasystems.es" data-call>
-            <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada
-          </a>
-          <a class="btn btn-ghost" href="/calculadora">Calcula cuánto pierdes</a>
+<main id="main">
+
+  <div class="story" id="story">
+
+    <!-- 1 · HERO -->
+    <section class="act act-hero" id="top" data-act data-ground="#e3f5ee" style="--tall:125" aria-labelledby="hero-title">
+      <div class="act-pin">
+        <div class="act-text">
+          <p class="kicker">Para clínicas dentales de Barcelona</p>
+          <h1 id="hero-title">Cada silla vacía <span class="dim">es margen que no vuelve.</span></h1>
+          <p class="lede">Confirmamos cada cita por WhatsApp y llenamos los huecos con tu lista de espera. Tu recepción no hace ni una llamada.</p>
+          <div class="ctas">
+            <a class="btn" href="mailto:ceo@axionasystems.es" data-call>
+              <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada
+            </a>
+            <a class="link" href="#calculadora">Calcula cuánto pierdes</a>
+          </div>
         </div>
-        <p class="direct">O escríbeme a <a href="mailto:ceo@axionasystems.es" data-call>ceo@axionasystems.es</a></p>
+        <div class="act-slot" data-slot>
+          <picture>
+            <source media="(prefers-reduced-motion: reduce) and (max-width: 900px)" srcset="/assets/img/hilo-hero-lleno-m.webp" width="920" height="804" />
+            <source media="(prefers-reduced-motion: reduce)" srcset="/assets/img/hilo-hero-lleno-d.webp" width="1400" height="950" />
+            <source media="(max-width: 900px)" srcset="/assets/img/hilo-hero-m.webp" width="920" height="804" />
+            <img src="/assets/img/hilo-hero-d.webp" width="1400" height="950" alt="" fetchpriority="high" decoding="async" id="heroPoster" />
+          </picture>
+        </div>
       </div>
-      <div class="hero-foot">
-        <dl>
-          <div><dt>citas perdidas al mes</dt><dd class="figure"><span class="amount">30</span></dd></div>
-          <div><dt>al mes sin facturar</dt><dd class="figure"><span class="amount">2.550</span><span class="unit">€</span></dd></div>
-          <div><dt>hasta que funciona solo</dt><dd class="figure"><span class="amount">4</span><span class="unit">semanas</span></dd></div>
-        </dl>
-        <p class="example-note"><span class="tag">Ejemplo</span>Clínica de 200 citas al mes, 15 % de ausencias y 85 € de ticket medio. Son los valores por defecto de la calculadora.</p>
+    </section>
+
+    <!-- 2 · DEMO -->
+    <section class="act act-demo on-mint" id="demo" data-act data-ground="#12715f" style="--tall:180" aria-labelledby="demo-title">
+      <div class="act-pin">
+        <div class="act-text">
+          <h2 id="demo-title">Alguien cancela. <span class="dim">El hueco se ofrece solo.</span></h2>
+          <ol class="chat" aria-label="Conversación de ejemplo por WhatsApp">
+            <li class="chat-note" data-at="0.06">Laura cancela su cita de mañana a las 10:30.</li>
+            <li class="chat-note" data-at="0.3">El sistema ofrece la hora a 3 pacientes de la lista de espera.</li>
+            <li class="chat-msg chat-out" data-at="0.36">Hola Marta. Se ha liberado un hueco mañana a las 10:30 con la doctora. ¿Te va bien?</li>
+            <li class="chat-msg chat-in" data-at="0.5">uy sí, perfecto</li>
+            <li class="chat-msg chat-out" data-at="0.66">Hecho. Te esperamos mañana a las 10:30.</li>
+            <li class="chat-result" data-at="0.76"><span>Hueco ocupado</span><b>+85&nbsp;€</b></li>
+          </ol>
+          <p class="fine">Conversación de ejemplo. Los mensajes llevan el tono de tu clínica y los apruebas tú.</p>
+        </div>
+        <div class="act-slot" data-slot>
+          <picture>
+            <source media="(max-width: 900px)" srcset="/assets/img/hilo-demo-m.webp" width="920" height="710" />
+            <img src="/assets/img/hilo-demo-d.webp" width="1400" height="1040" alt="" loading="lazy" decoding="async" />
+          </picture>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <aside class="chat grain" aria-labelledby="chat-title">
-      <p class="eyebrow">Martes, 9:12</p>
-      <h2 id="chat-title">Alguien cancela. El hueco se ofrece solo.</h2>
-      <p class="sysmsg" data-step="1">Laura cancela su cita de mañana a las 10:30</p>
-      <p class="sysmsg" data-step="2">Se ofrece la hora a 3 pacientes de la lista de espera</p>
-      <p class="bubble bubble-out" data-step="3">Hola Marta. Se ha liberado un hueco mañana a las 10:30 con la doctora. ¿Te va bien?</p>
-      <p class="bubble bubble-in" data-step="4">uy sí, perfecto</p>
-      <p class="bubble bubble-out" data-step="5">Hecho. Te esperamos mañana a las 10:30.</p>
-      <div class="chat-status" data-step="6"><span>Hueco de las 10:30 ocupado</span><span class="figure"><span class="amount">+85</span><span class="unit">€</span></span></div>
-      <p class="chat-caption">Conversación de ejemplo. Los mensajes los escribimos con el tono de tu clínica y los apruebas tú.</p>
-    </aside>
-  </section>
-
-  <!-- SISTEMAS -->
-  <section class="card" id="sistemas" aria-labelledby="sistemas-title">
-    <div class="sec-head reveal">
-      <div>
-        <p class="eyebrow">Tres fugas</p>
-        <h2 id="sistemas-title">Los pacientes ya los tienes. <span class="dim">Se pierden en los huecos.</span></h2>
+    <!-- 3 · LAS TRES FUGAS -->
+    <section class="act act-leaks" id="sistemas" data-act data-ground="#ffffff" style="--tall:180" aria-labelledby="leaks-title">
+      <div class="act-pin">
+        <div class="act-text">
+          <h2 id="leaks-title">Los pacientes ya los tienes. <span class="dim">Se pierden en los huecos.</span></h2>
+          <div class="leaks" id="leaks">
+            <div class="leak is-open" data-at="0">
+              <h3><button type="button" class="leak-trigger" id="leak-btn-1" aria-expanded="true" aria-controls="leak-panel-1"><span class="leak-n">1</span>Citas que no se presentan</button></h3>
+              <div class="leak-panel" id="leak-panel-1" role="region" aria-labelledby="leak-btn-1"><p>El paciente recibe un WhatsApp 72 y 24 horas antes y confirma, cambia o cancela respondiendo. Si cancela, la hora se ofrece a tu lista de espera hasta que alguien la coge. <span class="leak-system" translate="no">Sistema Silla Llena.</span></p></div>
+            </div>
+            <div class="leak is-open" data-at="0.5">
+              <h3><button type="button" class="leak-trigger" id="leak-btn-2" aria-expanded="true" aria-controls="leak-panel-2"><span class="leak-n">2</span>Pacientes que dejaron de venir</button></h3>
+              <div class="leak-panel" id="leak-panel-2" role="region" aria-labelledby="leak-btn-2"><p>Escribimos a quien lleva más de seis meses sin pasar por la clínica. Cada mensaje lo apruebas tú antes de que salga. <span class="leak-system" translate="no">Sistema Rescate de Facturación.</span></p></div>
+            </div>
+            <div class="leak is-open" data-at="0.74">
+              <h3><button type="button" class="leak-trigger" id="leak-btn-3" aria-expanded="true" aria-controls="leak-panel-3"><span class="leak-n">3</span>Consultas fuera de horario</button></h3>
+              <div class="leak-panel" id="leak-panel-3" role="region" aria-labelledby="leak-btn-3"><p>Quien pregunta por un implante un sábado a las diez de la noche recibe respuesta y una propuesta de cita. No espera al lunes. <span class="leak-system" translate="no">Sistema Piloto Automático.</span></p></div>
+            </div>
+          </div>
+        </div>
+        <div class="act-slot" data-slot>
+          <picture>
+            <source media="(max-width: 900px)" srcset="/assets/img/hilo-fugas-m.webp" width="920" height="1076" />
+            <img src="/assets/img/hilo-fugas-d.webp" width="1040" height="1216" alt="" loading="lazy" decoding="async" />
+          </picture>
+        </div>
       </div>
-      <p>Hay un sistema para cada fuga. Empiezas por la que más te cuesta y añades las otras cuando veas la cifra.</p>
-    </div>
-    <div class="reveal">
-      <article class="leak">
-        <p class="eyebrow" translate="no">Silla Llena</p>
-        <h3>Citas que no se presentan</h3>
-        <p>El paciente recibe un WhatsApp 72 y 24 horas antes y confirma, cambia o cancela respondiendo. Si cancela, la hora se ofrece a tu lista de espera hasta que alguien la coge.</p>
-      </article>
-      <article class="leak">
-        <p class="eyebrow" translate="no">Rescate de Facturación</p>
-        <h3>Pacientes que dejaron de venir</h3>
-        <p>Escribimos a quien lleva más de seis meses sin pasar por la clínica. Cada mensaje lo apruebas tú antes de que salga.</p>
-      </article>
-      <article class="leak">
-        <p class="eyebrow" translate="no">Piloto Automático</p>
-        <h3>Consultas fuera de horario</h3>
-        <p>Quien pregunta por un implante un sábado a las diez de la noche recibe respuesta y una propuesta de cita. No espera al lunes.</p>
-      </article>
-    </div>
-  </section>
+    </section>
 
-  <!-- CÓMO FUNCIONA -->
-  <section class="card" id="como-funciona" aria-labelledby="proceso-title">
-    <div class="sec-head reveal">
-      <div>
-        <p class="eyebrow">Cómo funciona</p>
-        <h2 id="proceso-title">Cuatro semanas. <span class="dim">Tu software no cambia.</span></h2>
+    <!-- 4 · CÓMO FUNCIONA -->
+    <section class="act act-weeks" id="como-funciona" data-act data-ground="#f2f3f1" style="--tall:190" aria-labelledby="weeks-title">
+      <div class="act-pin">
+        <div class="act-text">
+          <h2 id="weeks-title">Cuatro semanas. <span class="dim">Tu software no cambia.</span></h2>
+          <ol class="steps" id="steps">
+            <li class="step is-on" data-at="0"><button type="button" class="step-trigger"><span class="step-when">Semana 1</span><span class="step-name">Auditoría</span></button><p class="step-text">Miramos tu agenda y medimos dónde se pierde dinero.</p></li>
+            <li class="step is-on" data-at="0.25"><button type="button" class="step-trigger"><span class="step-when">Semana 2</span><span class="step-name">Conexión</span></button><p class="step-text">Nos conectamos a Gesden o Clinicsoft sin parar la consulta.</p></li>
+            <li class="step is-on" data-at="0.5"><button type="button" class="step-trigger"><span class="step-when">Semana 3</span><span class="step-name">Prueba</span></button><p class="step-text">El sistema trabaja en paralelo y tú apruebas cada mensaje.</p></li>
+            <li class="step is-on" data-at="0.75"><button type="button" class="step-trigger"><span class="step-when">Semana 4</span><span class="step-name">Funciona solo</span></button><p class="step-text">Cada lunes te llega cuánto dinero ha vuelto y de dónde.</p></li>
+          </ol>
+          <p class="trust">Funciona con <b translate="no">Gesden</b>, <b translate="no">Clinicsoft</b> y <b translate="no">WhatsApp Business</b>. Los datos se alojan en la UE. <a href="#faq-datos">Qué datos usamos</a></p>
+        </div>
+        <div class="act-slot" data-slot>
+          <picture>
+            <source media="(max-width: 900px)" srcset="/assets/img/hilo-semanas-m.webp" width="920" height="678" />
+            <img src="/assets/img/hilo-semanas-d.webp" width="1800" height="698" alt="" loading="lazy" decoding="async" />
+          </picture>
+        </div>
       </div>
-      <p>Tu equipo sigue trabajando igual. El sistema se conecta por debajo.</p>
-    </div>
-    <ol class="steps reveal">
-      <li class="step"><p class="eyebrow">Semana 1</p><h3>Auditoría</h3><p>Miramos tu agenda y medimos dónde se pierde dinero.</p></li>
-      <li class="step"><p class="eyebrow">Semana 2</p><h3>Conexión</h3><p>Nos conectamos a Gesden o Clinicsoft sin parar la consulta.</p></li>
-      <li class="step"><p class="eyebrow">Semana 3</p><h3>Prueba</h3><p>El sistema trabaja en paralelo y tú apruebas cada mensaje.</p></li>
-      <li class="step step-last grain"><p class="eyebrow">Semana 4</p><h3>Funciona solo</h3><p>Cada lunes te llega cuánto dinero ha vuelto y de dónde.</p></li>
-    </ol>
-  </section>
+    </section>
 
-  <!-- PRECIOS -->
-  <section class="card" id="precios" aria-labelledby="precios-title">
-    <div class="sec-head reveal">
-      <div>
-        <p class="eyebrow">Precios</p>
+    <!-- 5 · CALCULADORA -->
+    <section class="act act-calc on-mint" id="calculadora" data-act data-free data-ground="#12715f" aria-labelledby="calc-title">
+      <div class="calc-layout">
+        <div class="act-slot calc-slot" data-slot>
+          <picture>
+            <source media="(max-width: 900px)" srcset="/assets/img/hilo-calc-m.webp" width="920" height="1048" />
+            <img src="/assets/img/hilo-calc-d.webp" width="1400" height="988" alt="" loading="lazy" decoding="async" />
+          </picture>
+          <div class="grid2d" id="calcGrid" hidden></div>
+          <p class="calc-live" aria-hidden="true"><b id="calc-live-figure">30.600&nbsp;€</b> al año</p>
+        </div>
+        <div class="act-text calc-main">
+          <h2 id="calc-title">Cuánto pierde tu clínica <span class="dim">en citas que no se presentan.</span></h2>
+          <p class="calc-example" id="calc-example-note">Valores de ejemplo de una clínica de dos sillones. Cámbialos por los tuyos.</p>
+
+          <div class="calc-fields">
+            <div class="calc-field" role="group" aria-labelledby="lbl-citas">
+              <span class="calc-label" id="lbl-citas">Citas al mes</span>
+              <div class="calc-controls">
+                <input type="range" id="slider-citas" min="20" max="1000" step="10" value="200" aria-labelledby="lbl-citas" />
+                <div class="calc-num"><input type="text" inputmode="numeric" id="input-citas" value="200" autocomplete="off" aria-labelledby="lbl-citas" /></div>
+              </div>
+            </div>
+            <div class="calc-field" role="group" aria-labelledby="lbl-tasa">
+              <span class="calc-label" id="lbl-tasa">Ausencias y cancelaciones de última hora</span>
+              <div class="calc-controls">
+                <input type="range" id="slider-tasa" min="1" max="40" step="1" value="15" aria-labelledby="lbl-tasa" />
+                <div class="calc-num has-unit"><input type="text" inputmode="numeric" id="input-tasa" value="15" autocomplete="off" aria-labelledby="lbl-tasa" /><span class="unit">%</span></div>
+              </div>
+            </div>
+            <div class="calc-field" role="group" aria-labelledby="lbl-ticket">
+              <span class="calc-label" id="lbl-ticket">Ticket medio</span>
+              <div class="calc-controls">
+                <input type="range" id="slider-ticket" min="30" max="500" step="5" value="85" aria-labelledby="lbl-ticket" />
+                <div class="calc-num has-unit"><input type="text" inputmode="decimal" id="input-ticket" value="85" autocomplete="off" aria-labelledby="lbl-ticket" /><span class="unit">€</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-result" id="calc-result-panel">
+            <p class="calc-result-label">Se te escapan al año</p>
+            <p class="calc-figure"><span id="out-fuga-anual">30.600</span><span class="unit">€</span></p>
+            <p class="calc-sub"><span><b id="out-fuga-mes">2.550&nbsp;€</b> al mes</span><span><b id="out-citas-perdidas">30</b> citas perdidas al mes</span></p>
+            <div class="calc-mode" role="group" aria-label="Qué enseña la agenda">
+              <button type="button" data-mode="pierde" aria-pressed="true">Lo que pierdes</button>
+              <button type="button" data-mode="recupera" aria-pressed="false">Lo que se recupera</button>
+            </div>
+            <p class="calc-recover">Se pueden recuperar <b id="out-rec-mes">1.989&nbsp;€</b> al mes, <b id="out-rec-anual">23.868&nbsp;€</b> al año.</p>
+            <p class="calc-recover-low" id="calc-recover-low" hidden>Con estos números la fuga es pequeña. Un sistema como el nuestro solo tendría sentido con un alcance reducido. Cuéntamelo en la llamada y lo ajustamos.</p>
+            <p class="fine" id="calc-unit">Cada bloque es una cita. Las que faltan en la agenda están en el montón.</p>
+          </div>
+          <div id="calc-sr-announce" class="visually-hidden" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="calc-more">
+        <details class="more">
+          <summary>Cómo estás frente al sector</summary>
+          <div class="more-body">
+            <div class="sector-bar" role="img" id="sector-bar" aria-label="Tu tasa de ausencias frente al rango habitual del sector, entre el 12 % y el 18 %">
+              <div class="sector-range" id="sector-range"></div>
+              <div class="sector-marker" id="sector-marker"></div>
+            </div>
+            <div class="sector-scale"><span>0 %</span><span>Lo habitual: del 12 al 18 %</span><span>40 %</span></div>
+            <p id="sector-text">Estás dentro del rango habitual del sector, entre el 12 % y el 18 %. Es lo normal, pero se puede bajar.</p>
+          </div>
+        </details>
+        <details class="more">
+          <summary>Cómo se calcula</summary>
+          <div class="more-body">
+            <p>La fuga es tus citas al mes por tu tasa de ausencias por tu ticket medio. La recuperación junta dos efectos: bajar la tasa de ausencias hasta el 6 % confirmando cada cita, y rellenar en torno al 45 % de los huecos que aún se cancelen con la lista de espera. El rango del 12 % al 18 % es el habitual en clínicas dentales. Son estimaciones con medias del sector. Tu cifra real depende de tu agenda, de los tratamientos que haces y de tu base de pacientes.</p>
+          </div>
+        </details>
+        <details class="more" id="informe">
+          <summary>Te calculo las tres fugas, no solo esta</summary>
+          <div class="more-body">
+            <p>La calculadora mide una de las tres fugas. Con dos datos más calculo también los pacientes que dejaron de venir y las consultas sin respuesta, y te digo qué parte del total se puede recuperar en tu caso. No te llamo ni te hago seguimiento si no me lo pides.</p>
+            <form id="calc-email-form" class="form form-on-mint" novalidate>
+              <input type="hidden" name="_subject" value="Nuevo informe pedido desde la calculadora de AXIONA" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <input type="hidden" name="citas_al_mes" id="hid-citas" />
+              <input type="hidden" name="tasa_ausencias" id="hid-tasa" />
+              <input type="hidden" name="ticket_medio" id="hid-ticket" />
+              <input type="hidden" name="fuga_mensual" id="hid-fuga-mes" />
+              <input type="hidden" name="fuga_anual" id="hid-fuga-anual" />
+              <input type="hidden" name="recuperable_mensual" id="hid-rec-mes" />
+              <input type="hidden" name="recuperable_anual" id="hid-rec-anual" />
+              <div class="field">
+                <label for="calc-pacientes">Pacientes en tu base de datos <span class="optional">(opcional)</span></label>
+                <input type="text" inputmode="numeric" id="calc-pacientes" name="pacientes_base" placeholder="900…" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="calc-consultas">Consultas al mes por web, Instagram o Google <span class="optional">(opcional)</span></label>
+                <input type="text" inputmode="numeric" id="calc-consultas" name="consultas_mes" placeholder="40…" autocomplete="off" />
+              </div>
+              <div class="field full">
+                <label for="calc-email">Email</label>
+                <input type="email" spellcheck="false" id="calc-email" name="email" required placeholder="nombre@tuclinica.com" autocomplete="email" />
+              </div>
+              <label class="consent full">
+                <input type="checkbox" id="calc-consent" name="consentimiento" required />
+                <span>Acepto recibir el informe y comunicaciones de AXIONA Systems. Puedo darme de baja cuando quiera. <a href="/politica-privacidad">Política de privacidad</a>.</span>
+              </label>
+              <div class="form-foot full">
+                <button type="submit" class="btn btn-light btn-plain" id="calc-submit-btn">Enviar el desglose</button>
+                <p class="form-msg" id="calc-form-status" role="status" aria-live="polite"></p>
+              </div>
+            </form>
+            <p class="form-done" id="calc-form-success" role="status" hidden>Enviado. Te llegará a tu bandeja en cuanto lo prepare. Si no lo ves, mira en promociones o spam.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 6 · PRECIOS Y GARANTÍA -->
+  <section class="band band-prices" id="precios" aria-labelledby="precios-title">
+    <div class="wrap">
+      <div class="band-head">
         <h2 id="precios-title">Lo que cuesta. <span class="dim">La cifra exacta, después de ver tu agenda.</span></h2>
+        <p>Hay un sistema para cada fuga. Empiezas por la que más te cuesta y añades las otras cuando veas la cifra.</p>
       </div>
-      <p>El precio depende del volumen de tu clínica. Con más citas al mes hay más huecos que recuperar.</p>
-    </div>
-    <div class="plans reveal-group">
-      <article class="plan plan-1" style="--i:0">
-        <div class="plan-top">
+      <div class="plans">
+        <article class="plan">
           <h3 translate="no">Silla Llena</h3>
-          <span class="level" role="img" aria-label="Nivel 1 de 3"><i class="on" style="--k:0"></i><i class="" style="--k:1"></i><i class="" style="--k:2"></i></span>
-        </div>
-        <p class="plan-for">Para las citas que no se presentan.</p>
-        <div class="price"><span class="price-from">Desde</span><p><span class="figure"><span class="amount" data-odometer>690</span><span class="unit">€</span></span><span class="per">al mes</span></p></div>
-        <p class="setup">Más 990 € de instalación, una sola vez.</p>
-        <ul>
-          <li style="--j:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Recordatorios por WhatsApp a 72 y 24 horas</li>
-          <li style="--j:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Lista de espera automática para los huecos que se liberan</li>
-        </ul>
-        <a class="btn plan-btn" href="mailto:ceo@axionasystems.es" data-call><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada</a>
-      </article>
-      <article class="plan plan-2 grain" style="--i:1">
-        <div class="plan-top">
+          <p class="plan-for">Para las citas que no se presentan.</p>
+          <p class="price"><span class="price-from">Desde</span><span class="price-amount">690</span><span class="price-unit">€ al mes</span></p>
+          <a class="btn" href="mailto:ceo@axionasystems.es" data-call><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada</a>
+          <details class="more">
+            <summary>Qué incluye</summary>
+            <ul class="more-body">
+              <li>Recordatorios por WhatsApp a 72 y 24 horas</li>
+              <li>Lista de espera automática para los huecos que se liberan</li>
+              <li>Instalación: 990 €, una sola vez</li>
+            </ul>
+          </details>
+        </article>
+        <article class="plan">
           <h3 translate="no">Rescate de Facturación</h3>
-          <span class="level" role="img" aria-label="Nivel 2 de 3"><i class="on" style="--k:0"></i><i class="on" style="--k:1"></i><i class="" style="--k:2"></i></span>
-        </div>
-        <p class="plan-for">Para las cancelaciones y los pacientes que no vuelven.</p>
-        <div class="price"><span class="price-from">Desde</span><p><span class="figure"><span class="amount" data-odometer>1.190</span><span class="unit">€</span></span><span class="per">al mes</span></p></div>
-        <p class="setup">Más 1.490 € de instalación, una sola vez.</p>
-        <ul>
-          <li style="--j:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Las cancelaciones se convierten en citas para otros pacientes</li>
-          <li style="--j:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Mensajes a pacientes con más de seis meses sin venir</li>
-        </ul>
-        <a class="btn plan-btn" href="mailto:ceo@axionasystems.es" data-call><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada</a>
-      </article>
-      <article class="plan plan-3" style="--i:2">
-        <div class="plan-top">
+          <p class="plan-for">Para las cancelaciones y los pacientes que no vuelven.</p>
+          <p class="price"><span class="price-from">Desde</span><span class="price-amount">1.190</span><span class="price-unit">€ al mes</span></p>
+          <a class="btn" href="mailto:ceo@axionasystems.es" data-call><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada</a>
+          <details class="more">
+            <summary>Qué incluye</summary>
+            <ul class="more-body">
+              <li>Las cancelaciones se convierten en citas para otros pacientes</li>
+              <li>Mensajes a pacientes con más de seis meses sin venir</li>
+              <li>Instalación: 1.490 €, una sola vez</li>
+            </ul>
+          </details>
+        </article>
+        <article class="plan">
           <h3 translate="no">Piloto Automático</h3>
-          <span class="level" role="img" aria-label="Nivel 3 de 3"><i class="on" style="--k:0"></i><i class="on" style="--k:1"></i><i class="on" style="--k:2"></i></span>
-        </div>
-        <p class="plan-for">Para que la agenda funcione sin tu equipo.</p>
-        <div class="price"><span class="price-from">Desde</span><p><span class="figure"><span class="amount" data-odometer>1.990</span><span class="unit">€</span></span><span class="per">al mes</span></p></div>
-        <p class="setup">Más 1.990 € de instalación, una sola vez.</p>
-        <ul>
-          <li style="--j:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Agenda gestionada de principio a fin</li>
-          <li style="--j:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Respuesta a consultas a cualquier hora</li>
-          <li style="--j:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Informe semanal con lo que ha vuelto en euros</li>
-        </ul>
-        <a class="btn plan-btn" href="mailto:ceo@axionasystems.es" data-call><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada</a>
-      </article>
-    </div>
-    <div class="plans-notes reveal">
-      <p>La instalación incluye la conexión con tu software, la limpieza de tu base de datos, la configuración y las pruebas supervisadas. En la llamada vemos tus números y te digo la cifra exacta.</p>
-      <p>Hay una permanencia mínima de tres meses, que es lo que tarda el sistema en estar en marcha y medido. Después cancelas cuando quieras avisando con quince días. Precios sin IVA.</p>
-    </div>
-  </section>
-
-  <!-- GARANTÍA Y COMPATIBILIDAD -->
-  <section class="proof" aria-label="Garantía y compatibilidad">
-    <div class="guarantee grain reveal">
-      <p class="eyebrow">Garantía de 30 días</p>
-      <h2>Si no recupera el doble de tu cuota, dejas de pagar.</h2>
-      <p>Si en los primeros 30 días de funcionamiento autónomo el sistema no genera al menos el doble de tu cuota mensual, dejamos de facturarte hasta que lo haga. Aplica siempre que tengamos acceso a la agenda y a la base de pacientes en los plazos acordados.</p>
-    </div>
-    <div class="card compat reveal">
-      <p class="eyebrow">Compatibilidad</p>
-      <h2>Funciona con lo que ya usas</h2>
-      <div class="badges"><span class="badge" translate="no">Gesden</span><span class="badge" translate="no">Clinicsoft</span><span class="badge" translate="no">WhatsApp Business</span></div>
-      <ul class="checks">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Firmamos un contrato de encargado de tratamiento y los datos se alojan en la UE.</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Solo usamos nombre, teléfono, cita y tipo de tratamiento. Nunca historiales ni imágenes.</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" pathLength="1"/></svg>Hablas siempre con la misma persona.</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- NOSOTROS -->
-  <section class="card" id="nosotros" aria-labelledby="nosotros-title">
-    <div class="about">
-      <div class="reveal">
-        <p class="eyebrow">Quién está detrás</p>
-        <h2 id="nosotros-title">Nadie monta una clínica para perseguir a la gente por teléfono.</h2>
+          <p class="plan-for">Para que la agenda funcione sin tu equipo.</p>
+          <p class="price"><span class="price-from">Desde</span><span class="price-amount">1.990</span><span class="price-unit">€ al mes</span></p>
+          <a class="btn" href="mailto:ceo@axionasystems.es" data-call><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada</a>
+          <details class="more">
+            <summary>Qué incluye</summary>
+            <ul class="more-body">
+              <li>Agenda gestionada de principio a fin</li>
+              <li>Respuesta a consultas a cualquier hora</li>
+              <li>Informe semanal con lo que ha vuelto en euros</li>
+              <li>Instalación: 1.990 €, una sola vez</li>
+            </ul>
+          </details>
+        </article>
       </div>
-      <div class="about-body reveal">
-        <p>Al sector dental le llevan años contando lo mismo: que el problema es que no te conoce suficiente gente.</p>
-        <p>El dinero se va por los huecos. El paciente que no aparece un martes y nadie llama a nadie para ocupar esa hora. Los cientos de nombres de tu base de datos a los que nadie ha escrito en más de un año. La consulta de Instagram que llega un sábado y se contesta el lunes.</p>
-        <p>AXIONA instala lo que tapa esas fugas. No cambiamos tu software ni le pedimos nada nuevo a tu equipo. Funciona por debajo y cada semana te dice cuánto dinero ha vuelto y de dónde.</p>
-        <p class="pull">Haz la cuenta. Después decides.</p>
-        <div class="founder">
-          <b>Hugo Corbalán, fundador de AXIONA Systems</b>
-          <p>No hay departamentos. Mi equipo y yo hacemos la auditoría, instalamos el sistema y te escribimos el lunes con los resultados, buenos o malos. Si algo falla, sabes a quién llamar.</p>
-        </div>
+      <div class="plans-foot">
+        <p>El precio depende del volumen de tu clínica. La instalación va aparte, de 990 € a 1.990 € según el plan. Precios sin IVA.</p>
+        <details class="more">
+          <summary>Instalación y permanencia</summary>
+          <div class="more-body">
+            <p>La instalación incluye la conexión con tu software, la limpieza de tu base de datos, la configuración y las pruebas supervisadas. En la llamada vemos tus números y te digo la cifra exacta.</p>
+            <p>Hay una permanencia mínima de tres meses, que es lo que tarda el sistema en estar en marcha y medido. Después cancelas cuando quieras avisando con quince días.</p>
+          </div>
+        </details>
       </div>
     </div>
   </section>
 
-  <!-- PREGUNTAS -->
+  <section class="band band-guarantee" aria-labelledby="garantia-title">
+    <div class="wrap">
+      <p class="kicker">Garantía de 30 días</p>
+      <h2 id="garantia-title">Si no recupera el doble de tu cuota, dejas de pagar.</h2>
+      <details class="more">
+        <summary>Condiciones de la garantía</summary>
+        <div class="more-body">
+          <p>Si en los primeros 30 días de funcionamiento autónomo el sistema no genera al menos el doble de tu cuota mensual, dejamos de facturarte hasta que lo haga. Aplica siempre que tengamos acceso a la agenda y a la base de pacientes en los plazos acordados.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- 7 · QUIÉN ESTÁ DETRÁS -->
+  <section class="band band-about" id="nosotros" aria-labelledby="nosotros-title">
+    <div class="wrap about">
+      <h2 id="nosotros-title">Nadie monta una clínica para perseguir a la gente por teléfono.</h2>
+      <div class="about-body">
+        <p class="about-lede">No hay departamentos. Mi equipo y yo hacemos la auditoría, instalamos el sistema y te escribimos el lunes con los resultados, buenos o malos. Si algo falla, sabes a quién llamar.</p>
+        <p class="about-sign">Hugo Corbalán, fundador de AXIONA Systems</p>
+        <details class="more">
+          <summary>Por qué existe AXIONA</summary>
+          <div class="more-body">
+            <p>Al sector dental le llevan años contando lo mismo: que el problema es que no te conoce suficiente gente.</p>
+            <p>El dinero se va por los huecos. El paciente que no aparece un martes y nadie llama a nadie para ocupar esa hora. Los cientos de nombres de tu base de datos a los que nadie ha escrito en más de un año. La consulta de Instagram que llega un sábado y se contesta el lunes.</p>
+            <p>AXIONA instala lo que tapa esas fugas. No cambiamos tu software ni le pedimos nada nuevo a tu equipo. Funciona por debajo y cada semana te dice cuánto dinero ha vuelto y de dónde.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · PREGUNTAS -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -276,13 +421,10 @@
     ]
   }
   </script>
-  <section class="card" id="preguntas" aria-labelledby="preguntas-title">
-    <div class="faq">
-      <div class="reveal">
-        <p class="eyebrow">Preguntas</p>
-        <h2 id="preguntas-title">Lo que me preguntan antes de empezar</h2>
-      </div>
-      <div class="faq-list reveal">
+  <section class="band band-faq" id="preguntas" aria-labelledby="preguntas-title">
+    <div class="wrap faq">
+      <h2 id="preguntas-title">Lo que me preguntan antes de empezar</h2>
+      <div class="faq-list">
         <div class="faq-item">
           <h3 class="faq-q"><button type="button" class="faq-trigger" id="faq-btn-1" aria-expanded="false" aria-controls="faq-panel-1"><span>Esto ya lo hace mi software de gestión, ¿no?</span><svg class="faq-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></h3>
           <div class="faq-panel" id="faq-panel-1" role="region" aria-labelledby="faq-btn-1"><div class="faq-panel-inner"><p>Tu software avisa. Este sistema gestiona. Cuando un paciente cancela el martes por la mañana la cita del jueves, ¿tu software busca a alguien para ocupar ese hueco? Ahí está todo el valor.</p></div></div>
@@ -295,7 +437,7 @@
           <h3 class="faq-q"><button type="button" class="faq-trigger" id="faq-btn-3" aria-expanded="false" aria-controls="faq-panel-3"><span>¿No sonará a robot? No quiero molestar a mis pacientes.</span><svg class="faq-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></h3>
           <div class="faq-panel" id="faq-panel-3" role="region" aria-labelledby="faq-btn-3"><div class="faq-panel-inner"><p>Los mensajes se escriben con el tono de tu clínica y los apruebas tú, palabra por palabra, antes de que salga ninguno. Luego hay una fase de prueba en la que validas cada mensaje real antes de enviarlo. Y vigilamos las bajas, así que si algo molesta lo vemos en días.</p></div></div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item" id="faq-datos">
           <h3 class="faq-q"><button type="button" class="faq-trigger" id="faq-btn-4" aria-expanded="false" aria-controls="faq-panel-4"><span>¿Qué pasa con los datos de mis pacientes?</span><svg class="faq-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></h3>
           <div class="faq-panel" id="faq-panel-4" role="region" aria-labelledby="faq-btn-4"><div class="faq-panel-inner"><p>Firmamos un contrato de encargado de tratamiento y usamos solo los datos mínimos: nombre, teléfono, cita y tipo de tratamiento. No accedemos a historiales clínicos ni a imágenes. Los datos se alojan en la UE y siguen siendo tuyos: puedes exportarlos o pedir que se borren cuando quieras.</p></div></div>
         </div>
@@ -319,93 +461,99 @@
     </div>
   </section>
 
-  <!-- CONTACTO -->
-  <section class="contact" id="contacto" aria-label="Contacto">
-    <div class="card reveal">
-      <p class="eyebrow">Siguiente paso</p>
-      <h2>Haz la cuenta. <span class="dim">Después decides.</span></h2>
-      <p class="lede">Escríbeme y te llamo. En treinta minutos vemos tu agenda y te digo cuánto se está perdiendo y qué parte se puede recuperar. La cifra es tuya aunque no trabajemos juntos.</p>
-      <div class="ctas">
-        <a class="btn btn-primary" href="mailto:ceo@axionasystems.es" data-call>
-          <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada
-        </a>
+  <!-- 9 · CONTACTO -->
+  <section class="band band-contact on-dark" id="contacto" aria-labelledby="contacto-title">
+    <div class="wrap contact">
+      <div>
+        <h2 id="contacto-title">Haz la cuenta. <span class="dim">Después decides.</span></h2>
+        <p class="lede">Escríbeme y te llamo. En treinta minutos vemos tu agenda y te digo cuánto se pierde y qué parte se puede recuperar. La cifra es tuya aunque no trabajemos juntos.</p>
+        <div class="ctas">
+          <a class="btn btn-mint" href="mailto:ceo@axionasystems.es" data-call>
+            <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Pide una llamada
+          </a>
+        </div>
+        <p class="copy-row">Si no se abre tu correo, escribe a <span class="email">ceo@axionasystems.es</span> <button type="button" class="copy-btn" data-copy="ceo@axionasystems.es">Copiar</button></p>
       </div>
-      <p class="copy-row">Si no se abre tu correo, escribe a <span class="email">ceo@axionasystems.es</span> <button type="button" class="copy-btn" data-copy="ceo@axionasystems.es">Copiar</button></p>
-    </div>
-
-    <div class="card card-2 form-card reveal">
-      <p class="eyebrow">Si lo prefieres</p>
-      <h3>Déjame tus datos y te escribo yo</h3>
-      <p>Te respondo en menos de 24 horas laborables.</p>
-      <form id="leadForm" class="form" novalidate>
-        <input type="hidden" name="_subject" value="Nueva solicitud desde la web de AXIONA" />
-        <input type="hidden" name="_template" value="table" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <div class="field">
-          <label for="f-name">Nombre</label>
-          <input id="f-name" name="nombre" type="text" placeholder="Tu nombre" required autocomplete="name" />
+      <details class="more more-form" id="form-details">
+        <summary>Prefiero dejar mis datos y que me escribas tú</summary>
+        <div class="more-body">
+          <p>Te respondo en menos de 24 horas laborables.</p>
+          <form id="leadForm" class="form" novalidate>
+            <input type="hidden" name="_subject" value="Nueva solicitud desde la web de AXIONA" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <div class="field">
+              <label for="f-name">Nombre</label>
+              <input id="f-name" name="nombre" type="text" placeholder="Tu nombre…" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="f-clinic">Clínica</label>
+              <input id="f-clinic" name="clinica" type="text" placeholder="Clínica Dental…" required autocomplete="organization" />
+            </div>
+            <div class="field">
+              <label for="f-phone">Teléfono o WhatsApp</label>
+              <input id="f-phone" name="telefono" type="tel" placeholder="600 000 000" required autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" spellcheck="false" placeholder="tu@clinica.com" required autocomplete="email" />
+            </div>
+            <div class="field full">
+              <label for="f-volume">Citas al mes</label>
+              <select id="f-volume" name="citas_al_mes" required>
+                <option value="" disabled selected>Elige un rango</option>
+                <option>Menos de 50</option>
+                <option>Entre 50 y 150</option>
+                <option>Entre 150 y 300</option>
+                <option>Más de 300</option>
+              </select>
+            </div>
+            <div class="form-foot full">
+              <button type="submit" class="btn btn-mint btn-plain">Enviar</button>
+              <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+            </div>
+            <p class="form-legal full">Uso tus datos solo para responder a esta solicitud. Más información en la <a href="/politica-privacidad">política de privacidad</a>.</p>
+          </form>
         </div>
-        <div class="field">
-          <label for="f-clinic">Clínica</label>
-          <input id="f-clinic" name="clinica" type="text" placeholder="Clínica Dental…" required autocomplete="organization" />
-        </div>
-        <div class="field">
-          <label for="f-phone">Teléfono o WhatsApp</label>
-          <input id="f-phone" name="telefono" type="tel" placeholder="600 000 000" required autocomplete="tel" />
-        </div>
-        <div class="field">
-          <label for="f-email">Email</label>
-          <input id="f-email" name="email" type="email" spellcheck="false" placeholder="tu@clinica.com" required autocomplete="email" />
-        </div>
-        <div class="field full">
-          <label for="f-volume">Citas al mes</label>
-          <select id="f-volume" name="citas_al_mes" required>
-            <option value="" disabled selected>Elige un rango</option>
-            <option>Menos de 50</option>
-            <option>Entre 50 y 150</option>
-            <option>Entre 150 y 300</option>
-            <option>Más de 300</option>
-          </select>
-        </div>
-        <div class="form-foot">
-          <button type="submit" class="btn btn-submit">Enviar</button>
-          <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
-        </div>
-        <p class="form-legal">Uso tus datos solo para responder a esta solicitud. Más información en la <a href="/politica-privacidad">política de privacidad</a>.</p>
-      </form>
+      </details>
     </div>
   </section>
 
 </main>
 
-<footer class="footer">
-  <div class="footer-top">
-    <a href="/" class="logo" aria-label="AXIONA Systems, inicio">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="0" y="39" width="64" height="6" fill="#3fd1a8"/><path d="M32,4 L60,58 L4,58 Z M32,27 L47,51 L17,51 Z" fill="#ecedeb" fill-rule="evenodd"/></svg>
-      <span translate="no">AXIONA <small>SYSTEMS</small></span>
-    </a>
-    <nav class="footer-links" aria-label="Pie de página">
-      <a href="#sistemas">Sistemas</a>
-      <a href="#como-funciona">Cómo funciona</a>
-      <a href="#precios">Precios</a>
-      <a href="/calculadora">Calculadora</a>
-      <a href="#preguntas">Preguntas</a>
-      <a href="mailto:ceo@axionasystems.es">ceo@axionasystems.es</a>
-    </nav>
-  </div>
-  <div class="footer-bottom">
-    <span>© <span id="year">2026</span> AXIONA Systems · Hugo Corbalán Romera · Barcelona</span>
-    <nav aria-label="Legal">
-      <a href="/politica-privacidad">Privacidad</a>
-      <a href="/aviso-legal">Aviso legal</a>
-      <a href="/politica-cookies">Cookies</a>
-      <button type="button" data-cookie-settings>Configurar cookies</button>
-    </nav>
+<footer class="footer on-dark">
+  <div class="wrap">
+    <div class="footer-top">
+      <a href="/" class="logo" aria-label="AXIONA Systems, inicio">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="0" y="39" width="64" height="6" fill="#3fd1a8"/><path d="M32,4 L60,58 L4,58 Z M32,27 L47,51 L17,51 Z" fill="#ecedeb" fill-rule="evenodd"/></svg>
+        <span translate="no">AXIONA <small>SYSTEMS</small></span>
+      </a>
+      <nav class="footer-links" aria-label="Pie de página">
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#calculadora">Calculadora</a>
+        <a href="#precios">Precios</a>
+        <a href="#preguntas">Preguntas</a>
+        <a href="mailto:ceo@axionasystems.es">ceo@axionasystems.es</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> AXIONA Systems · Hugo Corbalán Romera · Barcelona</span>
+      <nav aria-label="Legal">
+        <a href="/politica-privacidad">Privacidad</a>
+        <a href="/aviso-legal">Aviso legal</a>
+        <a href="/politica-cookies">Cookies</a>
+        <button type="button" data-cookie-settings>Configurar cookies</button>
+      </nav>
+    </div>
   </div>
 </footer>
 
 <script src="/assets/axiona.js"></script>
-<script src="/assets/cookie-consent.js"></script>
+<script src="/assets/vendor/gsap-3.12.5.min.js" defer></script>
+<script src="/assets/vendor/ScrollTrigger-3.12.5.min.js" defer></script>
+<script src="/assets/vendor/lenis-1.1.14.min.js" defer></script>
+<script src="/assets/home.js" defer></script>
+<script src="/assets/cookie-consent.js" defer></script>
 </body>
 </html>

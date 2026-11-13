@@ -37,9 +37,10 @@ function apply(m) {
 
 self.onmessage = async (e) => {
   const m = e.data;
+  // first question from the page: is it worth it? It only draws the screens and hands the canvas over if so
+  if (m.type === 'probe') { if (!m.force && softwareGL()) postMessage({ type: 'error', message: 'no GPU acceleration' }); else postMessage({ type: 'go' }); return; }
   if (m.type !== 'init') { if (scene) apply(m); else queued.push(m); return; }
   try {
-    if (!m.opts.force && softwareGL()) { postMessage({ type: 'error', message: 'no GPU acceleration' }); return; }
     const { createScene } = await import('./escena.js');
     m.canvas.addEventListener('webglcontextlost', () => { running = false; postMessage({ type: 'error', message: 'context lost' }); });
     scene = createScene(m.canvas, m.opts); running = true;

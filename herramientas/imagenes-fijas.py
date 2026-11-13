@@ -1,8 +1,8 @@
-"""Genera las imágenes fijas de la agenda 3D (assets/img/hilo-*.webp).
+"""Genera las imágenes fijas de la escena 3D, la tablet y el móvil (assets/img/hilo-*.webp).
 
 Son las que se ven mientras carga el 3D y las que se quedan cuando no hay 3D
 (móvil lento, sin aceleración gráfica o con «reducir movimiento»). Hay que
-regenerarlas cada vez que cambie assets/3d/escena.js.
+regenerarlas cada vez que cambie assets/3d/escena.js o assets/3d/pantallas.js.
 
 Uso, desde la raíz del repositorio:
     npx serve -l 4173 .            # en otra terminal
@@ -11,7 +11,8 @@ Uso, desde la raíz del repositorio:
 Necesita Playwright para Python (pip install playwright && playwright install chromium).
 Cada imagen se dibuja con la escena real, con fondo transparente y el objeto ocupando el
 72 % central; su proporción es la del encuadre de cada momento, y por eso encajan justo
-donde luego aparece el 3D.
+donde luego aparece el 3D. Si se cambia un encuadre (frameOf en escena.js), el ancho y el alto de aquí
+y los de la etiqueta <img> de index.html tienen que seguir la proporción de su «span».
 """
 import base64, os, sys
 from playwright.sync_api import sync_playwright
@@ -22,10 +23,10 @@ DEST = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets', 
 JOBS = [
  ('hilo-hero-d', 0, 0, 0, 1400, 950, '&time=0'), ('hilo-hero-m', 0, 0, 1, 920, 804, '&time=0'),
  ('hilo-hero-lleno-d', 0, 0, 0, 1400, 950, '&time=99'), ('hilo-hero-lleno-m', 0, 0, 1, 920, 804, '&time=99'),
- ('hilo-demo-d', 1, 0.36, 0, 1400, 1041, '&time=99'), ('hilo-demo-m', 1, 0.36, 1, 920, 710, '&time=99'),
- ('hilo-fugas-d', 2, 0.26, 0, 1040, 1216, '&time=99'), ('hilo-fugas-m', 2, 0.26, 1, 920, 1076, '&time=99'),
- ('hilo-semanas-d', 3, 0.44, 0, 1800, 698, '&time=99'), ('hilo-semanas-m', 3, 0.44, 1, 920, 678, '&time=99'),
- ('hilo-calc-d', 4, 0, 0, 1400, 988, '&time=99'), ('hilo-calc-m', 4, 0, 1, 920, 1048, '&time=99'),
+ ('hilo-demo-d', 1, 0.36, 0, 1400, 1278, '&time=99'), ('hilo-demo-m', 1, 0.36, 1, 920, 552, '&time=99'),
+ ('hilo-fugas-d', 2, 0.295, 0, 1400, 1000, '&time=99'), ('hilo-fugas-m', 2, 0.295, 1, 920, 614, '&time=99'),
+ ('hilo-semanas-d', 3, 0.44, 0, 1800, 1000, '&time=99'), ('hilo-semanas-m', 3, 0.44, 1, 920, 726, '&time=99'),
+ ('hilo-calc-d', 4, 0, 0, 1400, 972, '&time=99'), ('hilo-calc-m', 4, 0, 1, 920, 622, '&time=99'),
 ]
 
 with sync_playwright() as p:
@@ -42,4 +43,7 @@ with sync_playwright() as p:
         webp = base64.b64decode(data[0].split(',')[1])
         open(os.path.join(DEST, name + '.webp'), 'wb').write(webp)
         print(name, data[1], 'x', data[2], round(len(webp) / 1024), 'KB')
+    # la imagen que sale al compartir la web (1200 × 630), con la misma tablet
+    pg = b.new_page(viewport={'width': 1200, 'height': 630}); pg.goto(f'{BASE}/herramientas/imagen-compartir.html', wait_until='networkidle'); pg.wait_for_timeout(400)
+    pg.screenshot(path=os.path.join(DEST, '..', 'icons', 'og-image.png')); pg.close(); print('og-image.png')
     b.close()

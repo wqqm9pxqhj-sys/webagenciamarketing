@@ -94,7 +94,7 @@
       $('hid-fuga-mes').value = num(m.lostMonth) + ' €'; $('hid-fuga-anual').value = num(m.lostYear) + ' €';
       $('hid-rec-mes').value = num(m.recMonth) + ' €'; $('hid-rec-anual').value = num(m.recYear) + ' €';
       const unit = m.C <= 250 ? 1 : m.C <= 500 ? 2 : 4;
-      $('calc-unit').textContent = (unit === 1 ? 'Cada bloque es una cita.' : 'Cada bloque son ' + unit + ' citas.') + ' Las que faltan en la agenda están en el montón.';
+      $('calc-unit').textContent = (unit === 1 ? 'Cada cuadro es una cita.' : 'Cada cuadro son ' + unit + ' citas.') + ' En rojo, las que no se presentan; en verde, las que se recuperan.';
       root.dataset.calcMode = state.mode;
       clearTimeout(announceTimer);
       announceTimer = setTimeout(() => { $('calc-sr-announce').textContent = 'Se te escapan ' + eur(m.lostYear) + ' al año. Se pueden recuperar ' + eur(m.recMonth) + ' al mes.'; }, 700);
@@ -103,7 +103,7 @@
       if (api.onChange) api.onChange(state);
     }
 
-    // flat stand-in for the 3D month: one square per block, gaps outlined, recovered ones in mint
+    // flat stand-in for the 3D month: one square per block, gaps outlined, recovered ones in green
     const grid = $('calcGrid'), order = Array.from({ length: 250 }, (_, i) => { const x = Math.sin((i + 7.31) * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); });
     function paintFlat(m, unit) {
       const shown = Math.max(1, Math.round(m.C / unit)), holes = Math.min(shown, Math.round(shown * m.T)), nRec = Math.round(holes * m.recFrac);
@@ -283,29 +283,31 @@
     if (calc) calc.useFlat();
     if (worker) { worker.postMessage({ type: 'stop' }); worker.terminate(); worker = null; }
   }
-  async function bitmaps() {
-    await document.fonts.load('600 48px Geist');
-    const make = (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d')); return createImageBitmap(c, { imageOrientation: 'flipY', premultiplyAlpha: 'none' }); };
-    const dias = await make(1000, 90, (g) => { g.fillStyle = '#fff'; g.font = '600 52px Geist'; g.textAlign = 'center'; g.textBaseline = 'middle'; ['L', 'M', 'X', 'J', 'V'].forEach((d, i) => g.fillText(d, (i + 0.5) * 200, 48)); });
-    const euro = await make(300, 128, (g) => { g.fillStyle = '#fff'; g.beginPath(); g.roundRect(4, 4, 292, 120, 60); g.fill(); g.fillStyle = '#0b0b0c'; g.font = '600 62px Geist'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('+85 €', 150, 68); });
-    return { dias, euro };
-  }
   async function boot3d() {
     const weak = (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.connection && navigator.connection.saveData);
     if (force === '0' || (weak && force !== '1') || !window.Worker || !canvas.transferControlToOffscreen) return still();
     try {
-      const bm = await bitmaps().catch(() => ({}));
-      const off = canvas.transferControlToOffscreen();
       worker = new Worker('/assets/3d/trabajador.js', { type: 'module' });
       worker.onerror = still;
-      worker.onmessage = (e) => {
+      worker.onmessage = async (e) => {
         if (e.data.type === 'ready') { live = true; root.classList.add('live3d'); }
         else if (e.data.type === 'error' || (e.data.type === 'perf' && e.data.ms > 42 && force !== '1')) still();
+        else if (e.data.type === 'go') {
+          // the worker has a real GPU: only now is it worth drawing what the tablet and the phone show
+          // (here, with the site's font) and handing it over with the canvas
+          try {
+            const { crearPantallas } = await import('/assets/3d/pantallas.js');
+            const pantallas = await crearPantallas({ mobile: innerWidth <= 900 });
+            if (!worker) return;
+            const off = canvas.transferControlToOffscreen();
+            worker.postMessage({ type: 'init', canvas: off, opts: { dpr: pixelRatio(), w: view.w, h: view.h, mobile: innerWidth <= 900, reduce, pantallas, force: force === '1' } }, [off].concat(Object.values(pantallas.bitmaps)));
+            worker.postMessage({ type: 'state', state: { stick: stick.slice(), mobile: innerWidth <= 900 } });
+            if (calc) calc.onChange(calc.state);
+            lastSent = ''; dirty = true;
+          } catch (err) { still(); }
+        }
       };
-      worker.postMessage({ type: 'init', canvas: off, opts: { dpr: pixelRatio(), w: view.w, h: view.h, mobile: innerWidth <= 900, reduce, bitmaps: bm, force: force === '1' } }, [off].concat(Object.values(bm)));
-      worker.postMessage({ type: 'state', state: { stick: stick.slice(), mobile: innerWidth <= 900 } });
-      if (calc) calc.onChange(calc.state);
-      lastSent = ''; dirty = true;
+      worker.postMessage({ type: 'probe', force: force === '1' });
     } catch (err) { still(); }
   }
   // start after the page has loaded and the browser is idle, so the 3D never delays the content

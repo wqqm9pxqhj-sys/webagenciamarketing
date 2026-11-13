@@ -13,24 +13,19 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh}
 // Parameters: k (act 0-4), t (progress 0-1), m (1 = phone framing), time (frozen clock, seconds), reg (cx,cy,fw,fh), sinfondo, citas/tasa/ticket/modo.
 // parameters travel in the hash: some static servers drop the query string when they redirect to the clean URL
 const q = new URLSearchParams(location.hash.slice(1) || location.search);
-const GROUND = ['#e3f5ee', '#12715f', '#ffffff', '#f2f3f1', '#12715f'];
+const GROUND = ['#e9f0fa', '#ffffff', '#f1f5fb', '#ffffff', '#143a7a'];
 const k0 = +(q.get('k') || 0), mobile = q.has('m') ? q.get('m') === '1' : innerWidth < 900;
 if (!q.has('sinfondo')) document.getElementById('fondo').style.background = GROUND[k0];
-await document.fonts.load('600 48px Geist');
-async function bitmaps() {
-  const mk = async (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d')); return createImageBitmap(c, { imageOrientation: 'flipY', premultiplyAlpha: 'none' }); };
-  const dias = await mk(1000, 90, (g) => { g.fillStyle = '#fff'; g.font = '600 52px Geist'; g.textAlign = 'center'; g.textBaseline = 'middle'; ['L', 'M', 'X', 'J', 'V'].forEach((d, i) => g.fillText(d, (i + 0.5) * 200, 48)); });
-  const euro = await mk(300, 128, (g) => { g.fillStyle = '#fff'; g.beginPath(); g.roundRect(4, 4, 292, 120, 60); g.fill(); g.fillStyle = '#0b0b0c'; g.font = '600 62px Geist'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('+85 €', 150, 68); });
-  return { dias, euro };
-}
+const { crearPantallas } = await import('/assets/3d/pantallas.js');
+const pantallas = await crearPantallas({ mobile });
 const canvas = document.getElementById('c'), w = innerWidth, h = innerHeight, dpr = Math.min(devicePixelRatio || 1, +(q.get('dpr') || 2));
 const reg = q.get('reg') ? q.get('reg').split(',').map(Number) : (mobile ? [0.5, 0.3, 0.92, 0.46] : [0.68, 0.5, 0.56, 0.78]);
 const worker = new Worker('/assets/3d/trabajador.js', { type: 'module' });
-const off = canvas.transferControlToOffscreen(), bm = await bitmaps();
+const off = canvas.transferControlToOffscreen();
 window.__log = [];
 worker.onmessage = (e) => { window.__log.push(e.data); if (e.data.type === 'ready') window.__ready = true; };
 worker.onerror = (e) => window.__log.push({ type: 'workererror', message: e.message });
-worker.postMessage({ type: 'init', canvas: off, opts: { dpr, w, h, mobile, reduce: q.has('reduce'), bitmaps: bm, force: true, fixedTime: q.has('time') ? +q.get('time') : null } }, [off, bm.dias, bm.euro]);
+worker.postMessage({ type: 'init', canvas: off, opts: { dpr, w, h, mobile, reduce: q.has('reduce'), pantallas, force: true, fixedTime: q.has('time') ? +q.get('time') : null } }, [off].concat(Object.values(pantallas.bitmaps)));
 window.__set = (state) => worker.postMessage({ type: 'state', state });
 window.__state = { k: k0, t: +(q.get('t') || 0) };
 __set({ k: k0, t: +(q.get('t') || 0), cut: +(q.get('cut') || 2), reg: { cx: reg[0], cy: reg[1], fw: reg[2], fh: reg[3] }, mobile });

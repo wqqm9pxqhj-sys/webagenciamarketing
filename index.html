@@ -259,6 +259,11 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentEl
         <details class="more">
           <summary>Cómo se calcula</summary>
           <div class="more-body">
+            <ul class="terms">
+              <li><b>Citas al mes.</b> Las que gestiona tu clínica en un mes normal.</li>
+              <li><b>Ausencias y cancelaciones de última hora.</b> Las citas que no se presentan o se cancelan tan tarde que el hueco se queda vacío.</li>
+              <li><b>Ticket medio.</b> Lo que factura de media una cita normal en tu clínica.</li>
+            </ul>
             <p>La fuga es tus citas al mes por tu tasa de ausencias por tu ticket medio. La recuperación junta dos efectos: bajar la tasa de ausencias hasta el 6 % confirmando cada cita, y rellenar en torno al 45 % de los huecos que aún se cancelen con la lista de espera. El rango del 12 % al 18 % es el habitual en clínicas dentales. Son estimaciones con medias del sector. Tu cifra real depende de tu agenda, de los tratamientos que haces y de tu base de pacientes.</p>
           </div>
         </details>
@@ -280,11 +285,13 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentEl
               <input type="hidden" name="recuperable_anual" id="hid-rec-anual" />
               <div class="field">
                 <label for="calc-pacientes">Pacientes en tu base de datos <span class="optional">(opcional)</span></label>
-                <input type="text" inputmode="numeric" id="calc-pacientes" name="pacientes_base" placeholder="900…" autocomplete="off" />
+                <input type="text" inputmode="numeric" id="calc-pacientes" name="pacientes_base" placeholder="900…" autocomplete="off" aria-describedby="hint-pacientes" />
+                <span class="hint" id="hint-pacientes">Aproximado. Todos los que han pasado por la clínica desde que abriste.</span>
               </div>
               <div class="field">
                 <label for="calc-consultas">Consultas al mes por web, Instagram o Google <span class="optional">(opcional)</span></label>
-                <input type="text" inputmode="numeric" id="calc-consultas" name="consultas_mes" placeholder="40…" autocomplete="off" />
+                <input type="text" inputmode="numeric" id="calc-consultas" name="consultas_mes" placeholder="40…" autocomplete="off" aria-describedby="hint-consultas" />
+                <span class="hint" id="hint-consultas">Aproximado. Gente que pregunta sin ser paciente todavía.</span>
               </div>
               <div class="field full">
                 <label for="calc-email">Email</label>
@@ -298,6 +305,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentEl
                 <button type="submit" class="btn btn-light btn-plain" id="calc-submit-btn">Enviar el desglose</button>
                 <p class="form-msg" id="calc-form-status" role="status" aria-live="polite"></p>
               </div>
+              <p class="form-legal full">No comparto tu correo con nadie. Puedes darte de baja en cualquier envío con un clic.</p>
             </form>
             <p class="form-done" id="calc-form-success" role="status" hidden>Enviado. Te llegará a tu bandeja en cuanto lo prepare. Si no lo ves, mira en promociones o spam.</p>
           </div>
@@ -390,7 +398,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentEl
     <div class="wrap about">
       <h2 id="nosotros-title">Nadie monta una clínica para perseguir a la gente por teléfono.</h2>
       <div class="about-body">
-        <p class="about-lede">No hay departamentos. Mi equipo y yo hacemos la auditoría, instalamos el sistema y te escribimos el lunes con los resultados, buenos o malos. Si algo falla, sabes a quién llamar.</p>
+        <p class="about-lede">No hay departamentos y hablas siempre con la misma persona. Mi equipo y yo hacemos la auditoría, instalamos el sistema y te escribimos el lunes con los resultados, buenos o malos. Si algo falla, sabes a quién llamar.</p>
         <p class="about-sign">Hugo Corbalán, fundador de AXIONA Systems</p>
         <details class="more">
           <summary>Por qué existe AXIONA</summary>

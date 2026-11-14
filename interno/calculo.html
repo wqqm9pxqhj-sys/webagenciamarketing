@@ -7,104 +7,117 @@
 <meta name="robots" content="noindex, nofollow" />
 <link rel="icon" href="/brand/favicon/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
-<meta name="theme-color" content="#0b0b0c" />
+<meta name="theme-color" content="#e9f0fa" />
 <link rel="preload" href="/assets/fonts/geist-var.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="/assets/axiona.css" />
+<link rel="stylesheet" href="/assets/sitio.css" />
 <style>
-/* internal tool: same cards as the public calculator, inputs beside the mint result, email below */
-.tool-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:var(--gap)}
+/* internal tool, on the site's styles: the data on the left, the result on navy (as the public calculator), the email below */
+.tool-tag{font-size:13.5px;font-weight:500;color:var(--muted);padding:6px 14px;border-radius:999px;border:1px solid var(--line)}
+.tool{padding:clamp(40px,5vw,72px) 0}
+.tool-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(28px,4vw,64px);align-items:start}
 .tool-inputs{display:grid;gap:18px;align-content:start}
 .tool-field{display:grid;gap:6px}
-.tool-field label{font-size:14px;font-weight:500}
-.tool-field .req{color:var(--mint)}
-.tool-field input{height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card-2);padding:0 14px;font-size:16px;font-variant-numeric:tabular-nums;transition:border-color 200ms ease}
-.tool-field input:focus{outline:none;border-color:var(--mint);box-shadow:0 0 0 3px rgba(18,113,95,.15)}
-.tool-fieldset{border:1px solid var(--line);border-radius:var(--r-md);padding:18px;margin:0;min-width:0;display:grid;gap:16px}
-.tool-fieldset legend{padding:0 6px;margin-left:-6px;font-size:14px;font-weight:500}
-.tool-result{border-radius:var(--r-lg);padding:var(--pad);color:#fff;display:grid;gap:24px;align-content:start;min-width:0;
-  background:radial-gradient(70% 55% at 100% 0%,rgba(63,209,168,.6) 0%,transparent 70%),radial-gradient(80% 80% at 0% 100%,var(--mint-deep) 0%,transparent 70%),linear-gradient(160deg,var(--mint),var(--mint-deep))}
-.tool-result .eyebrow{color:var(--mint-pale)}
-.tool-result .figure .unit{color:var(--mint-pale)}
-.tool-big{font-size:clamp(48px,5vw,76px);margin-top:10px}
-.tool-sub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.2)}
-.tool-sub .v{display:block;font-size:clamp(24px,2.2vw,30px)}
-.tool-sub .k{display:block;font-size:14px;color:var(--mint-pale);margin-top:6px}
-.tool-box{padding:20px;border-radius:var(--r-md);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)}
-.rec-line{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.18)}
-.rec-line:last-of-type{border-bottom:none}
-.rec-name{font-size:15px;color:var(--mint-pale)}
-.rec-value{font-size:20px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.rec-value.empty{font-size:14px;font-weight:400;letter-spacing:0;color:var(--mint-pale)}
-.rec-assumption{font-size:13.5px;color:var(--mint-pale);margin:-4px 0 6px;max-width:52ch}
-.tool-total{font-size:clamp(22px,2vw,28px);font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin-top:8px}
-.tool-total small{font-size:.6em;font-weight:500;color:var(--mint-pale);letter-spacing:0}
-.email-card-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
-.email-card-head span{font-size:15px;font-weight:500}
-#emailOutput{width:100%;min-height:380px;resize:vertical;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--card-2);padding:16px;font-family:var(--mono);font-size:14px;line-height:1.65;color:var(--ink)}
-#emailOutput:focus{outline:none;border-color:var(--mint)}
-#copyStatus{font-size:14px;color:var(--mint);margin-top:8px;min-height:1em}
+.tool-field label{font-size:14.5px;font-weight:500}
+.tool-field .req{color:var(--brand)}
+.tool-field input{width:100%;height:50px;border-radius:12px;border:1px solid #c5cedc;background:#fff;padding:0 14px;font-size:16px;font-variant-numeric:tabular-nums;color:var(--ink);transition:border-color 200ms ease}
+.tool-field input::placeholder{color:#8c98ad}
+.tool-field input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(29,87,201,.18)}
+.tool-fieldset{border:0;border-top:1px solid var(--line);padding:18px 0 0;margin:6px 0 0;min-width:0;display:grid;gap:16px}
+.tool-fieldset legend{padding:0 10px 0 0;font-size:14.5px;font-weight:500;color:var(--muted)}
+.tool-result{border-radius:22px;padding:clamp(22px,3vw,40px);background:var(--navy);display:grid;gap:26px;align-content:start;min-width:0}
+.tool-label{font-size:15px;color:var(--tint)}
+.figure{font-weight:600;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.figure .unit{font-size:.42em;font-weight:500;letter-spacing:0;color:var(--tint);margin-left:.14em}
+.tool-big{font-size:clamp(52px,6vw,92px);margin-top:8px}
+.tool-sub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding-top:22px;border-top:1px solid var(--rule)}
+.tool-sub .v{display:block;font-size:clamp(26px,2.4vw,34px)}
+.tool-sub .k{display:block;font-size:14px;color:var(--tint);margin-top:8px}
+.tool-rec{padding-top:22px;border-top:1px solid var(--rule)}
+.rec{border-bottom:1px solid var(--rule)}
+.rec:last-child{border-bottom:none}
+.rec-line{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0}
+.rec-name{font-size:15.5px}
+/* green keeps its one meaning here too: what can be recovered */
+.rec-value{font-size:21px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--gain-bright)}
+.rec-value.empty{font-size:14px;font-weight:400;letter-spacing:0;color:var(--tint)}
+.rec-assumption{font-size:13.5px;color:var(--tint);margin:-4px 0 14px;max-width:52ch}
+.tool-total{font-size:clamp(24px,2.4vw,32px);font-weight:600;letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin-top:8px;color:var(--gain-bright)}
+.tool-total small{font-size:.58em;font-weight:500;color:var(--tint);letter-spacing:0}
+.tool-email{background:var(--grey);padding:clamp(40px,5vw,72px) 0 clamp(64px,8vw,112px)}
+.email-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.email-head h2{font-size:clamp(22px,2vw,26px);letter-spacing:-.03em;line-height:1.15}
+#emailOutput{width:100%;min-height:400px;resize:vertical;border-radius:14px;border:1px solid #c5cedc;background:#fff;padding:18px;font:inherit;font-size:15.5px;line-height:1.6;color:var(--ink)}
+#emailOutput:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(29,87,201,.18)}
+#copyStatus{font-size:14.5px;color:var(--gain);margin-top:10px;min-height:1.4em}
 @media (max-width:960px){.tool-grid{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
-<header class="nav">
+<a href="#main" class="skip-link">Saltar al contenido</a>
+<header class="nav is-solid">
   <a href="/" class="logo" aria-label="AXIONA Systems, inicio">
-    <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="0" y="39" width="64" height="6" fill="#3fd1a8"/><path d="M32,4 L60,58 L4,58 Z M32,27 L47,51 L17,51 Z" fill="#ecedeb" fill-rule="evenodd"/></svg>
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="0" y="39" width="64" height="6" fill="#1d57c9"/><path d="M32,4 L60,58 L4,58 Z M32,27 L47,51 L17,51 Z" fill="#0d1b33" fill-rule="evenodd"/></svg>
     <span translate="no">AXIONA <small>SYSTEMS</small></span>
   </a>
-  <span class="tag" style="background:transparent;color:var(--on-frame-muted);border-color:var(--frame-line)">Uso interno</span>
+  <span class="tool-tag">Uso interno</span>
 </header>
-<main class="frame">
-  <header class="card page-hero">
-    <p class="eyebrow">Herramienta interna</p>
-    <h1>Cálculo de las tres fugas</h1>
-    <p class="lede">Solo para uso interno. No se indexa y no hay enlaces desde la web. Mete los datos del contacto y sale el email con el cálculo completo.</p>
+<main id="main">
+  <header class="band-legal-head">
+    <div class="wrap">
+      <p class="kicker">Herramienta interna</p>
+      <h1>Cálculo de las tres fugas</h1>
+      <p class="lede">Solo para uso interno. No se indexa y no hay enlaces desde la web. Mete los datos del contacto y sale el email con el cálculo completo.</p>
+    </div>
   </header>
 
-  <div class="tool-grid">
-    <div class="card tool-inputs">
-      <div class="tool-field"><label for="f-nombre">Nombre</label><input type="text" id="f-nombre" placeholder="Para personalizar el email" autocomplete="off" /></div>
-      <div class="tool-field"><label for="f-citas">Citas al mes <span class="req">*</span></label><input type="text" inputmode="numeric" id="f-citas" placeholder="200" autocomplete="off" /></div>
-      <div class="tool-field"><label for="f-tasa">Tasa de ausencias (%) <span class="req">*</span></label><input type="text" inputmode="numeric" id="f-tasa" placeholder="15" autocomplete="off" /></div>
-      <div class="tool-field"><label for="f-ticket">Ticket medio (€) <span class="req">*</span></label><input type="text" inputmode="decimal" id="f-ticket" placeholder="85" autocomplete="off" /></div>
-      <fieldset class="tool-fieldset">
-        <legend>Opcional, activa las fugas 2 y 3</legend>
-        <div class="tool-field"><label for="f-pacientes">Pacientes en base de datos</label><input type="text" inputmode="numeric" id="f-pacientes" placeholder="900" autocomplete="off" /></div>
-        <div class="tool-field"><label for="f-consultas">Consultas al mes</label><input type="text" inputmode="numeric" id="f-consultas" placeholder="40" autocomplete="off" /></div>
-      </fieldset>
-    </div>
+  <section class="tool" aria-label="Datos y resultado">
+    <div class="wrap tool-grid">
+      <div class="tool-inputs">
+        <div class="tool-field"><label for="f-nombre">Nombre</label><input type="text" id="f-nombre" placeholder="Para personalizar el email" autocomplete="off" /></div>
+        <div class="tool-field"><label for="f-citas">Citas al mes <span class="req">*</span></label><input type="text" inputmode="numeric" id="f-citas" placeholder="200" autocomplete="off" /></div>
+        <div class="tool-field"><label for="f-tasa">Tasa de ausencias (%) <span class="req">*</span></label><input type="text" inputmode="numeric" id="f-tasa" placeholder="15" autocomplete="off" /></div>
+        <div class="tool-field"><label for="f-ticket">Ticket medio (€) <span class="req">*</span></label><input type="text" inputmode="decimal" id="f-ticket" placeholder="85" autocomplete="off" /></div>
+        <fieldset class="tool-fieldset">
+          <legend>Opcional, activa las fugas 2 y 3</legend>
+          <div class="tool-field"><label for="f-pacientes">Pacientes en base de datos</label><input type="text" inputmode="numeric" id="f-pacientes" placeholder="900" autocomplete="off" /></div>
+          <div class="tool-field"><label for="f-consultas">Consultas al mes</label><input type="text" inputmode="numeric" id="f-consultas" placeholder="40" autocomplete="off" /></div>
+        </fieldset>
+      </div>
 
-    <div class="tool-result grain" id="resultPanel">
-      <div>
-        <p class="eyebrow">Fuga de citas que no se presentan, al mes</p>
-        <p class="tool-big figure" id="out-fuga1-mes">—</p>
-      </div>
-      <div class="tool-sub">
-        <div><span class="v figure" id="out-fuga1-anual">—</span><span class="k">al año</span></div>
-        <div><span class="v figure" id="out-citas-perdidas">—</span><span class="k">citas perdidas al mes</span></div>
-      </div>
-      <div class="tool-box">
-        <p class="eyebrow">Recuperable por fuga</p>
-        <div class="rec-line"><span class="rec-name">1 · Citas que no se presentan</span><span class="rec-value" id="out-rec1">—</span></div>
-        <div class="rec-line"><span class="rec-name">2 · Pacientes dormidos</span><span class="rec-value empty" id="out-rec2">sin datos</span></div>
-        <p class="rec-assumption" id="rec2-assumption" hidden>Supuesto: <span id="a-inactivos">—</span> pacientes inactivos (60 % de la base), contactando hasta <span id="a-contactados">—</span> al mes, conversión del 8 %.</p>
-        <div class="rec-line"><span class="rec-name">3 · Consultas sin respuesta</span><span class="rec-value empty" id="out-rec3">sin datos</span></div>
-        <p class="rec-assumption" id="rec3-assumption" hidden>Supuesto: el 60 % de las consultas no recibe respuesta a tiempo y el 25 % de esas es recuperable.</p>
-      </div>
-      <div class="tool-box">
-        <p class="eyebrow">Total recuperable</p>
-        <p class="tool-total"><span id="out-total-mes">—</span> <small>al mes</small> · <span id="out-total-anual">—</span> <small>al año</small></p>
+      <div class="tool-result on-brand" id="resultPanel">
+        <div>
+          <p class="tool-label">Fuga de citas que no se presentan, al mes</p>
+          <p class="tool-big figure" id="out-fuga1-mes">—</p>
+        </div>
+        <div class="tool-sub">
+          <div><span class="v figure" id="out-fuga1-anual">—</span><span class="k">al año</span></div>
+          <div><span class="v figure" id="out-citas-perdidas">—</span><span class="k">citas perdidas al mes</span></div>
+        </div>
+        <div class="tool-rec">
+          <p class="tool-label">Recuperable por fuga</p>
+          <div class="rec"><div class="rec-line"><span class="rec-name">1 · Citas que no se presentan</span><span class="rec-value" id="out-rec1">—</span></div></div>
+          <div class="rec"><div class="rec-line"><span class="rec-name">2 · Pacientes dormidos</span><span class="rec-value empty" id="out-rec2">sin datos</span></div>
+            <p class="rec-assumption" id="rec2-assumption" hidden>Supuesto: <span id="a-inactivos">—</span> pacientes inactivos (60 % de la base), contactando hasta <span id="a-contactados">—</span> al mes, conversión del 8 %.</p></div>
+          <div class="rec"><div class="rec-line"><span class="rec-name">3 · Consultas sin respuesta</span><span class="rec-value empty" id="out-rec3">sin datos</span></div>
+            <p class="rec-assumption" id="rec3-assumption" hidden>Supuesto: el 60 % de las consultas no recibe respuesta a tiempo y el 25 % de esas es recuperable.</p></div>
+        </div>
+        <div class="tool-rec">
+          <p class="tool-label">Total recuperable</p>
+          <p class="tool-total"><span id="out-total-mes">—</span> <small>al mes</small> · <span id="out-total-anual">—</span> <small>al año</small></p>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <section class="card card-2">
-    <div class="email-card-head">
-      <span id="email-variant-label">Email generado, variante B (faltan datos)</span>
-      <button type="button" class="btn btn-submit" id="copyBtn">Copiar email</button>
+  <section class="tool-email" aria-labelledby="email-variant-label">
+    <div class="wrap">
+      <div class="email-head">
+        <h2 id="email-variant-label">Email generado, variante B (faltan datos)</h2>
+        <button type="button" class="btn btn-plain" id="copyBtn">Copiar email</button>
+      </div>
+      <textarea id="emailOutput" readonly spellcheck="false" aria-labelledby="email-variant-label"></textarea>
+      <p id="copyStatus" role="status" aria-live="polite"></p>
     </div>
-    <textarea id="emailOutput" readonly spellcheck="false" aria-labelledby="email-variant-label"></textarea>
-    <p id="copyStatus" role="status" aria-live="polite"></p>
   </section>
 </main>
 

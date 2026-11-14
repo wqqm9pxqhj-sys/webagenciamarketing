@@ -237,6 +237,15 @@ with sync_playwright() as p:
     check('Ahora mismo no puedo responder' in pg.inner_text('.ayuda-list') and pg.is_disabled('#ayudaInput') and pg.locator('.ayuda-call').get_attribute('href').startswith('mailto:ceo@axionasystems.es?subject='), 'asistente caído a media conversación: lo dice y ofrece el correo y la llamada')
     ctx.close()
 
+    # ---- internal tool (not linked, not indexed): same sums as the public calculator and the email with the three leaks
+    ctx, pg = page(b); pg.goto(B + '/interno/calculo', wait_until='networkidle')
+    for k, v in (('nombre', 'Marta'), ('citas', '200'), ('tasa', '15'), ('ticket', '85'), ('pacientes', '900'), ('consultas', '40')): pg.fill('#f-' + k, v)
+    pg.wait_for_timeout(200)
+    check(pg.inner_text('#out-fuga1-mes').replace('\n', '') == '2.550€' and pg.inner_text('#out-rec1') == '1.989 €' and pg.inner_text('#out-total-mes') == '3.315 €', 'herramienta interna: 200 citas, 15 % y 85 € dan 2.550 € de fuga, 1.989 € recuperables y 3.315 € con las tres fugas')
+    check('variante A' in pg.inner_text('#email-variant-label') and pg.input_value('#emailOutput').startswith('Asunto: Tus tres fugas suman 3.315 € al mes') and 'Hola Marta,' in pg.input_value('#emailOutput'), 'herramienta interna: genera el email completo')
+    check('noindex' in pg.get_attribute('meta[name="robots"]', 'content') and pg.evaluate('document.documentElement.scrollWidth - innerWidth') <= 0 and pg.evaluate('document.querySelector(".nav").getBoundingClientRect().top') == 0 and not pg.errs, f'herramienta interna: sin indexar, sin desbordes y sin errores {pg.errs[:3]}')
+    ctx.close()
+
     # ---- cookie banner on a first visit
     ctx, pg = page(b, 375, 700, consent=False, has_touch=True, is_mobile=True); pg.goto(B + '/', wait_until='networkidle'); pg.wait_for_timeout(600)
     check(pg.is_visible('#cookieBanner'), 'banner de cookies en la primera visita')
